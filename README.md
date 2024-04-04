@@ -1,4 +1,4 @@
-Hệ thống quản lý bệnh viện
+<h1>Hệ thống quản lý bệnh viện</h1>
 Trong thời đại kỹ thuật số ngày nay, ngành y tế cũng đang trải qua những thay đổi lớn với nhu cầu
 quản lý và vận hành hiệu quả các nguồn lực y tế, từ trang thiết bị, đến nhân lực y bác sĩ và quản lý
 bệnh nhân. Bệnh viện ABC, một trong những bệnh viện hàng đầu, đang đối mặt với thách thức
