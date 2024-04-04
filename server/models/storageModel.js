@@ -25,9 +25,9 @@ const equipmentSchema = mongoose.Schema({
         type: String,
         enum: ['Available', 'In Use', 'Under Maintenance', 'Reserved'],  // Define possible availability states
     },
-    maintenanceHistory: [{  // Array of maintenance events (optional)
+    maintenanceHistory: [{
         date: Date,
         description: String,
-        technician: String  // Name of the technician who performed maintenance
+        technician: String  
     }]
 })
