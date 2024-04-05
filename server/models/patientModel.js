@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const patientScheme = mongooose.Schema(
+const patientScheme = mongoose.Schema(
     {
         _id: mongoose.Schema.Types.ObjectId,
         lastName: String,
@@ -31,3 +31,5 @@ const patientScheme = mongooose.Schema(
         allergies: [String]
     }
 );
+
+export const Patient = mongoose.model('Patient', patientScheme);
