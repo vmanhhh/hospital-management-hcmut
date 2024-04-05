@@ -38,4 +38,41 @@ router.post('/new', async (req, res) => {
     }
 });
 
+router.get('/all', async (req, res) => {
+    try {
+        const patients = await Patient.find({});
+        return res.status(200).json({
+            count: patients.length,
+            data: patients,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: error.message });
+    }
+});
+
+router.get('/search/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const patients = await Patient.findById(id);
+        return res.status(200).json(patients);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: error.message });
+    }
+});
+
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const result = await Patient.findByIdAndDelete(id);
+        if (result) {
+            return res.status(200).send({message: 'Patient deleted'})
+        }
+        return res.status(404).json({message:'Patient not found'});
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: error.message });
+    }
+})
 export default router;
