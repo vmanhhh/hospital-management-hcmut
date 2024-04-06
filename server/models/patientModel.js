@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 const patientScheme = mongoose.Schema(
     {
         _id: mongoose.Schema.Types.ObjectId,
-        lastName: String,
-        firstName: String,
+        lastName: String,   // Họ
+        firstName: String,  // Tên
         dob: Date,
         gender: String,
         citizenId: String,
@@ -24,9 +24,8 @@ const patientScheme = mongoose.Schema(
             phone: String,
         },
         medicalRecord: [{
-            condition: String,
-            dateDiagnosed: Date,
-            notes: String
+            medicalRecordId: mongoose.Schema.Types.ObjectId,
+            ref: 'medicalRecord',
         }],
         allergies: [String]
     }
