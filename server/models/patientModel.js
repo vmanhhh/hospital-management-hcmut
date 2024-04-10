@@ -23,10 +23,6 @@ const patientScheme = mongoose.Schema(
             relationship: String,
             phone: String,
         },
-        medicalRecord: [{
-            medicalRecordId: mongoose.Schema.Types.ObjectId,
-            ref: 'medicalRecord',
-        }],
         allergies: [String]
     }
 );

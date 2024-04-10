@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const treatmentScheme = mongoose.Schema(
+const treatmentSchema = mongoose.Schema(
     {
         _id: mongoose.Schema.Types.ObjectId,
         patientId: {
@@ -29,4 +29,4 @@ const treatmentScheme = mongoose.Schema(
     }
 );
 
-const Treatment = mongoose.model('Treatment', treatmentScheme);
+const Treatment = mongoose.model('Treatment', treatmentSchema);

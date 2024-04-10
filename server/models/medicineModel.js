@@ -15,7 +15,7 @@ const medicineSchema = mongoose.Schema({
     dosage: String, //Liều lượng (vd: 100mg)
     unit: String, //(mg, g, ml)
     dosageForm: String, //Dạng thuốc (con nhông, dung dịch,...)(tablets, capsules, syrup,...)
-    lot: [lotSchema],
+    lot: [lotSchema], // Lô hàng
 });
 
 export const Medicine = mongoose.model('Medicine', medicineSchema);
