@@ -19,7 +19,6 @@ const medicalRecordScheme = mongoose.Schema(
         },
         symptoms: [String],
         diagnosis: [String],
-        treatment: mongoose.Schema.Types.ObjectId,
     }
 );
 
