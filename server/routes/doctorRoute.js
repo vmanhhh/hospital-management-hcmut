@@ -1,10 +1,9 @@
 import express from "express";
-import { Staff } from '../models/staffModel.js';
-
+import { Doctor } from '../models/doctorModel.js';
 const router = express.Router();
 
-// Route for creating a new staff member
-router.post('/staff', async (req, res) => {
+// Route for creating a new doctor member
+router.post('/', async (req, res) => {
     try {
         if (
             !req.body.lastName ||
@@ -18,7 +17,7 @@ router.post('/staff', async (req, res) => {
             return res.status(400).send({ message: 'Fill in the required fields' })
         }
 
-        const newStaff = {
+        const newDoctor = {
         _id: mongoose.Schema.Types.ObjectId,
         lastName: req.body.lastName,
         firstName: req.body.firstName,
@@ -32,7 +31,7 @@ router.post('/staff', async (req, res) => {
         emergencyContact: req.body.emergencyContact,
 
         }
-        const staff = await Staff.create(newStaff);
+        const doctor = await Doctor.create(newDoctor);
         res.status(201).json(result);
     } catch (error) {
         console.log(error);
@@ -40,52 +39,52 @@ router.post('/staff', async (req, res) => {
     }
 });
 
-// Route for retrieving all staff members
-router.get('/staff', async (req, res) => {
+// Route for retrieving all Doctor members
+router.get('/', async (req, res) => {
     try {
-        const staff = await Staff.find();
-        res.status(200).json(staff);
+        const doctor = await Doctor.find();
+        res.status(200).json(doctor);
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: error.message });
     }
 });
 
-// Route for retrieving a specific staff member by ID
-router.get('/staff/:id', async (req, res) => {
+// Route for retrieving a specific doctor member by ID
+router.get('/:id', async (req, res) => {
     try {
-        const staff = await Staff.findById(req.params.id);
-        if (!staff) {
-            return res.status(404).json({ message: 'Staff member not found' });
+        const doctor = await Doctor.findById(req.params.id);
+        if (!doctor) {
+            return res.status(404).json({ message: 'Doctor member not found' });
         }
-        res.status(200).json(staff);
+        res.status(200).json(doctor);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }   
 });
 
-// Route for updating a staff member by ID
-router.patch('/staff/:id', async (req, res) => {
+// Route for updating a doctor member by ID
+router.patch('/:id', async (req, res) => {
     try {
-        const staff = await Staff.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!staff) {
-            return res.status(404).json({ message: 'Staff member not found' });
+        const doctor = await Doctor.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!doctor) {
+            return res.status(404).json({ message: 'Doctor member not found' });
         }
-        res.status(200).json(staff);
+        res.status(200).json(doctor);
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: error.message });
     }
 });
 
-// Route for deleting a staff member by ID
-router.delete('/staff/:id', async (req, res) => {
+// Route for deleting a doctor member by ID
+router.delete('/:id', async (req, res) => {
     try {
-        const staff = await Staff.findByIdAndDelete(req.params.id);
-        if (!staff) {
-            return res.status(404).json({ message: 'Staff member not found' });
+        const doctor = await Doctor.findByIdAndDelete(req.params.id);
+        if (!doctor) {
+            return res.status(404).json({ message: 'Doctor member not found' });
         }
-        res.status(200).json({ message: 'Staff member deleted successfully' });
+        res.status(200).json({ message: 'Doctor member deleted successfully' });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: error.message });

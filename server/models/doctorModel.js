@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
-import bycrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 
-const patientScheme = mongoose.Schema(
+const staffScheme = mongooose.Schema(
     {
         _id: mongoose.Schema.Types.ObjectId,
-        lastName: String,   // Họ
-        firstName: String,  // Tên
+        lastName: String,
+        firstName: String,
+        role: String,
+        department: String,
         dob: Date,
         gender: String,
         username: {
@@ -18,7 +18,6 @@ const patientScheme = mongoose.Schema(
             type: String,
             required: true,
         },
-
         address: {
             streetAddress: String,
             district: String,
@@ -33,25 +32,24 @@ const patientScheme = mongoose.Schema(
             firstName: String,
             relationship: String,
             phone: String,
-        },
-        allergies: [String]
+        }
     }
 );
-patientScheme.methods.matchPassword = async function (enteredPassword) {
+
+staffScheme.methods.matchPassword = async function (enteredPassword) {
     return await bycrypt.compare(enteredPassword, this.password);
 };
-patientScheme.methods.generateAuthToken = function () {
+staffScheme.methods.generateAuthToken = function () {
     return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRE,
     });
-};
-patientScheme.pre('save', async function (next) {
-    if (!this.isModified('password')) {
+}
+staffScheme.pre("save", async function (next) {
+    if (!this.isModified("password")) {
         next();
     }
     const salt = await bycrypt.genSalt(10);
     this.password = await bycrypt.hash(this.password, salt);
 });
 
-
-export const Patient = mongoose.model('Patient', patientScheme);
+export const Staff = mongoose.model('Staff', staffScheme);  // Export the model
