@@ -2,17 +2,30 @@ import express from "express";
 import { PORT, mongoDBURL } from './config.js';
 import mongoose from "mongoose";
 import patientsRoute from './routes/patientsRoute.js';
+import doctorRoute from './routes/doctorRoute.js';
+import userRoute from './routes/userRoute.js';
+import medicalRecordRoute from './routes/medicalRecordRoute.js';
+import medicineRoute from './routes/medicineRoute.js';
+import treatmentRoute from './routes/treatmentRoute.js';
+import progressTrackingRoute from './routes/progressTrackingRoute.js';
+import equipmentRoute from './routes/equipmentRoute.js';
+import notFound from './middleware/notFound.js';
+import errorHandlerMiddleware from './middleware/errorMiddleware';
+
+import dotenv from 'dotenv';
+import cors from 'cors';
+import morgan from 'morgan';
+
 const app = express();
+
+dotenv.config();
+app.use(cors());
+app.use(morgan('dev'));
+app.use(express.json());
 
 // Middleware
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    console.log(req);
-    return res.status(200).send('Hello World');
-});
-
-app.use('/patients', patientsRoute);
 
 
 mongoose
@@ -26,3 +39,13 @@ mongoose
     .catch((error) => {
         console.log(error);
     });
+app.use('/', userRoute);
+app.use('/patients', patientsRoute);
+app.use('/doctors', doctorRoute);
+app.use('/medicalRecords', medicalRecordRoute);
+app.use('/medicines', medicineRoute);
+app.use('/treatments', treatmentRoute);
+app.use('/progressTracking', progressTrackingRoute);
+app.use('/equipment', equipmentRoute);
+app.use(notFound);
+app.use(errorHandlerMiddleware);
