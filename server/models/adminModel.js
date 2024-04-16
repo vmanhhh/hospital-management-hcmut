@@ -3,6 +3,8 @@ import bycrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 const adminSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
+    lastName: String,
+    firstName: String,
     username: {
         type: String,
         required: true,
@@ -28,3 +30,5 @@ adminSchema.pre("save", async function (next) {
     const salt = await bycrypt.genSalt(10);
     this.password = await bycrypt.hash(this.password, salt);
 });
+
+export const Admin = mongoose.model("Admin", adminSchema); // Export the model

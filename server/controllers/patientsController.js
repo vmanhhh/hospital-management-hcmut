@@ -1,5 +1,4 @@
 import { Patient } from '../models/patientModel';
-import { StatusCodes } from 'http-status-codes';
 const addNewPatient = async (req, res) => {
     try {
         // Check if data included required info
@@ -54,3 +53,19 @@ const findPatientById = async (req, res) => {
         res.status(500).send({ message: error.message });
     }
 };
+const updatePatient = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const patient = await Patient.findByIdAndUpdate(id, req.body);
+        if (!patient) {
+            return res.status(404).json({ message: 'Patient not found' });
+        }
+        return res.status(200).json(patient);
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).send({ message: error.message });
+    }
+};
+
+export { addNewPatient, getAllPatients, findPatientById, updatePatient };

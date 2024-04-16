@@ -29,4 +29,4 @@ const treatmentSchema = mongoose.Schema(
     }
 );
 
-const Treatment = mongoose.model('Treatment', treatmentSchema);
+export const Treatment = mongoose.model('Treatment', treatmentSchema);

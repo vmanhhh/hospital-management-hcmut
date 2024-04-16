@@ -1,5 +1,5 @@
-const { StatusCodes } = require("http-status-codes");
-const jwt = require("jsonwebtoken");
+import { StatusCodes } from "http-status-codes";
+import jwt from "jsonwebtoken";
 const authMiddleware = async (req, res, next) => {
   const { authorization } = req.headers; //get token from header
   console.log(authorization);
@@ -19,4 +19,5 @@ const authMiddleware = async (req, res, next) => {
     next();
   }
 };
-module.exports = authMiddleware;
+export default authMiddleware;
+

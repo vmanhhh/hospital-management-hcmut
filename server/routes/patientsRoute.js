@@ -4,6 +4,7 @@ import {
     addNewPatient,
     getAllPatients,
     findPatientById,
+    updatePatient
 
 } from '../controllers/patientsController.js'
 const router = express.Router();
@@ -27,5 +28,8 @@ router.delete('/delete/:id', async (req, res) => {
         console.log(error);
         res.status(500).send({ message: error.message });
     }
-})
+});
+
+router.patch('/:id', updatePatient);
+
 export default router;

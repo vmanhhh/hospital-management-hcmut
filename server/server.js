@@ -11,6 +11,8 @@ import progressTrackingRoute from './routes/progressTrackingRoute.js';
 import equipmentRoute from './routes/equipmentRoute.js';
 import notFound from './middleware/notFound.js';
 import errorHandlerMiddleware from './middleware/errorMiddleware';
+import authMiddleware from "./middleware/auth.js";
+
 
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -40,12 +42,12 @@ mongoose
         console.log(error);
     });
 app.use('/', userRoute);
-app.use('/patients', patientsRoute);
+app.use('/patients', authMiddleware, patientsRoute);
 app.use('/doctors', doctorRoute);
-app.use('/medicalRecords', medicalRecordRoute);
-app.use('/medicines', medicineRoute);
-app.use('/treatments', treatmentRoute);
-app.use('/progressTracking', progressTrackingRoute);
-app.use('/equipment', equipmentRoute);
+app.use('/medicalRecords', authMiddleware, medicalRecordRoute);
+app.use('/medicines', authMiddleware, medicineRoute);
+app.use('/treatments', authMiddleware, treatmentRoute);
+app.use('/progressTracking', authMiddleware, progressTrackingRoute);
+app.use('/equipment', authMiddleware, equipmentRoute);
 app.use(notFound);
 app.use(errorHandlerMiddleware);
