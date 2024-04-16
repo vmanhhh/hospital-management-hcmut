@@ -1,6 +1,6 @@
-import adminSchema from "../models/adminModel.js";
-import staffSchema from "../models/doctorModel.js";
-import patientSchema from "../models/patientModel.js";
+import Admin from "../models/adminModel.js";
+import Doctor from "../models/doctorModel.js";
+import Patient from "../models/patientModel.js";
 import { StatusCodes } from "http-status-codes";
 const Login = async (req, res) => {
     var { email, password, role } = req.body;

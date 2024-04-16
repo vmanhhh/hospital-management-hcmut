@@ -62,3 +62,5 @@ router.get('/patient/:id',async(req,res)=>{
         res.status(200).json(medicalRecords);
 }
 );
+
+export default router;
