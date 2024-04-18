@@ -7,7 +7,7 @@ on:
   push:
     branches: [ master ]
 
-    # Allows you to run this workflow manually from the Actions tab
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -26,8 +26,10 @@ jobs:
         run: |
           npm install
           npm run build
+          npm run export
+          touch out/.nojekyll
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages # The branch the action should deploy to.
-          folder: dist # The folder the action should deploy.
+          folder: out # The folder the action should deploy.
