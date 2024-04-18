@@ -8,7 +8,6 @@ const equipmentSchema = mongoose.Schema({
     manufacturer: String,
     serialNumber: String,
     department: String,
-    status: String,
     availability: {
         type: String,
         enum: ['Available', 'In Use', 'Under Maintenance', 'Reserved'],  // Define possible availability states
