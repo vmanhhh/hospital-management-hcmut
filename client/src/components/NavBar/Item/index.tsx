@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { mdiChevronUp, mdiChevronDown } from '@mdi/js'
 import Divider from '../../Divider'
 import Icon from '../../Icon'
-import UserAvatarCurrentUser from '../../UserAvatar/CurrentUser'
 import NavBarMenuList from '../MenuList'
 import { useAppDispatch, useAppSelector } from '../../../stores/hooks'
 import { MenuNavBarItem } from '../../../interfaces'
@@ -52,7 +51,7 @@ export default function NavBarItem({ item }: Props) {
         }`}
         onClick={handleMenuClick}
       >
-        {item.isCurrentUser && <UserAvatarCurrentUser className="w-6 h-6 mr-3 inline-flex" />}
+       
         {item.icon && <Icon path={item.icon} className="transition-colors" />}
         <span
           className={`px-2 transition-colors ${

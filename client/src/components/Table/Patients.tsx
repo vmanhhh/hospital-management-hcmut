@@ -1,7 +1,7 @@
 import { mdiEye, mdiTrashCan } from '@mdi/js'
 import React, { useState } from 'react'
 import { useSamplePatients } from '../../hooks/sampleData'
-import { Client } from '../../interfaces'
+import { Patient } from '../../interfaces'
 import Button from '../Button'
 import Buttons from '../Buttons'
 import CardBoxModal from '../CardBox/Modal'
@@ -34,7 +34,7 @@ const TableSamplePatients = () => {
   return (
     <>
       <CardBoxModal
-        title="Sample modal"
+        title="Thông tin bệnh nhân"
         buttonColor="info"
         buttonLabel="Done"
         isActive={isModalInfoActive}
@@ -48,49 +48,38 @@ const TableSamplePatients = () => {
       </CardBoxModal>
 
       <CardBoxModal
-        title="Please confirm"
+        title="Xóa bệnh nhân"
         buttonColor="danger"
-        buttonLabel="Confirm"
+        buttonLabel="Xóa"
         isActive={isModalTrashActive}
         onConfirm={handleModalAction}
         onCancel={handleModalAction}
       >
         <p>
-          Lorem ipsum dolor sit amet <b>adipiscing elit</b>
+          Bạn có muốn xóa bệnh nhân này không?
         </p>
-        <p>This is sample modal</p>
+        <p>Chọn "Xác nhận" nếu có</p>
       </CardBoxModal>
 
       <table>
         <thead>
           <tr>
-            <th />
-            <th>Name</th>
-            <th>Company</th>
-            <th>City</th>
-            <th>Progress</th>
-            <th>Created</th>
+            <th>Họ</th>
+            <th>Tên</th>
+            <th>Giới tính</th>
+            <th>Ngày sinh</th>
+            <th>Tỉnh/Thành</th>
             <th />
           </tr>
         </thead>
         <tbody>
-          {patientsPaginated.map((client: Client) => (
-            <tr key={client.id}>
-              <td data-label="Name">{client.name}</td>
-              <td data-label="Company">{client.company}</td>
-              <td data-label="City">{client.city}</td>
-              <td data-label="Progress" className="lg:w-32">
-                <progress
-                  className="flex w-2/5 self-center lg:w-full"
-                  max="100"
-                  value={client.progress}
-                >
-                  {client.progress}
-                </progress>
-              </td>
-              <td data-label="Created" className="lg:w-1 whitespace-nowrap">
-                <small className="text-gray-500 dark:text-slate-400">{client.created}</small>
-              </td>
+          {patientsPaginated.map((patient: Patient) => (
+            <tr key={patient._id}>
+              <td data-label="Last Name">{patient.lastName}</td>
+              <td data-label="First Name">{patient.firstName}</td>
+              <td data-label="Gender">{patient.gender}</td>
+              <td data-label="Date of Birth">{new Date(patient.dob).toLocaleDateString()}</td>
+              <td data-label="Province">{patient.address.province}</td>
               <td className="before:hidden lg:w-1 whitespace-nowrap">
                 <Buttons type="justify-start lg:justify-end" noWrap>
                   <Button

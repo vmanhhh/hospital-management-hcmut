@@ -8,17 +8,18 @@ import LayoutAuthenticated from '../layouts/Authenticated'
 import NotificationBar from '../components/NotificationBar'
 import SectionMain from '../components/Section/Main'
 import SectionTitleLineWithButton from '../components/Section/TitleLineWithButton'
-import TableSampleClients from '../components/Table/SampleClients'
+import TableDoctors from '../components/Table/Doctors'
 import { getPageTitle } from '../config'
 
 const TablesPage = () => {
   return (
     <>
       <Head>
-        <title>{getPageTitle('Patients')}</title>
+        <title>{getPageTitle('Danh sách Bác sĩ')}</title>
       </Head>
       <SectionMain>
-        <SectionTitleLineWithButton icon={mdiTableBorder} title="Tables" main>
+        <SectionTitleLineWithButton icon={mdiTableBorder} title="Danh sách Bác sĩ" main>
+  
         </SectionTitleLineWithButton>
 
         <NotificationBar color="info" icon={mdiMonitorCellphone}>
@@ -26,7 +27,7 @@ const TablesPage = () => {
         </NotificationBar>
 
         <CardBox className="mb-6" hasTable>
-          <TableSampleClients />
+          <TableDoctors />
         </CardBox>
 
         <SectionTitleLineWithButton icon={mdiTableOff} title="Empty variation" />

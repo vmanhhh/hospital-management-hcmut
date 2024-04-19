@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import { containerMaxW } from '../config'
-import JustboilLogo from './JustboilLogo'
+import BkHospitalLogo from './BkHospitalLogo'
 
 type Props = {
   children: ReactNode
@@ -21,7 +21,7 @@ export default function FooterBar({ children }: Props) {
         </div>
         <div className="md:py-2">
           <a href="https://justboil.me" rel="noreferrer" target="_blank">
-            <JustboilLogo className="w-auto h-8 md:h-6 mx-auto" />
+            <BkHospitalLogo className="w-auto h-8 md:h-6 mx-auto" />
           </a>
         </div>
       </div>

@@ -2,25 +2,16 @@
  * @type {import('next').NextConfig}
  */
  const nextConfig = {
-  basePath: "/admin-one-react-tailwind",
+  basePath: "",
   async redirects() {
     return [
       {
           source: '/',
-          destination: '/admin-one-react-tailwind',
+          destination: '/',
           basePath: false,
           permanent: false
       }
     ]
-  },
-  images: {
-    unoptimized: true,
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'static.justboil.me',
-      },
-    ],
   },
 }
 

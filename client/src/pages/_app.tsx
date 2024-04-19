@@ -34,7 +34,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         <>
           <Head>
             <meta name="description" content={description} />
-
             <meta property="og:title" content={title} />
             <meta property="og:description" content={description} />
             <meta property="og:image:type" content="image/png" />
@@ -47,22 +46,9 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             <meta property="twitter:image:width" content={imageWidth} />
             <meta property="twitter:image:height" content={imageHeight} />
 
-            <link rel="icon" href="/admin-one-react-tailwind/favicon.png" />
+            <link rel="icon" href="/favicon.svg" />
           </Head>
 
-          <Script
-            src="https://www.googletagmanager.com/gtag/js?id=UA-130795909-1"
-            strategy="afterInteractive"
-          />
-
-          <Script id="google-analytics" strategy="afterInteractive">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'UA-130795909-1');
-            `}
-          </Script>
 
           <Component {...pageProps} />
         </>

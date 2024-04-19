@@ -44,7 +44,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             <meta property="og:title" content={title} />
             <meta property="og:description" content={description} />
             <meta property="og:image" content={image} />
-            <meta property="og:image:type" content="image/png" />
+            <meta property="og:image:type" content="image/svg" />
             <meta property="og:image:width" content={imageWidth} />
             <meta property="og:image:height" content={imageHeight} />
 
@@ -55,7 +55,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             <meta property="twitter:image:width" content={imageWidth} />
             <meta property="twitter:image:height" content={imageHeight} />
 
-            <link rel="icon" href="/admin-one-react-tailwind/favicon.png" />
+            <link rel="icon" href="/favicon.svg" />
           </Head>
 
           <Script

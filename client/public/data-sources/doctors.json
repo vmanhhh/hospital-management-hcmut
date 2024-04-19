@@ -1,0 +1,58 @@
+{
+    "data": [
+        {
+            "_id": "ObjectId('some-object-id')", 
+            "lastName": "Smith",
+            "firstName": "John",
+            "role": "Software Engineer",
+            "department": "Engineering",
+            "dob": "1990-01-01T00:00:00.000Z",  
+            "gender": "Male",
+            "username": "jsmith",
+            "password": "hashed_password",  
+            "address": {
+              "streetAddress": "123 Main St",
+              "district": "Downtown",
+              "province": "California"
+            },
+            "contactInfo": {
+              "phone": "+1 (555) 555-5555",
+              "email": "john.smith@company.com"
+            },
+            "emergencyContact": {
+              "lastName": "Doe",
+              "firstName": "Jane",
+              "relationship": "Sister",
+              "phone": "+1 (555) 123-4567"
+            }
+          },
+          {
+            "_id": "ObjectId('another-object-id')", 
+            "lastName": "Lee",
+            "firstName": "Anne",
+            "role": "Marketing Manager",
+            "department": "Marketing",
+            "dob": "1985-07-15T00:00:00.000Z", 
+            "gender": "Female",
+            "username": "alee",
+            "password": "hashed_password",
+            "address": {
+              "streetAddress": "456 Elm St",
+              "district": "Midtown",
+              "province": "New York"
+            },
+            "contactInfo": {
+              "phone": "+1 (666) 666-6666",
+              "email": "anne.lee@company.com"
+            },
+            "emergencyContact": {
+              "lastName": "Lee",
+              "firstName": "David",
+              "relationship": "Father",
+              "phone": "+1 (777) 777-7777"
+            }
+          }
+          
+
+    ]
+}

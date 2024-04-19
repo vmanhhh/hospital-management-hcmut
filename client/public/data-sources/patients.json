@@ -1,0 +1,116 @@
+{
+    "data": [
+        {
+            "_id": "60f2ad0f8f45b83eacfeec56",
+            "lastName": "Smith",
+            "firstName": "Alice",
+            "dob": "1985-10-20T00:00:00.000Z",
+            "gender": "Female",
+            "username": "alicesmith85",
+            "password": "hashedpassword456",
+            "address": {
+                "streetAddress": "456 Elm St",
+                "district": "Westside",
+                "province": "New York"
+            },
+            "contactInfo": {
+                "phone": "789-123-4567",
+                "email": "alice.smith@example.com"
+            },
+            "emergencyContact": {
+                "lastName": "Jones",
+                "firstName": "David",
+                "relationship": "Brother",
+                "phone": "555-555-5555"
+            },
+            "allergies": [
+                "Shellfish",
+                "Pollen"
+            ]
+        },
+        {
+            "_id": "60f2ad0f8f45b83eacfeec57",
+            "lastName": "Garcia",
+            "firstName": "Maria",
+            "dob": "1978-03-12T00:00:00.000Z",
+            "gender": "Female",
+            "username": "mariag78",
+            "password": "hashedpassword789",
+            "address": {
+                "streetAddress": "789 Oak St",
+                "district": "Eastside",
+                "province": "Texas"
+            },
+            "contactInfo": {
+                "phone": "321-654-9876",
+                "email": "maria.garcia@example.com"
+            },
+            "emergencyContact": {
+                "lastName": "Rodriguez",
+                "firstName": "Jose",
+                "relationship": "Husband",
+                "phone": "999-999-9999"
+            },
+            "allergies": [
+                "Dairy",
+                "Dust"
+            ]
+        },
+        {
+            "_id": "60f2ad0f8f45b83eacfeec58",
+            "lastName": "Johnson",
+            "firstName": "Michael",
+            "dob": "1995-07-08T00:00:00.000Z",
+            "gender": "Male",
+            "username": "mikejohn",
+            "password": "hashedpassword101112",
+            "address": {
+                "streetAddress": "1010 Pine St",
+                "district": "Northside",
+                "province": "Washington"
+            },
+            "contactInfo": {
+                "phone": "999-888-7777",
+                "email": "michael.johnson@example.com"
+            },
+            "emergencyContact": {
+                "lastName": "Williams",
+                "firstName": "Emily",
+                "relationship": "Sister",
+                "phone": "777-888-9999"
+            },
+            "allergies": [
+                "Gluten",
+                "Cats"
+            ]
+        },
+        {
+            "_id": "60f2ad0f8f45b83eacfeec59",
+            "lastName": "Brown",
+            "firstName": "David",
+            "dob": "1980-12-25T00:00:00.000Z",
+            "gender": "Male",
+            "username": "davidbrown80",
+            "password": "hashedpassword131415",
+            "address": {
+                "streetAddress": "1313 Maple St",
+                "district": "Southside",
+                "province": "California"
+            },
+            "contactInfo": {
+                "phone": "555-444-3333",
+                "email": "daf@fafa.com"
+            },
+            "emergencyContact": {
+                "lastName": "Davis",
+                "firstName": "Sarah",
+                "relationship": "Wife",
+                "phone": "333-444-5555"
+            },
+            "allergies": [
+                "Peanuts",
+                "Mold"
+            ]
+        }
+    ]
+}

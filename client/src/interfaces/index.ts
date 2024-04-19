@@ -55,8 +55,65 @@ export type Transaction = {
   business: string
 }
 
+export type Patient = {
+  _id: string,
+  lastName: string,
+  firstName: string,
+  dob: Date,
+  gender: string,
+  username: string,
+  password: string,
+  address: {
+    streetAddress: string,
+    district: string,
+    province: string
+  },
+  contactInfo: {
+    phone: string,
+    email: string
+  },
+  emergencyContact: {
+    lastName: string,
+    firstName: string,
+    relationship: string,
+    phone: string
+  },
+  allergies: string[]
+
+
+}
+
+export type Doctor = {
+  _id: string,
+  lastName: string,
+  firstName: string,
+  role: string,
+  department: string,
+  dob: Date,
+  gender: string,
+  username: string,
+  password: string,
+  address: {
+    streetAddress: string,
+    district: string,
+    province: string
+  },
+  contactInfo: {
+    phone: string,
+    email: string
+  },
+  emergencyContact: {
+    lastName: string,
+    firstName: string,
+    relationship: string,
+    phone: string
+  }
+}
+
 export type Client = {
-  id: number
+  lastName: string
+  id: string
+  gender: string
   avatar: string
   login: string
   name: string
