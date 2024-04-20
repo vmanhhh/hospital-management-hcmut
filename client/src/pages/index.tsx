@@ -43,7 +43,7 @@ const StyleSelectPage = () => {
           </h1>
           <h2 className="text-xl md:text-xl text-center text-white mb-12">
             Style switching with a single{' '}
-            <code className="px-1.5 py-0.5 rounded bg-white bg-opacity-20">action()</code>
+            <code className="px-1.5 py-0.5 rounded bg-white bg-opaprovince-20">action()</code>
           </h2>
           <div className="grid gap-6 grid-cols-1 lg:grid-cols-2 px-6 max-w-6xl mx-auto">
             {styles.map((style) => (

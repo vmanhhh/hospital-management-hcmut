@@ -1,4 +1,4 @@
-import { mdiAccountInjury, mdiMonitorCellphone, mdiTableBorder, mdiTableOff } from '@mdi/js'
+import { mdiGithub, mdiTableBorder, mdiTableOff, mdiAccountInjury } from '@mdi/js'
 import Head from 'next/head'
 import React, { ReactElement } from 'react'
 import Button from '../components/Button'
@@ -10,7 +10,7 @@ import SectionMain from '../components/Section/Main'
 import SectionTitleLineWithButton from '../components/Section/TitleLineWithButton'
 import TablePatients from '../components/Table/Patients'
 import { getPageTitle } from '../config'
-
+import { mdiPlusBox } from '@mdi/js'
 const TablesPage = () => {
   return (
     <>
@@ -18,8 +18,8 @@ const TablesPage = () => {
         <title>{getPageTitle('Danh sách bệnh nhân')}</title>
       </Head>
       <SectionMain>
-        <SectionTitleLineWithButton icon={mdiTableBorder} title="Danh sách bệnh nhân" main>
-          <Button
+        <SectionTitleLineWithButton icon={mdiAccountInjury} title="Danh sách bệnh nhân" main>
+        <Button
             color="info"
             label="Thêm bệnh nhân"
             icon={mdiAccountInjury}
@@ -28,23 +28,11 @@ const TablesPage = () => {
           />
         </SectionTitleLineWithButton>
 
-        <NotificationBar color="info" icon={mdiMonitorCellphone}>
-          <b>Responsive table.</b> Collapses on mobile
-        </NotificationBar>
 
         <CardBox className="mb-6" hasTable>
           <TablePatients />
         </CardBox>
 
-        <SectionTitleLineWithButton icon={mdiTableOff} title="Empty variation" />
-
-        <NotificationBar color="danger" icon={mdiTableOff}>
-          <b>Empty card.</b> When there&apos;s nothing to show
-        </NotificationBar>
-
-        <CardBox>
-          <CardBoxComponentEmpty />
-        </CardBox>
       </SectionMain>
     </>
   )

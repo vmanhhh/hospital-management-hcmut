@@ -77,8 +77,7 @@ export type Patient = {
     firstName: string,
     relationship: string,
     phone: string
-  },
-  allergies: string[]
+  }
 
 
 }
@@ -149,7 +148,7 @@ export type Client = {
   login: string
   name: string
   company: string
-  city: string
+  province: string
   progress: number
   created: string
   created_mm_dd_yyyy: string

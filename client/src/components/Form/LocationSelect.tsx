@@ -19,12 +19,12 @@ const LocationSelect = ({}) => {
     fetchData();
   }, []);
 
-  const handleCityChange = (event) => {
-    const cityId = event.target.value;
-    const city = data.find(city => city.Id === cityId);
-    setDistricts(city ? city.Districts : []);
+  const handleprovinceChange = (event) => {
+    const provinceId = event.target.value;
+    const province = data.find(province => province.Id === provinceId);
+    setDistricts(province ? province.Districts : []);
     setWards([]);
-    setFieldValue('address.city', cityId); // Changed from 'address.province'
+    setFieldValue('address.province', provinceId); // Changed from 'address.province'
     setFieldValue('address.district', '');
     setFieldValue('address.ward', '');
   };
@@ -43,10 +43,10 @@ const handleWardChange = (event) => {
 };
   return (
     <FormField>
-      <Field as="select" name="address.city" onChange={handleCityChange}>
+      <Field as="select" name="address.province" onChange={handleprovinceChange}>
         <option value="">Chọn tỉnh thành</option>
-        {cities.map(city => (
-          <option key={city.Id} value={city.Id}>{city.Name}</option>
+        {cities.map(province => (
+          <option key={province.Id} value={province.Id}>{province.Name}</option>
         ))}
       </Field>
 

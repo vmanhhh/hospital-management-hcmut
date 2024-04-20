@@ -18,14 +18,13 @@ router.post('/', async (req, res) => {
         lastName: req.body.lastName,
         firstName: req.body.firstName,
         role: req.body.role,
-        department: req.body.role,
+        department: req.body.department,
         dob: req.body.dob,
         gender: req.body.gender,
-        citizenId: req.body.citizenId,
         address: {
             ward: req.body.address.ward,
             district: req.body.address.district,
-            city: req.body.address.city
+            province: req.body.address.province
         },
         contactInfo: {
             phone: req.body.contactInfo.phone,
@@ -40,7 +39,7 @@ router.post('/', async (req, res) => {
 
         }
         const doctor = await Doctor.create(newDoctor);
-        res.status(201).json(result);
+        res.status(201).json(doctor);
     } catch (error) {
         console.log(error);
         res.status(400).json({ message: error.message });
@@ -72,7 +71,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Route for updating a doctor member by ID
-router.patch('/:id', async (req, res) => {
+router.post('/:id', async (req, res) => {
     try {
         const doctor = await Doctor.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!doctor) {

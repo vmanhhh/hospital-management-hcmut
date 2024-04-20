@@ -19,6 +19,7 @@ type Props = {
   active?: boolean
   disabled?: boolean
   roundedFull?: boolean
+  style?: React.CSSProperties
   onClick?: (e: React.MouseEvent) => void
 }
 
@@ -37,6 +38,7 @@ export default function Button({
   active = false,
   disabled = false,
   roundedFull = false,
+  style,
   onClick,
 }: Props) {
   const componentClass = [
@@ -64,7 +66,7 @@ export default function Button({
   }
 
   if (disabled) {
-    componentClass.push(outline ? 'opacity-50' : 'opacity-70')
+    componentClass.push(outline ? 'opaprovince-50' : 'opaprovince-70')
   }
 
   const componentClassString = componentClass.join(' ')
@@ -86,7 +88,7 @@ export default function Button({
 
   return React.createElement(
     asAnchor ? 'a' : 'button',
-    { className: componentClassString, type: type ?? 'button', target, disabled, onClick },
+    { className: componentClassString, type: type ?? 'button', target, disabled, style, onClick },
     componentChildren
   )
 }
