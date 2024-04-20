@@ -9,7 +9,7 @@
             "username": "alicesmith85",
             "password": "hashedpassword456",
             "address": {
-                "streetAddress": "456 Elm St",
+                "ward": "456 Elm St",
                 "district": "Westside",
                 "province": "New York"
             },
@@ -37,7 +37,7 @@
             "username": "mariag78",
             "password": "hashedpassword789",
             "address": {
-                "streetAddress": "789 Oak St",
+                "ward": "789 Oak St",
                 "district": "Eastside",
                 "province": "Texas"
             },
@@ -65,7 +65,7 @@
             "username": "mikejohn",
             "password": "hashedpassword101112",
             "address": {
-                "streetAddress": "1010 Pine St",
+                "ward": "1010 Pine St",
                 "district": "Northside",
                 "province": "Washington"
             },
@@ -93,7 +93,7 @@
             "username": "davidbrown80",
             "password": "hashedpassword131415",
             "address": {
-                "streetAddress": "1313 Maple St",
+                "ward": "1313 Maple St",
                 "district": "Southside",
                 "province": "California"
             },

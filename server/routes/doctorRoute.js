@@ -1,5 +1,6 @@
 import express from "express";
 import { Doctor } from '../models/doctorModel.js';
+import mongoose from 'mongoose';
 const router = express.Router();
 
 // Route for creating a new doctor member
@@ -7,18 +8,13 @@ router.post('/', async (req, res) => {
     try {
         if (
             !req.body.lastName ||
-            !req.body.firstName ||
-            !req.body.role||
-            !req.body.department||
-            !req.body.dob ||
-            !req.body.gender ||
-            !req.body.citizenId
+            !req.body.firstName
         ) {
             return res.status(400).send({ message: 'Fill in the required fields' })
         }
 
         const newDoctor = {
-        _id: mongoose.Schema.Types.ObjectId,
+        _id: new mongoose.Types.ObjectId(),
         lastName: req.body.lastName,
         firstName: req.body.firstName,
         role: req.body.role,
@@ -26,9 +22,21 @@ router.post('/', async (req, res) => {
         dob: req.body.dob,
         gender: req.body.gender,
         citizenId: req.body.citizenId,
-        address: req.body.address,
-        contactInfo: req.body.contactInfo,
-        emergencyContact: req.body.emergencyContact,
+        address: {
+            ward: req.body.address.ward,
+            district: req.body.address.district,
+            city: req.body.address.city
+        },
+        contactInfo: {
+            phone: req.body.contactInfo.phone,
+            email: req.body.contactInfo.email
+        },
+        emergencyContact: {
+            lastName: req.body.emergencyContact.lastName,
+            firstName: req.body.emergencyContact.firstName,
+            relationship: req.body.emergencyContact.relationship,
+            phone: req.body.emergencyContact.phone,
+        }
 
         }
         const doctor = await Doctor.create(newDoctor);

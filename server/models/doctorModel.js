@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const doctorScheme = mongooose.Schema(
+const doctorScheme = mongoose.Schema(
     {
         _id: mongoose.Schema.Types.ObjectId,
         lastName: String,
@@ -9,6 +9,7 @@ const doctorScheme = mongooose.Schema(
         department: String,
         dob: Date,
         gender: String,
+        /*
         username: {
             type: String,
             required: true,
@@ -18,10 +19,11 @@ const doctorScheme = mongooose.Schema(
             type: String,
             required: true,
         },
+        */
         address: {
-            streetAddress: String,
+            ward: String,
             district: String,
-            province: String
+            city: String
         },
         contactInfo: {
             phone: String,

@@ -50,7 +50,9 @@ const CardBoxModal = ({
           )}
         </CardBoxComponentTitle>
 
-        <div className="space-y-3">{children}</div>
+        <div className="space-y-3" style={{ overflow: 'auto', maxHeight: '60vh' }}>
+          {children}
+        </div>
       </CardBox>
     </OverlayLayer>
   )

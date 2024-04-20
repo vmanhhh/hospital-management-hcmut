@@ -1,4 +1,4 @@
-import { mdiGithub, mdiMonitorCellphone, mdiTableBorder, mdiTableOff } from '@mdi/js'
+import { mdiAccountInjury, mdiMonitorCellphone, mdiTableBorder, mdiTableOff } from '@mdi/js'
 import Head from 'next/head'
 import React, { ReactElement } from 'react'
 import Button from '../components/Button'
@@ -19,7 +19,13 @@ const TablesPage = () => {
       </Head>
       <SectionMain>
         <SectionTitleLineWithButton icon={mdiTableBorder} title="Danh sách bệnh nhân" main>
-  
+          <Button
+            color="info"
+            label="Thêm bệnh nhân"
+            icon={mdiAccountInjury}
+            roundedFull
+            href="/forms/patient"
+          />
         </SectionTitleLineWithButton>
 
         <NotificationBar color="info" icon={mdiMonitorCellphone}>

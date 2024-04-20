@@ -10,7 +10,7 @@ import treatmentRoute from './routes/treatmentRoute.js';
 import progressTrackingRoute from './routes/progressTrackingRoute.js';
 import equipmentRoute from './routes/equipmentRoute.js';
 import notFound from './middleware/notFound.js';
-import errorHandlerMiddleware from './middleware/errorMiddleware';
+import errorHandlerMiddleware from './middleware/errorMiddleware/index.js';
 import authMiddleware from "./middleware/auth.js";
 
 

@@ -64,7 +64,7 @@ export type Patient = {
   username: string,
   password: string,
   address: {
-    streetAddress: string,
+    ward: string,
     district: string,
     province: string
   },
@@ -94,7 +94,7 @@ export type Doctor = {
   username: string,
   password: string,
   address: {
-    streetAddress: string,
+    ward
     district: string,
     province: string
   },
@@ -108,6 +108,37 @@ export type Doctor = {
     relationship: string,
     phone: string
   }
+}
+
+export type Equipment = {
+  _id: string,
+  name: string,
+  model: string,
+  manufacturer: string,
+  serialNumber: string,
+  department: string,
+  availability: string,
+  maintenanceHistory: {
+    date: Date,
+    description: string,
+    technician: string
+  }[]
+}
+
+export type Medicine = {
+  _id: string,
+  name: string,
+  brandName: string,
+  description: string,
+  dosage: string,
+  unit: string,
+  dosageForm: string,
+  lot: {
+    stock: number,
+    lotNumber: string,
+    dateImported: Date,
+    expirationDate: Date
+  }[]
 }
 
 export type Client = {

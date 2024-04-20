@@ -20,7 +20,7 @@ const patientScheme = mongoose.Schema(
         },
 
         address: {
-            streetAddress: String,
+            ward: String,
             district: String,
             province: String
         },

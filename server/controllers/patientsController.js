@@ -1,4 +1,4 @@
-import { Patient } from '../models/patientModel';
+import { Patient } from '../models/patientModel.js';
 const addNewPatient = async (req, res) => {
     try {
         // Check if data included required info

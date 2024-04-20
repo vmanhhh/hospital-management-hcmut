@@ -11,7 +11,7 @@
             "username": "jsmith",
             "password": "hashed_password",  
             "address": {
-              "streetAddress": "123 Main St",
+              "ward
               "district": "Downtown",
               "province": "California"
             },
@@ -37,7 +37,7 @@
             "username": "alee",
             "password": "hashed_password",
             "address": {
-              "streetAddress": "456 Elm St",
+              "ward": "456 Elm St",
               "district": "Midtown",
               "province": "New York"
             },

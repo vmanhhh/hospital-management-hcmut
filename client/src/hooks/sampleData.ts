@@ -21,6 +21,25 @@ export const useSampleDoctors = () => {
   }
 }
 
+export const useSampleEquipments = () => {
+  const { data, error } = useSWR('/data-sources/equipments.json', fetcher)
+
+  return {
+    equipments: data?.data ?? [],
+    isLoading: !error && !data,
+    isError: error,
+  }
+}
+
+export const useSampleMedicines = () => {
+  const { data, error } = useSWR('/data-sources/medicines.json', fetcher)
+
+  return {
+    medicines: data?.data ?? [],
+    isLoading: !error && !data,
+    isError: error,
+  }
+}
 
 export const useSampleTransactions = () => {
   const { data, error } = useSWR('/data-sources/history.json', fetcher)

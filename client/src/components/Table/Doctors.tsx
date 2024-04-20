@@ -5,6 +5,15 @@ import { Doctor } from '../../interfaces'
 import Button from '../Button'
 import Buttons from '../Buttons'
 import CardBoxModal from '../CardBox/Modal'
+import axios from 'axios'
+import { Formik, Form, Field } from 'formik'
+import FormField from '../Form/Field'
+import DepartmentSelect from '../Form/DepartmentSelect'
+import LocationSelect from '../Form/LocationSelect'
+import {SERVER_URI} from '../../config'
+import { mdiAccount, mdiGithub, mdiMail, mdiUpload } from '@mdi/js'
+import CardBox from '../../components/CardBox'
+import Divider from '../../components/Divider'
 
 const TableSampleDoctors = () => {
   const { doctors } = useSampleDoctors()
@@ -25,11 +34,29 @@ const TableSampleDoctors = () => {
 
   const [isModalInfoActive, setIsModalInfoActive] = useState(false)
   const [isModalTrashActive, setIsModalTrashActive] = useState(false)
-
+  const [doctorTemp, setDoctor] = useState(null)
   const handleModalAction = () => {
     setIsModalInfoActive(false)
     setIsModalTrashActive(false)
   }
+  const handleDeleteModalAction = async () => {
+    try {
+      await axios.delete(`${SERVER_URI}/doctors/${doctorTemp._id}`)
+      window.location.reload()
+      console.log('Deleted')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleInfoModalAction = async () => {
+    try {
+      await axios.get(`/doctors/${doctorTemp._id}`)
+      console.log('Info')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
 
   return (
     <>
@@ -41,10 +68,97 @@ const TableSampleDoctors = () => {
         onConfirm={handleModalAction}
         onCancel={handleModalAction}
       >
-        <p>
-          Lorem ipsum dolor sit amet <b>adipiscing elit</b>
-        </p>
-        <p>This is sample modal</p>
+        <CardBox>
+          <Formik
+            initialValues={{
+              lastName: '',
+              firstName: '',
+              department: '',
+              dob: '1990-01-01',
+              gender: '',
+              address: '',
+              phone: '',
+              email: '',
+              emergencyLastName: '',
+              emergencyFirstName: '',
+              relationship: '',
+              emergencyPhone: '',
+            }}
+            onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
+          >
+            <Form>
+              <FormField label="Họ và tên" icons={[mdiAccount, mdiMail]}>
+                <Field name="lastName" placeholder="Họ" />
+                <Field name="firstName" placeholder="Tên" />
+              </FormField>
+              <FormField>
+                <FormField label="Chức vụ" labelFor="role">
+                  <Field name="role" id="role" component="select">
+                    <option value="">Chọn chức vụ</option>
+                    <option value="Doctor">Bác sĩ</option>
+                    <option value="Nurse">Y tá</option>
+                    <option value="Staff">Nhân viên</option>
+                  </Field>
+                </FormField>
+                <FormField label="Khoa" labelFor="department">
+                  <DepartmentSelect />
+                </FormField>
+              </FormField>
+              <FormField label="Ngày sinh" labelFor="dob">
+                <Field name="dob" type="date" id="dob" />
+              </FormField>
+              <FormField label="Giới tính" labelFor="gender">
+                <Field name="gender" id="gender" component="select">
+                  <option value="">Chọn giới tính</option>
+                  <option value="male">Nam</option>
+                  <option value="female">Nữ</option>
+                  <option value="other">Khác</option>
+                </Field>
+              </FormField>
+              <FormField label="Địa chỉ" labelFor="address">
+                <LocationSelect />
+              </FormField>
+              <Divider />
+              <FormField
+                label="Thông tin liên hệ"
+                labelFor="contact"
+              >
+                <FormField label="Số điện thoại" labelFor="phone">
+                  <Field name="phone" id="phone" />
+                </FormField>
+                <FormField label="Email" labelFor="email">
+                  <Field name="email" id="email" />
+                </FormField>
+              </FormField>
+              <Divider />
+
+              <FormField
+                label="Thông tin người thân"
+                labelFor="emergencyContact"
+              >
+                <FormField label="Họ" labelFor="emergencyLastName">
+                  <Field name="emergencyLastName" id="emergencyLastName" />
+                </FormField>
+                <FormField label="Tên" labelFor="emergencyFirstName">
+                  <Field name="emergencyFirstName" id="emergencyFirstName" />
+                </FormField>
+              </FormField>
+              <FormField label="Quan hệ" labelFor="relationship">
+                <Field name="relationship" id="relationship" />
+              </FormField>
+              <FormField label="Số điện thoại" labelFor="emergencyPhone">
+                <Field name="emergencyPhone" id="emergencyPhone" />
+              </FormField>
+
+              <Divider />
+
+              <FormField label="Textarea" hasTextareaHeight>
+                <Field name="textarea" as="textarea" placeholder="Your text here" />
+              </FormField>
+
+            </Form>
+          </Formik>
+        </CardBox>
       </CardBoxModal>
 
       <CardBoxModal
@@ -52,7 +166,7 @@ const TableSampleDoctors = () => {
         buttonColor="danger"
         buttonLabel="Xóa"
         isActive={isModalTrashActive}
-        onConfirm={handleModalAction}
+        onConfirm={handleDeleteModalAction}
         onCancel={handleModalAction}
       >
         <p>
@@ -91,7 +205,10 @@ const TableSampleDoctors = () => {
                   <Button
                     color="danger"
                     icon={mdiTrashCan}
-                    onClick={() => setIsModalTrashActive(true)}
+                    onClick={() => {
+                      setDoctor(doctor)
+                      setIsModalTrashActive(true)
+                    }}
                     small
                   />
                 </Buttons>

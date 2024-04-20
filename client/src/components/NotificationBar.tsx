@@ -1,5 +1,5 @@
 import { mdiClose } from '@mdi/js'
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, useState, useEffect } from 'react'
 import { ColorKey } from '../interfaces'
 import { colorsBgLight, colorsOutline } from '../colors'
 import Button from './Button'
@@ -11,18 +11,40 @@ type Props = {
   outline?: boolean
   children: ReactNode
   button?: ReactNode
+  style?: React.CSSProperties
+  autoDismiss?: boolean
 }
 
-const NotificationBar = ({ outline = false, children, ...props }: Props) => {
+const NotificationBar = ({ outline = false, children, autoDismiss = false, ...props }: Props) => {
   const componentColorClass = outline ? colorsOutline[props.color] : colorsBgLight[props.color]
 
   const [isDismissed, setIsDismissed] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
 
   const dismiss = (e: React.MouseEvent) => {
     e.preventDefault()
-
-    setIsDismissed(true)
+    setIsVisible(false)
   }
+
+  useEffect(() => {
+    if (autoDismiss) {
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [autoDismiss]);
+
+  useEffect(() => {
+    if (!isVisible) {
+      const timer = setTimeout(() => {
+        setIsDismissed(true);
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible]);
 
   if (isDismissed) {
     return null
@@ -31,6 +53,10 @@ const NotificationBar = ({ outline = false, children, ...props }: Props) => {
   return (
     <div
       className={`px-3 py-6 md:py-3 mb-6 last:mb-0 border rounded-lg transition-colors duration-150 ${componentColorClass}`}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transition: 'opacity 0.5s ease-in-out'
+      }}
     >
       <div className="flex flex-col md:flex-row items-center justify-between">
         <div className="flex flex-col md:flex-row items-center mb-6 md:mb-0">

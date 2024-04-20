@@ -1,5 +1,5 @@
 import express from "express";
-import { ProgressTracking } from "../models/progressTrackingModel";
+import { ProgressTracking } from "../models/progressTrackingModel.js";
 const router = express.Router();
 router.post("/", async (req, res) => {
     try {
