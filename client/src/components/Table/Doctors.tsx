@@ -1,4 +1,5 @@
-import { mdiEye, mdiTrashCan } from '@mdi/js'
+import { mdiAlertCircle, mdiCheckCircle, mdiEye, mdiTrashCan } from '@mdi/js'
+import Snackbar from '@mui/material/Snackbar';
 import React, { useState } from 'react'
 import { useSampleDoctors } from '../../hooks/sampleData'
 import { Doctor } from '../../interfaces'
@@ -10,14 +11,40 @@ import { Formik, Form, Field } from 'formik'
 import FormField from '../Form/Field'
 import DepartmentSelect from '../Form/DepartmentSelect'
 import LocationSelect from '../Form/LocationSelect'
-import {SERVER_URI} from '../../config'
+import { SERVER_URI } from '../../config'
 import { mdiAccount, mdiGithub, mdiMail, mdiUpload } from '@mdi/js'
 import CardBox from '../../components/CardBox'
 import Divider from '../../components/Divider'
-
+import NotificationBar from '../../components/NotificationBar'
+import { useFormikContext } from 'formik'
+const departmentLabels = {
+  'Neural': 'Thần kinh',
+  'Cardiology': 'Tim mạch',
+  'Orthopedic': 'Chấn thương chỉnh hình',
+  'Oncology': 'Ung thư',
+  'Gynecology': 'Phụ khoa',
+  'Pediatric': 'Nhi',
+  'Psychiatry': 'Tâm thần',
+  'Dermatology': 'Da liễu',
+  'Ophthalmology': 'Mắt',
+  'ENT': 'Tai mũi họng',
+  'Dental': 'Nha khoa',
+};
 const TableSampleDoctors = () => {
   const { doctors } = useSampleDoctors()
 
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const addNotification = (message, type = 'success') => {
+    setNotifications(prevNotifications => [
+      ...prevNotifications,
+      {
+        id: Date.now(), // unique id for key
+        message,
+        type
+      }
+    ]);
+  };
   const perPage = 5
 
   const [currentPage, setCurrentPage] = useState(0)
@@ -48,29 +75,44 @@ const TableSampleDoctors = () => {
       console.log(error)
     }
   }
-  const handleInfoModalAction = async () => {
+
+
+  const handleEditModalAction = async () => {
     try {
-      await axios.get(`/doctors/${doctorTemp._id}`)
-      console.log('Info')
+      await axios.post(`${SERVER_URI}/doctors/${doctorTemp._id}`, doctorTemp)
+      console.log(doctorTemp)
+      setIsSubmitted(true);
+      addNotification('Cập nhật bác sĩ thành công!');
     } catch (error) {
       console.log(error)
+      addNotification('Cập nhật bác sĩ thất bại!', 'error');
     }
   }
-
 
   return (
     <>
       <CardBoxModal
-        title="Thông tin bệnh nhân"
+        title="Thông tin Bác sĩ"
         buttonColor="info"
         buttonLabel="Done"
+        style={{ display: 'none' }}
         isActive={isModalInfoActive}
-        onConfirm={handleModalAction}
+        onConfirm={handleEditModalAction}
         onCancel={handleModalAction}
       >
+        {notifications.map(notification => (
+          <NotificationBar
+            key={notification.id}
+            color={notification.type === 'error' ? 'danger' : 'success'}
+            icon={notification.type === 'error' ? mdiAlertCircle : mdiCheckCircle}
+            autoDismiss={true}
+          >
+            {notification.message}
+          </NotificationBar>
+        ))}
         <CardBox>
           <Formik
-            initialValues={{
+            initialValues={doctorTemp || {
               lastName: '',
               firstName: '',
               department: '',
@@ -84,9 +126,24 @@ const TableSampleDoctors = () => {
               relationship: '',
               emergencyPhone: '',
             }}
-            onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
+            
+            onSubmit={(values) => {
+          
+              console.log(JSON.stringify(values, null, 2));
+              axios.post(`${SERVER_URI}/doctors/${doctorTemp._id}`, values)
+                .then(response => {
+                  console.log(response);
+                  console.log(`${SERVER_URI}/doctors/${doctorTemp._id}`)
+                  setIsSubmitted(true);
+                  addNotification('Cập nhật bác sĩ thành công!');
+                })
+                .catch(error => {
+                  console.error(error);
+                  addNotification('Cập nhật bác sĩ thất bại!', 'error');
+                });
+            }}
           >
-            <Form>
+            {({ handleSubmit })=><Form onSubmit={handleSubmit}>
               <FormField label="Họ và tên" icons={[mdiAccount, mdiMail]}>
                 <Field name="lastName" placeholder="Họ" />
                 <Field name="firstName" placeholder="Tên" />
@@ -151,26 +208,24 @@ const TableSampleDoctors = () => {
               </FormField>
 
               <Divider />
-
-              <FormField label="Textarea" hasTextareaHeight>
-                <Field name="textarea" as="textarea" placeholder="Your text here" />
-              </FormField>
-
+              <Button type="submit" active={false} color="info" label="Cập nhật" />
             </Form>
+}
           </Formik>
         </CardBox>
       </CardBoxModal>
 
       <CardBoxModal
-        title="Xóa bệnh nhân"
+        title="Xóa bác sĩ"
         buttonColor="danger"
         buttonLabel="Xóa"
+        style={{}}
         isActive={isModalTrashActive}
         onConfirm={handleDeleteModalAction}
         onCancel={handleModalAction}
       >
         <p>
-          Bạn có muốn xóa bệnh nhân này không?
+          Bạn có muốn xóa bác sĩ này không?
         </p>
         <p>Chọn "Xác nhận" nếu có</p>
       </CardBoxModal>
@@ -191,15 +246,18 @@ const TableSampleDoctors = () => {
             <tr key={doctor._id}>
               <td data-label="Last Name">{doctor.lastName}</td>
               <td data-label="First Name">{doctor.firstName}</td>
-              <td data-label="Gender">{doctor.gender}</td>
-              <td data-label="Role">{doctor.role}</td>
-              <td data-label="Department">{doctor.department}</td>
+              <td data-label="Gender">{doctor.gender === 'male' ? 'Nam' : (doctor.gender === 'female' ? 'Nữ' : 'Khác')}</td>
+              <td data-label="Role">{doctor.role === 'Doctor' ? 'Bác sĩ' : (doctor.role === 'Nurse' ? 'Y tá' : 'Nhân viên')}</td>
+              <td data-label="Department">{departmentLabels[doctor.department]}</td>
               <td className="before:hidden lg:w-1 whitespace-nowrap">
                 <Buttons type="justify-start lg:justify-end" noWrap>
                   <Button
                     color="info"
                     icon={mdiEye}
-                    onClick={() => setIsModalInfoActive(true)}
+                    onClick={() => {
+                      setDoctor(doctor)
+                      setIsModalInfoActive(true)
+                    }}
                     small
                   />
                   <Button

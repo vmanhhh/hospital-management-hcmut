@@ -1,10 +1,18 @@
-
-import { Field } from 'formik';
+import { Field, useFormikContext } from 'formik';
+import { useEffect, useState } from 'react';
 import FormField from './Field';
+
 const DepartmentSelect = () => {
+    const { setFieldValue } = useFormikContext();
+
+    const handleDepartmentChange = (event) => {
+        const department = event.target.value;
+        setFieldValue('department', department);
+    };
+
     return (
         <FormField>
-            <Field name="department" id="department" component="select">
+            <Field name="department" id="department" component="select" onChange={handleDepartmentChange}>
                 <option value="">Chọn khoa</option>
                 <option value="Neural">Thần kinh</option>
                 <option value="Cardiology">Tim mạch</option>

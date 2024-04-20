@@ -5,7 +5,7 @@
       "login": "percy64",
       "name": "Howell Hand",
       "company": "Kiehn-Green",
-      "city": "Emelyside",
+      "province": "Emelyside",
       "progress": 70,
       "created": "Mar 3, 2023",
       "created_mm_dd_yyyy": "03-03-2023"
@@ -15,7 +15,7 @@
       "login": "dare.concepcion",
       "name": "Hope Howe",
       "company": "Nolan Inc",
-      "city": "Paristown",
+      "province": "Paristown",
       "progress": 68,
       "created": "Dec 1, 2023",
       "created_mm_dd_yyyy": "12-01-2023"
@@ -25,7 +25,7 @@
       "login": "geovanni.kessler",
       "name": "Nelson Jerde",
       "company": "Nitzsche LLC",
-      "city": "Jailynbury",
+      "province": "Jailynbury",
       "progress": 49,
       "created": "May 18, 2023",
       "created_mm_dd_yyyy": "05-18-2023"
@@ -35,7 +35,7 @@
       "login": "macejkovic.dashawn",
       "name": "Kim Weimann",
       "company": "Brown-Lueilwitz",
-      "city": "New Emie",
+      "province": "New Emie",
       "progress": 38,
       "created": "May 4, 2023",
       "created_mm_dd_yyyy": "05-04-2023"
@@ -45,7 +45,7 @@
       "login": "hilpert.leora",
       "name": "Justice O'Reilly",
       "company": "Lakin-Muller",
-      "city": "New Kacie",
+      "province": "New Kacie",
       "progress": 38,
       "created": "Mar 27, 2023",
       "created_mm_dd_yyyy": "03-27-2023"
@@ -55,7 +55,7 @@
       "login": "ferry.sophia",
       "name": "Adrienne Mayer III",
       "company": "Kozey, McLaughlin and Kuhn",
-      "city": "Howardbury",
+      "province": "Howardbury",
       "progress": 39,
       "created": "Mar 29, 2023",
       "created_mm_dd_yyyy": "03-29-2023"
@@ -65,7 +65,7 @@
       "login": "gokuneva",
       "name": "Mr. Julien Ebert",
       "company": "Cormier LLC",
-      "city": "South Serenaburgh",
+      "province": "South Serenaburgh",
       "progress": 29,
       "created": "Jun 25, 2023",
       "created_mm_dd_yyyy": "06-25-2023"
@@ -75,7 +75,7 @@
       "login": "paolo.walter",
       "name": "Lenna Smitham",
       "company": "King Inc",
-      "city": "McCulloughfort",
+      "province": "McCulloughfort",
       "progress": 59,
       "created": "Oct 8, 2023",
       "created_mm_dd_yyyy": "10-08-2023"
@@ -85,7 +85,7 @@
       "login": "lkessler",
       "name": "Travis Davis",
       "company": "Leannon and Sons",
-      "city": "West Frankton",
+      "province": "West Frankton",
       "progress": 52,
       "created": "Oct 20, 2023",
       "created_mm_dd_yyyy": "10-20-2023"
@@ -95,7 +95,7 @@
       "login": "shana.lang",
       "name": "Prof. Esteban Steuber",
       "company": "Langosh-Ernser",
-      "city": "East Sedrick",
+      "province": "East Sedrick",
       "progress": 34,
       "created": "May 16, 2023",
       "created_mm_dd_yyyy": "05-16-2023"
@@ -105,7 +105,7 @@
       "login": "jewel07",
       "name": "Russell Goodwin V",
       "company": "Nolan-Stracke",
-      "city": "Williamsonmouth",
+      "province": "Williamsonmouth",
       "progress": 55,
       "created": "Apr 22, 2023",
       "created_mm_dd_yyyy": "04-22-2023"
@@ -115,7 +115,7 @@
       "login": "burnice.okuneva",
       "name": "Ms. Cassidy Wiegand DVM",
       "company": "Kuhlman-Hahn",
-      "city": "New Ruthiehaven",
+      "province": "New Ruthiehaven",
       "progress": 76,
       "created": "Sep 16, 2023",
       "created_mm_dd_yyyy": "09-16-2023"
@@ -125,7 +125,7 @@
       "login": "oconnell.juanita",
       "name": "Mr. Watson Brakus PhD",
       "company": "Osinski, Bins and Kuhn",
-      "city": "Lake Gloria",
+      "province": "Lake Gloria",
       "progress": 58,
       "created": "Jun 22, 2023",
       "created_mm_dd_yyyy": "06-22-2023"
@@ -135,7 +135,7 @@
       "login": "vgutmann",
       "name": "Mr. Garrison Friesen V",
       "company": "VonRueden, Rippin and Pfeffer",
-      "city": "Port Cieloport",
+      "province": "Port Cieloport",
       "progress": 39,
       "created": "Oct 19, 2023",
       "created_mm_dd_yyyy": "10-19-2023"
@@ -145,7 +145,7 @@
       "login": "veum.lucio",
       "name": "Ms. Sister Morar",
       "company": "Gusikowski, Altenwerth and Abbott",
-      "city": "Lake Macville",
+      "province": "Lake Macville",
       "progress": 34,
       "created": "Jun 11, 2023",
       "created_mm_dd_yyyy": "06-11-2023"
@@ -155,7 +155,7 @@
       "login": "edietrich",
       "name": "Ms. Laisha Reinger",
       "company": "Boehm PLC",
-      "city": "West Alexiemouth",
+      "province": "West Alexiemouth",
       "progress": 73,
       "created": "Nov 2, 2023",
       "created_mm_dd_yyyy": "11-02-2023"
@@ -165,7 +165,7 @@
       "login": "mose44",
       "name": "Cameron Lind",
       "company": "Tremblay, Padberg and Pouros",
-      "city": "Naderview",
+      "province": "Naderview",
       "progress": 59,
       "created": "Sep 14, 2023",
       "created_mm_dd_yyyy": "09-14-2023"
@@ -175,7 +175,7 @@
       "login": "rau.abelardo",
       "name": "Sarai Little",
       "company": "Deckow LLC",
-      "city": "Jeanieborough",
+      "province": "Jeanieborough",
       "progress": 49,
       "created": "Jun 13, 2023",
       "created_mm_dd_yyyy": "06-13-2023"
@@ -185,7 +185,7 @@
       "login": "imurazik",
       "name": "Shyann Kautzer",
       "company": "Osinski, Boehm and Kihn",
-      "city": "New Alvera",
+      "province": "New Alvera",
       "progress": 41,
       "created": "Feb 15, 2023",
       "created_mm_dd_yyyy": "02-15-2023"
@@ -195,7 +195,7 @@
       "login": "annalise97",
       "name": "Lorna Christiansen",
       "company": "Altenwerth-Friesen",
-      "city": "Port Elbertland",
+      "province": "Port Elbertland",
       "progress": 36,
       "created": "Mar 9, 2023",
       "created_mm_dd_yyyy": "03-09-2023"

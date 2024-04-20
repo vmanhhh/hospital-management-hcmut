@@ -9,16 +9,6 @@ const patientScheme = mongoose.Schema(
         firstName: String,  // Tên
         dob: Date,
         gender: String,
-        username: {
-            type: String,
-            required: true,
-            unique: true,
-        },
-        password: {
-            type: String,
-            required: true,
-        },
-
         address: {
             ward: String,
             district: String,
@@ -33,8 +23,7 @@ const patientScheme = mongoose.Schema(
             firstName: String,
             relationship: String,
             phone: String,
-        },
-        allergies: [String]
+        }
     }
 );
 patientScheme.methods.matchPassword = async function (enteredPassword) {

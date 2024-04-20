@@ -42,7 +42,7 @@ const FormsPage = ({ id }) => {
   };
   useEffect(() => {
     if (id) {
-      axios.get(`/doctors/${id}`)
+      axios.get(`/patients/${id}`)
         .then(response => {
           setData(response.data);
         })
@@ -64,11 +64,11 @@ const FormsPage = ({ id }) => {
   return (
     <>
       <Head>
-        <title>{getPageTitle('Thông tin Nhân viên Y tế')}</title>
+        <title>{getPageTitle('Thông tin Bệnh nhân')}</title>
       </Head>
 
       <SectionMain>
-        <SectionTitleLineWithButton icon={mdiBallotOutline} title="Thông tin Nhân viên Y tế" main>
+        <SectionTitleLineWithButton icon={mdiBallotOutline} title="Thông tin Bệnh nhân" main>
         </SectionTitleLineWithButton>
 
         <CardBox>
@@ -98,16 +98,16 @@ const FormsPage = ({ id }) => {
             }}
             onSubmit={(values) => {
               console.log(JSON.stringify(values, null, 2));
-              axios.post(`${SERVER_URI}/doctors`, values)
+              axios.post(`${SERVER_URI}/patients`, values)
                 .then(response => {
                   console.log(response);
-                  console.log(`${SERVER_URI}/doctors`)
+                  console.log(`${SERVER_URI}/patients`)
                   setIsSubmitted(true);
-                  addNotification('Thêm bác sĩ thành công!');
+                  addNotification('Thêm bệnh nhân thành công!');
                 })
                 .catch(error => {
                   console.error(error);
-                  addNotification('Thêm bác sĩ thất bại!', 'error');
+                  addNotification('Thêm bệnh nhân thất bại!', 'error');
                 });
             }}
           >
@@ -117,29 +117,19 @@ const FormsPage = ({ id }) => {
                 <Field name="firstName" placeholder="Tên" />
               </FormField>
               <FormField>
-                <FormField label="Chức vụ" labelFor="role">
-                  <Field name="role" id="role" component="select">
-                    <option value="">Chọn chức vụ</option>
-                    <option value="Doctor">Bác sĩ</option>
-                    <option value="Nurse">Y tá</option>
-                    <option value="Staff">Nhân viên</option>
+                <FormField label="Ngày sinh" labelFor="dob">
+                  <Field name="dob" type="date" id="dob" />
+                </FormField>
+                <FormField label="Giới tính" labelFor="gender">
+                  <Field name="gender" id="gender" component="select">
+                    <option value="">Chọn giới tính</option>
+                    <option value="male">Nam</option>
+                    <option value="female">Nữ</option>
+                    <option value="other">Khác</option>
                   </Field>
                 </FormField>
-                <FormField label="Khoa" labelFor="department">
-                  <DepartmentSelect />
-                </FormField>
               </FormField>
-              <FormField label="Ngày sinh" labelFor="dob">
-                <Field name="dob" type="date" id="dob" />
-              </FormField>
-              <FormField label="Giới tính" labelFor="gender">
-                <Field name="gender" id="gender" component="select">
-                  <option value="">Chọn giới tính</option>
-                  <option value="male">Nam</option>
-                  <option value="female">Nữ</option>
-                  <option value="other">Khác</option>
-                </Field>
-              </FormField>
+              
               <FormField label="Địa chỉ" labelFor="address">
                 <LocationSelect />
               </FormField>

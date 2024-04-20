@@ -54,8 +54,8 @@ const NotificationBar = ({ outline = false, children, autoDismiss = false, ...pr
     <div
       className={`px-3 py-6 md:py-3 mb-6 last:mb-0 border rounded-lg transition-colors duration-150 ${componentColorClass}`}
       style={{
-        opacity: isVisible ? 1 : 0,
-        transition: 'opacity 0.5s ease-in-out'
+        opaprovince: isVisible ? 1 : 0,
+        transition: 'opaprovince 0.5s ease-in-out'
       }}
     >
       <div className="flex flex-col md:flex-row items-center justify-between">

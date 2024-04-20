@@ -1,25 +1,33 @@
 import useSWR from 'swr'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import {SERVER_URI } from '../config'
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 export const useSamplePatients = () => {
-  const { data, error } = useSWR('/data-sources/patients.json', fetcher)
+  const [patients, setPatients] = useState([]);
 
-  return {
-    patients: data?.data ?? [],
-    isLoading: !error && !data,
-    isError: error,
-  }
-}
+  useEffect(() => {
+    axios.get(`${SERVER_URI}/patients`)
+      .then(response => setPatients(response.data))
+      .catch(error => console.error(error));
+  }, []);
+
+  return { patients };
+};
+
 
 export const useSampleDoctors = () => {
-  const { data, error } = useSWR('/data-sources/doctors.json', fetcher)
+  const [doctors, setDoctors] = useState([]);
 
-  return {
-    doctors: data?.data ?? [],
-    isLoading: !error && !data,
-    isError: error,
-  }
-}
+  useEffect(() => {
+    axios.get(`${SERVER_URI}/doctors`)
+      .then(response => setDoctors(response.data))
+      .catch(error => console.error(error));
+  }, []);
+
+  return { doctors };
+};
 
 export const useSampleEquipments = () => {
   const { data, error } = useSWR('/data-sources/equipments.json', fetcher)

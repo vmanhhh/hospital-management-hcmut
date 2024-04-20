@@ -1,35 +1,99 @@
 import express from "express";
 import { Patient } from '../models/patientModel.js';
-import { 
-    addNewPatient,
-    getAllPatients,
-    findPatientById,
-    updatePatient
-
-} from '../controllers/patientsController.js'
+import mongoose from 'mongoose';
 const router = express.Router();
 
-// Route for adding a new patient
-router.post('/', addNewPatient);
-
-router.get('/', getAllPatients);
-
-router.get('/:id', findPatientById);
-
-router.delete('/delete/:id', async (req, res) => {
+// Route for creating a new patient member
+router.post('/', async (req, res) => {
     try {
-        const id = req.params.id;
-        const result = await Patient.findByIdAndDelete(id);
-        if (result) {
-            return res.status(200).send({message: 'Patient deleted'})
+        if (
+            !req.body.lastName ||
+            !req.body.firstName
+        ) {
+            return res.status(400).send({ message: 'Fill in the required fields' })
         }
-        return res.status(404).json({message:'Patient not found'});
+
+        const newPatient = {
+        _id: new mongoose.Types.ObjectId(),
+        lastName: req.body.lastName,
+        firstName: req.body.firstName,
+        dob: req.body.dob,
+        gender: req.body.gender,
+        address: {
+            ward: req.body.address.ward,
+            district: req.body.address.district,
+            province: req.body.address.province
+        },
+        contactInfo: {
+            phone: req.body.contactInfo.phone,
+            email: req.body.contactInfo.email
+        },
+        emergencyContact: {
+            lastName: req.body.emergencyContact.lastName,
+            firstName: req.body.emergencyContact.firstName,
+            relationship: req.body.emergencyContact.relationship,
+            phone: req.body.emergencyContact.phone,
+        }
+
+        }
+        const patient = await Patient.create(newPatient);
+        res.status(201).json(patient);
     } catch (error) {
         console.log(error);
-        res.status(500).send({ message: error.message });
+        res.status(400).json({ message: error.message });
     }
 });
 
-router.patch('/:id', updatePatient);
+// Route for retrieving all Patient members
+router.get('/', async (req, res) => {
+    try {
+        const patient = await Patient.find();
+        res.status(200).json(patient);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Route for retrieving a specific patient member by ID
+router.get('/:id', async (req, res) => {
+    try {
+        const patient = await Patient.findById(req.params.id);
+        if (!patient) {
+            return res.status(404).json({ message: 'Patient member not found' });
+        }
+        res.status(200).json(patient);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }   
+});
+
+// Route for updating a patient member by ID
+router.post('/:id', async (req, res) => {
+    try {
+        const patient = await Patient.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!patient) {
+            return res.status(404).json({ message: 'Patient member not found' });
+        }
+        res.status(200).json(patient);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Route for deleting a patient member by ID
+router.delete('/:id', async (req, res) => {
+    try {
+        const patient = await Patient.findByIdAndDelete(req.params.id);
+        if (!patient) {
+            return res.status(404).json({ message: 'Patient member not found' });
+        }
+        res.status(200).json({ message: 'Patient member deleted successfully' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+});
 
 export default router;

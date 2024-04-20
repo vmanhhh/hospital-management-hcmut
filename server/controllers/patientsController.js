@@ -4,10 +4,7 @@ const addNewPatient = async (req, res) => {
         // Check if data included required info
         if (
             !req.body.lastName ||
-            !req.body.firstName ||
-            !req.body.dob ||
-            !req.body.gender ||
-            !req.body.citizenId
+            !req.body.firstName
         ) {
             return res.status(400).send({ message: 'Fill in the required fields' })
         }
@@ -21,8 +18,7 @@ const addNewPatient = async (req, res) => {
             address: req.body.address,
             contactInfo: req.body.contactInfo,
             emergencyContact: req.body.emergencyContact,
-            medicalRecord: req.body.medicalRecord,
-            allergies: req.body.allergies
+            medicalRecord: req.body.medicalRecord
         }
         const patient = await Patient.create(newPatient);
         return res.status(201).send(patient);
@@ -33,14 +29,11 @@ const addNewPatient = async (req, res) => {
 };
 const getAllPatients = async (req, res) => {
     try {
-        const patients = await Patient.find({});
-        return res.status(200).json({
-            count: patients.length,
-            data: patients,
-        });
+        const patients = await Patient.find();
+        res.status(200).json(patients);
     } catch (error) {
         console.log(error);
-        res.status(500).send({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 const findPatientById = async (req, res) => {

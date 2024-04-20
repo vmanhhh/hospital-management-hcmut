@@ -9,21 +9,10 @@ const doctorScheme = mongoose.Schema(
         department: String,
         dob: Date,
         gender: String,
-        /*
-        username: {
-            type: String,
-            required: true,
-            unique: true,
-        },
-        password: {
-            type: String,
-            required: true,
-        },
-        */
         address: {
             ward: String,
             district: String,
-            city: String
+            province: String
         },
         contactInfo: {
             phone: String,
