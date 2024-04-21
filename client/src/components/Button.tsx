@@ -66,7 +66,7 @@ export default function Button({
   }
 
   if (disabled) {
-    componentClass.push(outline ? 'opaprovince-50' : 'opaprovince-70')
+    componentClass.push(outline ? 'opacity-50' : 'opacity-70')
   }
 
   const componentClassString = componentClass.join(' ')

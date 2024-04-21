@@ -33,7 +33,7 @@ const FormFilePicker = ({ label, icon, accept, color, isRoundIcon }: Props) => {
         />
         <input
           type="file"
-          className="absolute top-0 left-0 w-full h-full opaprovince-0 outline-none cursor-pointer -z-1"
+          className="absolute top-0 left-0 w-full h-full opacity-0 outline-none cursor-pointer -z-1"
           onChange={handleFileChange}
           accept={accept}
         />
