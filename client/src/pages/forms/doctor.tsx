@@ -6,65 +6,44 @@ import Button from '../../components/Button'
 import Buttons from '../../components/Buttons'
 import Divider from '../../components/Divider'
 import CardBox from '../../components/CardBox'
-import FormCheckRadio from '../../components/Form/CheckRadio'
-import FormCheckRadioGroup from '../../components/Form/CheckRadioGroup'
 import FormField from '../../components/Form/Field'
-import FormFilePicker from '../../components/Form/FilePicker'
 import LayoutAuthenticated from '../../layouts/Authenticated'
 import SectionMain from '../../components/Section/Main'
-import SectionTitle from '../../components/Section/Title'
 import SectionTitleLineWithButton from '../../components/Section/TitleLineWithButton'
 import { getPageTitle } from '../../config'
 import LocationSelect from '../../components/Form/LocationSelect'
 import DepartmentSelect from '../../components/Form/DepartmentSelect'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import NotificationBar from '../../components/NotificationBar'
 import { SERVER_URI } from '../../config'
+import SnackbarAlert from '../../components/snackbar'
 
 const FormsPage = ({ id }) => {
   const [data, setData] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const [notifications, setNotifications] = useState([]);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState<"error" | "warning" | "info" | "success">("success");
 
-  // ... useEffect for fetching data ...
-
-  const addNotification = (message, type = 'success') => {
-    setNotifications(prevNotifications => [
-      ...prevNotifications,
-      {
-        id: Date.now(), // unique id for key
-        message,
-        type
-      }
-    ]);
-  };
+  // ... useEffect for fetching data ..
   useEffect(() => {
     if (id) {
       axios.get(`/doctors/${id}`)
         .then(response => {
+          console.log(response.data);
           setData(response.data);
+          
         })
         .catch(error => {
           console.error(error);
+          setAlertMessage("Ôi không! Bác sĩ đâu rồi?");
+          setAlertSeverity("error");
         });
     }
   }, [id]);
-  useEffect(() => {
-    if (isSubmitted) {
-      setIsVisible(true);
-      const timer = setTimeout(() => {
-        setIsVisible(false);
-      }, 2000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isSubmitted]);
   return (
     <>
       <Head>
-        <title>{getPageTitle('Thông tin Nhân viên Y tế')}</title>
+        <title>{getPageTitle('Thông tin Bác sỹ')}</title>
       </Head>
 
       <SectionMain>
@@ -103,11 +82,15 @@ const FormsPage = ({ id }) => {
                   console.log(response);
                   console.log(`${SERVER_URI}/doctors`)
                   setIsSubmitted(true);
-                  addNotification('Thêm bác sĩ thành công!');
+          setAlertMessage("Thêm thành công!");
+          setAlertSeverity("success");
+
                 })
                 .catch(error => {
                   console.error(error);
-                  addNotification('Thêm bác sĩ thất bại!', 'error');
+                  setIsSubmitted(true);
+          setAlertMessage("Thêm thất bại!");
+          setAlertSeverity("error");
                 });
             }}
           >
@@ -186,17 +169,9 @@ const FormsPage = ({ id }) => {
             </Form>
           </Formik>
         </CardBox>
-        {notifications.map(notification => (
-          <NotificationBar
-            key={notification.id}
-            color={notification.type === 'error' ? 'danger' : 'success'}
-            icon={notification.type === 'error' ? mdiAlertCircle : mdiCheckCircle}
-            autoDismiss={true}
-          >
-            {notification.message}
-          </NotificationBar>
-        ))}
+      
       </SectionMain >
+      {isSubmitted && <SnackbarAlert message={alertMessage} severity={alertSeverity} />}
 
     </>
   )

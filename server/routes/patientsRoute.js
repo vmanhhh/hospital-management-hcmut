@@ -20,9 +20,9 @@ router.post('/', async (req, res) => {
         dob: req.body.dob,
         gender: req.body.gender,
         address: {
-            ward: req.body.address.ward,
+            province: req.body.address.province,
             district: req.body.address.district,
-            province: req.body.address.province
+            ward: req.body.address.ward
         },
         contactInfo: {
             phone: req.body.contactInfo.phone,

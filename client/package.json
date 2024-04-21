@@ -9,6 +9,8 @@
     "format": "prettier 'src/**/*.{tsx,ts,js}' --write"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@mdi/js": "^7.0.96",
     "@mui/material": "^5.15.15",
     "@reduxjs/toolkit": "^1.9.5",

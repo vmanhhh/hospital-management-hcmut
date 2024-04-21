@@ -64,9 +64,9 @@ export type Patient = {
   username: string,
   password: string,
   address: {
-    ward: string,
+    province: string,
     district: string,
-    province: string
+    ward: string
   },
   contactInfo: {
     phone: string,
@@ -93,9 +93,9 @@ export type Doctor = {
   username: string,
   password: string,
   address: {
-    ward
+    province: string,
     district: string,
-    province: string
+    ward: string
   },
   contactInfo: {
     phone: string,

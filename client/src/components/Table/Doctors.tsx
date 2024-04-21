@@ -1,6 +1,6 @@
 import { mdiAlertCircle, mdiCheckCircle, mdiEye, mdiTrashCan } from '@mdi/js'
 import Snackbar from '@mui/material/Snackbar';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSampleDoctors } from '../../hooks/sampleData'
 import { Doctor } from '../../interfaces'
 import Button from '../Button'
@@ -17,6 +17,8 @@ import CardBox from '../../components/CardBox'
 import Divider from '../../components/Divider'
 import NotificationBar from '../../components/NotificationBar'
 import { useFormikContext } from 'formik'
+import SnackbarAlert from '../../components/snackbar'
+
 const departmentLabels = {
   'Neural': 'Thần kinh',
   'Cardiology': 'Tim mạch',
@@ -31,7 +33,21 @@ const departmentLabels = {
   'Dental': 'Nha khoa',
 };
 const TableSampleDoctors = () => {
-  const { doctors } = useSampleDoctors()
+  const [doctors, setPatients] = useState([]);
+
+  const fetchDoctors = async () => {
+    try {
+      const response = await axios.get(`${SERVER_URI}/doctors`);
+      console.log("Fetch");
+      setPatients(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -51,7 +67,7 @@ const TableSampleDoctors = () => {
 
   const doctorsPaginated = doctors.slice(perPage * currentPage, perPage * (currentPage + 1))
 
-  const numPages = doctors.length / perPage
+  const numPages = Math.ceil(doctors.length / perPage)
 
   const pagesList = []
 
@@ -62,15 +78,22 @@ const TableSampleDoctors = () => {
   const [isModalInfoActive, setIsModalInfoActive] = useState(false)
   const [isModalTrashActive, setIsModalTrashActive] = useState(false)
   const [doctorTemp, setDoctor] = useState(null)
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState<"error" | "warning" | "info" | "success">("success");
+
   const handleModalAction = () => {
     setIsModalInfoActive(false)
     setIsModalTrashActive(false)
+    fetchDoctors()
   }
   const handleDeleteModalAction = async () => {
     try {
       await axios.delete(`${SERVER_URI}/doctors/${doctorTemp._id}`)
-      window.location.reload()
+      fetchDoctors();
+
+      setIsModalTrashActive(false)
       console.log('Deleted')
+
     } catch (error) {
       console.log(error)
     }
@@ -80,9 +103,9 @@ const TableSampleDoctors = () => {
   const handleEditModalAction = async () => {
     try {
       await axios.post(`${SERVER_URI}/doctors/${doctorTemp._id}`, doctorTemp)
-      console.log(doctorTemp)
+      console.log(doctorTemp);
+      fetchDoctors();
       setIsSubmitted(true);
-      addNotification('Cập nhật bác sĩ thành công!');
     } catch (error) {
       console.log(error)
       addNotification('Cập nhật bác sĩ thất bại!', 'error');
@@ -91,6 +114,7 @@ const TableSampleDoctors = () => {
 
   return (
     <>
+      {isSubmitted && <SnackbarAlert message={alertMessage} severity={alertSeverity} />}
       <CardBoxModal
         title="Thông tin Bác sĩ"
         buttonColor="info"
@@ -100,50 +124,58 @@ const TableSampleDoctors = () => {
         onConfirm={handleEditModalAction}
         onCancel={handleModalAction}
       >
-        {notifications.map(notification => (
-          <NotificationBar
-            key={notification.id}
-            color={notification.type === 'error' ? 'danger' : 'success'}
-            icon={notification.type === 'error' ? mdiAlertCircle : mdiCheckCircle}
-            autoDismiss={true}
-          >
-            {notification.message}
-          </NotificationBar>
-        ))}
+
+
         <CardBox>
-          <Formik
-            initialValues={doctorTemp || {
-              lastName: '',
-              firstName: '',
-              department: '',
-              dob: '1990-01-01',
-              gender: '',
-              address: '',
-              phone: '',
-              email: '',
-              emergencyLastName: '',
-              emergencyFirstName: '',
-              relationship: '',
-              emergencyPhone: '',
+          {doctorTemp && (<Formik
+            initialValues={{
+              lastName: doctorTemp.lastName,
+              firstName: doctorTemp.firstName,
+              department: doctorTemp.department,
+              role: doctorTemp.role,
+              dob: new Date(doctorTemp.dob).toISOString().split('T')[0],
+              gender: doctorTemp.gender,
+              address: {
+                ward: doctorTemp.address.ward,
+                district: doctorTemp.address.district,
+                province: doctorTemp.address.province,
+              },
+              contactInfo: {
+                phone: doctorTemp.contactInfo.phone,
+                email: doctorTemp.contactInfo.email,
+              },
+              emergencyContact: {
+                lastName: doctorTemp.emergencyContact.lastName,
+                firstName: doctorTemp.emergencyContact.firstName,
+                relationship: doctorTemp.emergencyContact.relationship,
+                phone: doctorTemp.emergencyContact.phone,
+              }
+
             }}
-            
             onSubmit={(values) => {
-          
+
               console.log(JSON.stringify(values, null, 2));
+
+              console.log(doctorTemp)
               axios.post(`${SERVER_URI}/doctors/${doctorTemp._id}`, values)
                 .then(response => {
                   console.log(response);
                   console.log(`${SERVER_URI}/doctors/${doctorTemp._id}`)
                   setIsSubmitted(true);
-                  addNotification('Cập nhật bác sĩ thành công!');
+                  fetchDoctors();
+                  setAlertMessage("Cập nhật thành công!");
+                  setAlertSeverity("success");
                 })
                 .catch(error => {
                   console.error(error);
-                  addNotification('Cập nhật bác sĩ thất bại!', 'error');
+                  setIsSubmitted(true);
+                  setAlertMessage("Cập nhật thất bại!");
+                  setAlertSeverity("error");
                 });
             }}
           >
-            {({ handleSubmit })=><Form onSubmit={handleSubmit}>
+
+            {({ handleSubmit }) => <Form onSubmit={handleSubmit}>
               <FormField label="Họ và tên" icons={[mdiAccount, mdiMail]}>
                 <Field name="lastName" placeholder="Họ" />
                 <Field name="firstName" placeholder="Tên" />
@@ -210,10 +242,12 @@ const TableSampleDoctors = () => {
               <Divider />
               <Button type="submit" active={false} color="info" label="Cập nhật" />
             </Form>
-}
+            }
+
           </Formik>
+          )}
         </CardBox>
-      </CardBoxModal>
+      </CardBoxModal >
 
       <CardBoxModal
         title="Xóa bác sĩ"
@@ -295,6 +329,7 @@ const TableSampleDoctors = () => {
         </div>
       </div>
     </>
+
   )
 }
 

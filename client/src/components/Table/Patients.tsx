@@ -1,6 +1,6 @@
 import { mdiAlertCircle, mdiCheckCircle, mdiEye, mdiTrashCan } from '@mdi/js'
 import Snackbar from '@mui/material/Snackbar';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSamplePatients } from '../../hooks/sampleData'
 import { Patient } from '../../interfaces'
 import Button from '../Button'
@@ -18,7 +18,21 @@ import Divider from '../../components/Divider'
 import NotificationBar from '../../components/NotificationBar'
 import { useFormikContext } from 'formik'
 const TableSamplePatients = () => {
-  const { patients } = useSamplePatients()
+  const [patients, setPatients] = useState([]);
+
+  const fetchPatients = async () => {
+    try {
+      const response = await axios.get(`${SERVER_URI}/patients`);
+
+      setPatients(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPatients();
+  }, []);
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -69,12 +83,23 @@ const TableSamplePatients = () => {
       await axios.post(`${SERVER_URI}/patients/${patientTemp._id}`, patientTemp)
       console.log(patientTemp)
       setIsSubmitted(true);
+      fetchPatients();
       addNotification('Cập nhật bác sĩ thành công!');
     } catch (error) {
       console.log(error)
       addNotification('Cập nhật bác sĩ thất bại!', 'error');
     }
   }
+  {notifications.map(notification => (
+    <NotificationBar
+      key={notification.id}
+      color={notification.type === 'error' ? 'danger' : 'success'}
+      icon={notification.type === 'error' ? mdiAlertCircle : mdiCheckCircle}
+      autoDismiss={true}
+    >
+      {notification.message}
+    </NotificationBar>
+  ))}
 
   return (
     <>
@@ -87,16 +112,6 @@ const TableSamplePatients = () => {
         onConfirm={handleEditModalAction}
         onCancel={handleModalAction}
       >
-        {notifications.map(notification => (
-          <NotificationBar
-            key={notification.id}
-            color={notification.type === 'error' ? 'danger' : 'success'}
-            icon={notification.type === 'error' ? mdiAlertCircle : mdiCheckCircle}
-            autoDismiss={true}
-          >
-            {notification.message}
-          </NotificationBar>
-        ))}
         <CardBox>
         <Formik
             initialValues={patientTemp || {
@@ -106,9 +121,9 @@ const TableSamplePatients = () => {
               department: '',
               dob: '1990-01-01',
               address: {
-                ward: '',
-                district: '',
                 province: '',
+                district: '',
+                ward: ''
               },
               gender: '',
               contactInfo: {
