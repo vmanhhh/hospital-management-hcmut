@@ -1,7 +1,6 @@
 import { mdiAlertCircle, mdiCheckCircle, mdiEye, mdiTrashCan } from '@mdi/js'
 import Snackbar from '@mui/material/Snackbar';
 import React, { useState, useEffect } from 'react'
-import { useSampleDoctors } from '../../hooks/sampleData'
 import { Doctor } from '../../interfaces'
 import Button from '../Button'
 import Buttons from '../Buttons'
