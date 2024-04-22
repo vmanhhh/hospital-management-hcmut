@@ -1,21 +1,17 @@
-import { mdiAlertCircle, mdiCheckCircle, mdiEye, mdiTrashCan } from '@mdi/js'
-import Snackbar from '@mui/material/Snackbar';
+import { mdiEye, mdiTrashCan, mdiAccount, mdiMail  } from '@mdi/js'
 import React, { useState, useEffect } from 'react'
 import { Doctor } from '../../interfaces'
 import Button from '../Button'
 import Buttons from '../Buttons'
 import CardBoxModal from '../CardBox/Modal'
 import axios from 'axios'
-import { Formik, Form, Field } from 'formik'
+import { Formik, Form, Field, useFormikContext } from 'formik'
 import FormField from '../Form/Field'
 import DepartmentSelect from '../Form/DepartmentSelect'
 import LocationSelect from '../Form/LocationSelect'
 import { SERVER_URI } from '../../config'
-import { mdiAccount, mdiGithub, mdiMail, mdiUpload } from '@mdi/js'
 import CardBox from '../../components/CardBox'
 import Divider from '../../components/Divider'
-import NotificationBar from '../../components/NotificationBar'
-import { useFormikContext } from 'formik'
 import SnackbarAlert from '../../components/snackbar'
 
 const departmentLabels = {
