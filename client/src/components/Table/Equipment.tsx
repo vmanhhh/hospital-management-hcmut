@@ -1,8 +1,8 @@
 import { mdiAlertCircle, mdiCheckCircle, mdiEye, mdiTrashCan } from '@mdi/js'
 import Snackbar from '@mui/material/Snackbar';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSampleEquipments } from '../../hooks/sampleData'
-import { Equipment } from '../../interfaces'
+import {  Equipment } from '../../interfaces'
 import Button from '../Button'
 import Buttons from '../Buttons'
 import CardBoxModal from '../CardBox/Modal'
@@ -17,9 +17,37 @@ import CardBox from '../../components/CardBox'
 import Divider from '../../components/Divider'
 import NotificationBar from '../../components/NotificationBar'
 import { useFormikContext } from 'formik'
+import SnackbarAlert from '../../components/snackbar'
 
-const TableSampleEquipments = () => {
-  const { equipments } = useSampleEquipments()
+const departmentLabels = {
+  'Neural': 'Thần kinh',
+  'Cardiology': 'Tim mạch',
+  'Orthopedic': 'Chấn thương chỉnh hình',
+  'Oncology': 'Ung thư',
+  'Gynecology': 'Phụ khoa',
+  'Pediatric': 'Nhi',
+  'Psychiatry': 'Tâm thần',
+  'Dermatology': 'Da liễu',
+  'Ophthalmology': 'Mắt',
+  'ENT': 'Tai mũi họng',
+  'Dental': 'Nha khoa',
+};
+const TableSampleEquipment = () => {
+  const [equipments, setPatients] = useState([]);
+
+  const fetchEquipment = async () => {
+    try {
+      const response = await axios.get(`${SERVER_URI}/equipments`);
+      console.log("Fetch");
+      setPatients(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEquipment();
+  }, []);
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -39,7 +67,7 @@ const TableSampleEquipments = () => {
 
   const equipmentsPaginated = equipments.slice(perPage * currentPage, perPage * (currentPage + 1))
 
-  const numPages = equipments.length / perPage
+  const numPages = Math.ceil(equipments.length / perPage)
 
   const pagesList = []
 
@@ -49,16 +77,23 @@ const TableSampleEquipments = () => {
 
   const [isModalInfoActive, setIsModalInfoActive] = useState(false)
   const [isModalTrashActive, setIsModalTrashActive] = useState(false)
-  const [equipmentTemp, setEquipment] = useState(null)
+  const [EquipTemp, setDoctor] = useState(null)
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState<"error" | "warning" | "info" | "success">("success");
+
   const handleModalAction = () => {
     setIsModalInfoActive(false)
     setIsModalTrashActive(false)
+    fetchEquipment()
   }
   const handleDeleteModalAction = async () => {
     try {
-      await axios.delete(`${SERVER_URI}/equipments/${equipmentTemp._id}`)
-      window.location.reload()
+      await axios.delete(`${SERVER_URI}/equipments/${EquipTemp._id}`)
+      fetchEquipment();
+
+      setIsModalTrashActive(false)
       console.log('Deleted')
+
     } catch (error) {
       console.log(error)
     }
@@ -67,20 +102,21 @@ const TableSampleEquipments = () => {
 
   const handleEditModalAction = async () => {
     try {
-      await axios.post(`${SERVER_URI}/equipments/${equipmentTemp._id}`, equipmentTemp)
-      console.log(equipmentTemp)
+      await axios.post(`${SERVER_URI}/equipments/${EquipTemp._id}`, EquipTemp)
+      console.log(EquipTemp);
+      fetchEquipment();
       setIsSubmitted(true);
-      addNotification('Cập nhật bác sĩ thành công!');
     } catch (error) {
       console.log(error)
-      addNotification('Cập nhật bác sĩ thất bại!', 'error');
+      addNotification('Cập nhật thiết bị thất bại!', 'error');
     }
   }
 
   return (
     <>
+      {isSubmitted && <SnackbarAlert message={alertMessage} severity={alertSeverity} />}
       <CardBoxModal
-        title="Thông tin Bác sĩ"
+        title="Thông tin thiết bị"
         buttonColor="info"
         buttonLabel="Done"
         style={{ display: 'none' }}
@@ -88,40 +124,52 @@ const TableSampleEquipments = () => {
         onConfirm={handleEditModalAction}
         onCancel={handleModalAction}
       >
-        {notifications.map(notification => (
-          <NotificationBar
-            key={notification.id}
-            color={notification.type === 'error' ? 'danger' : 'success'}
-            icon={notification.type === 'error' ? mdiAlertCircle : mdiCheckCircle}
-            autoDismiss={true}
-          >
-            {notification.message}
-          </NotificationBar>
-        ))}
-        <CardBox>
-          <Formik
-            initialValues={equipmentTemp}
 
+
+        <CardBox>
+          {EquipTemp && (<Formik
+            initialValues={{
+              name: EquipTemp.name,
+              model: EquipTemp.model,
+              manufacturer: EquipTemp.manufacturer,
+              serialNumber: EquipTemp.serialNumber,
+              department: EquipTemp.department,
+              availability: {
+                type: EquipTemp.availability,
+              },
+              maintenanceHistory: {
+                date: new Date(EquipTemp.date).toISOString().split('T')[0],
+                description: EquipTemp.description,
+                technician: EquipTemp.technician,
+              },
+
+            }}
             onSubmit={(values) => {
 
               console.log(JSON.stringify(values, null, 2));
-              axios.post(`${SERVER_URI}/equipments/${equipmentTemp._id}`, values)
+
+              console.log(EquipTemp)
+              axios.post(`${SERVER_URI}/equipments/${EquipTemp._id}`, values)
                 .then(response => {
                   console.log(response);
-                  console.log(`${SERVER_URI}/equipments/${equipmentTemp._id}`)
+                  console.log(`${SERVER_URI}/equipments/${EquipTemp._id}`)
                   setIsSubmitted(true);
-                  addNotification('Cập nhật bác sĩ thành công!');
+                  fetchEquipment();
+                  setAlertMessage("Cập nhật thành công!");
+                  setAlertSeverity("success");
                 })
                 .catch(error => {
                   console.error(error);
-                  addNotification('Cập nhật bác sĩ thất bại!', 'error');
+                  setIsSubmitted(true);
+                  setAlertMessage("Cập nhật thất bại!");
+                  setAlertSeverity("error");
                 });
             }}
           >
-            {({ handleSubmit }) => <Form onSubmit={handleSubmit}>
-              <FormField label="Tên thiết bị" icons={[mdiAccount, mdiMail]}>
-                <Field name="deviceName" placeholder="Tên thiết bị" />
 
+            {({ handleSubmit }) => <Form onSubmit={handleSubmit}>
+            <FormField label="Tên thiết bị" icons={[mdiAccount, mdiMail]}>
+                <Field name="deviceName" placeholder="Tên thiết bị" />
               </FormField>
               <FormField>
                 <FormField label="Hãng sản xuất" labelFor="manufacturer">
@@ -151,22 +199,20 @@ const TableSampleEquipments = () => {
                 <Field name="description" placeholder="Mô tả" />
                 <Field name="maintenanceBy" placeholder="Người bảo trì" />
               </FormField>
-
-
               <Divider />
 
-              <Buttons>
-                <Button type="submit" color="info" label="Submit" />
-                <Button type="reset" color="info" outline label="Reset" />
-              </Buttons>
+              <Divider />
+              <Button type="submit" active={false} color="info" label="Cập nhật" />
             </Form>
             }
+
           </Formik>
+          )}
         </CardBox>
-      </CardBoxModal>
+      </CardBoxModal >
 
       <CardBoxModal
-        title="Xóa bác sĩ"
+        title="Xóa thiết bị"
         buttonColor="danger"
         buttonLabel="Xóa"
         style={{}}
@@ -175,7 +221,7 @@ const TableSampleEquipments = () => {
         onCancel={handleModalAction}
       >
         <p>
-          Bạn có muốn xóa bác sĩ này không?
+          Bạn có muốn xóa thiết bị này không?
         </p>
         <p>Chọn "Xác nhận" nếu có</p>
       </CardBoxModal>
@@ -184,28 +230,27 @@ const TableSampleEquipments = () => {
         <thead>
           <tr>
             <th>Tên thiết bị</th>
-            <th>Hãng sản xuất</th>
             <th>Model</th>
-            <th>Số Serial</th>
-            <th>Thuộc khoa</th>
+            <th>Hãng sản xuất</th>
+            <th>Khoa</th>
+            <th>Trạng thái</th>
             <th />
           </tr>
         </thead>
         <tbody>
-          {equipmentsPaginated.map((equipment: Equipment) => (
-            <tr key={equipment._id}>
-              <td data-label="Equipment name">{equipment.name}</td>
-              <td data-label="Manufacturer">{equipment.manufacturer}</td>
-              <td data-label="Model">{equipment.model}</td>
-              <td data-label="Serial number">{equipment.serialNumber}</td>
-              <td data-label="Department">{equipment.department}</td>
+          {equipmentsPaginated.map((equipments:  Equipment) => (
+            <tr key={equipments._id}>
+              <td data-label="name">{equipments.name}</td>
+              <td data-label="model">{equipments.model}</td>
+              <td data-label="manufacturer">{equipments.manufacturer}</td>
+              <td data-label="department">{departmentLabels[equipments.department]}</td>
               <td className="before:hidden lg:w-1 whitespace-nowrap">
                 <Buttons type="justify-start lg:justify-end" noWrap>
                   <Button
                     color="info"
                     icon={mdiEye}
                     onClick={() => {
-                      setEquipment(equipment)
+                      setDoctor(equipments)
                       setIsModalInfoActive(true)
                     }}
                     small
@@ -214,7 +259,7 @@ const TableSampleEquipments = () => {
                     color="danger"
                     icon={mdiTrashCan}
                     onClick={() => {
-                      setEquipment(equipment)
+                      setDoctor(equipments)
                       setIsModalTrashActive(true)
                     }}
                     small
@@ -224,7 +269,7 @@ const TableSampleEquipments = () => {
             </tr>
           ))}
         </tbody>
-      </table >
+      </table>
       <div className="p-3 lg:px-6 border-t border-gray-100 dark:border-slate-800">
         <div className="flex flex-col md:flex-row items-center justify-between py-3 md:py-0">
           <Buttons>
@@ -245,7 +290,8 @@ const TableSampleEquipments = () => {
         </div>
       </div>
     </>
+
   )
 }
 
-export default TableSampleEquipments
+export default TableSampleEquipment

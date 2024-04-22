@@ -1,4 +1,4 @@
-import { mdiPlusBox, mdiMonitorCellphone, mdiCellphoneLink, mdiTableOff } from '@mdi/js'
+import { mdiGithub, mdiDoctor, mdiTableBorder, mdiTableOff } from '@mdi/js'
 import Head from 'next/head'
 import React, { ReactElement } from 'react'
 import Button from '../components/Button'
@@ -8,43 +8,31 @@ import LayoutAuthenticated from '../layouts/Authenticated'
 import NotificationBar from '../components/NotificationBar'
 import SectionMain from '../components/Section/Main'
 import SectionTitleLineWithButton from '../components/Section/TitleLineWithButton'
-import TableEquipments from '../components/Table/Equipment'
+import TableDoctors from '../components/Table/Doctors'
 import { getPageTitle } from '../config'
-
+import { mdiPlusBox } from '@mdi/js'
 const TablesPage = () => {
   return (
     <>
       <Head>
-        <title>{getPageTitle('Danh sách Thiết bị')}</title>
+        <title>{getPageTitle('Danh sách Bác sĩ')}</title>
       </Head>
       <SectionMain>
-        <SectionTitleLineWithButton icon={mdiCellphoneLink} title="Danh sách Thiết bị" main>
+        <SectionTitleLineWithButton icon={mdiDoctor} title="Danh sách Bác sĩ" main>
         <Button
             color="info"
-            label="Thêm Thiết bị"
+            label="Thêm Bác sĩ"
             icon={mdiPlusBox}
             roundedFull
-            href="/forms/equipments"
+            href="/forms/doctor"
           />
         </SectionTitleLineWithButton>
 
-        <NotificationBar color="info" icon={mdiMonitorCellphone}>
-          <b>Responsive table.</b> Collapses on mobile
-        </NotificationBar>
 
         <CardBox className="mb-6" hasTable>
-          <TableEquipments />
+          <TableDoctors />
         </CardBox>
 
-        <SectionTitleLineWithButton icon={mdiTableOff} title="Empty variation" />
-
-        <NotificationBar color="danger" icon={mdiTableOff}>
-          <b>Empty card.</b> When there&apos;s nothing to show
-        </NotificationBar>
-
-        <CardBox>
-          <CardBoxComponentEmpty />
-        </CardBox>
       </SectionMain>
     </>
   )

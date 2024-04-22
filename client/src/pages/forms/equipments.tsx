@@ -37,7 +37,6 @@ const FormsPage = () => {
             <Form>
               <FormField label="Tên thiết bị" icons={[mdiAccount, mdiMail]}>
                 <Field name="deviceName" placeholder="Tên thiết bị" />
-
               </FormField>
               <FormField>
                 <FormField label="Hãng sản xuất" labelFor="manufacturer">
