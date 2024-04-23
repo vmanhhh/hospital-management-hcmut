@@ -18,7 +18,6 @@ const progressTrackingScheme = mongoose.Schema(
         bloodPressureDiastolic: Number,
         heartRate: Number,
         temperature: Number,
-        symptoms: [String],
         note: String,
     }
 );
