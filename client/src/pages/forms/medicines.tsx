@@ -2,16 +2,16 @@ import { mdiAccount, mdiBallotOutline, mdiGithub, mdiMail, mdiUpload } from '@md
 import { Field, Form, Formik } from 'formik'
 import Head from 'next/head'
 import { ReactElement } from 'react'
-import Button from '../components/Button'
-import Buttons from '../components/Buttons'
-import Divider from '../components/Divider'
-import CardBox from '../components/CardBox'
-import FormField from '../components/Form/Field'
-import LayoutAuthenticated from '../layouts/Authenticated'
-import SectionMain from '../components/Section/Main'
-import SectionTitleLineWithButton from '../components/Section/TitleLineWithButton'
-import { getPageTitle } from '../config'
-import DepartmentSelect from '../components/Form/DepartmentSelect'
+import Button from '../../components/Button'
+import Buttons from '../../components/Buttons'
+import Divider from '../../components/Divider'
+import CardBox from '../../components/CardBox'
+import FormField from '../../components/Form/Field'
+import LayoutAuthenticated from '../../layouts/Authenticated'
+import SectionMain from '../../components/Section/Main'
+import SectionTitleLineWithButton from '../../components/Section/TitleLineWithButton'
+import { getPageTitle } from '../../config'
+import DepartmentSelect from '../../components/Form/DepartmentSelect'
 
 const FormsPage = () => {
   return (
@@ -33,7 +33,6 @@ const FormsPage = () => {
             <Form>
               <FormField label="Tên thiết bị" icons={[mdiAccount, mdiMail]}>
                 <Field name="deviceName" placeholder="Tên thiết bị" />
-
               </FormField>
               <FormField>
                 <FormField label="Hãng sản xuất" labelFor="manufacturer">

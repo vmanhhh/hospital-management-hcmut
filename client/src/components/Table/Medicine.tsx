@@ -1,21 +1,60 @@
-import { mdiEye, mdiTrashCan } from '@mdi/js'
-import React, { useState } from 'react'
+import { mdiAlertCircle, mdiCheckCircle, mdiEye, mdiTrashCan } from '@mdi/js'
+import Snackbar from '@mui/material/Snackbar';
+import React, { useState, useEffect } from 'react'
 import { useSampleMedicines } from '../../hooks/sampleData'
-import { Medicine } from '../../interfaces'
+import {  Medicine } from '../../interfaces'
 import Button from '../Button'
 import Buttons from '../Buttons'
 import CardBoxModal from '../CardBox/Modal'
+import axios from 'axios'
+import { Formik, Form, Field } from 'formik'
+import FormField from '../Form/Field'
+import DepartmentSelect from '../Form/DepartmentSelect'
+import LocationSelect from '../Form/LocationSelect'
+import { SERVER_URI } from '../../config'
+import { mdiAccount, mdiGithub, mdiMail, mdiUpload } from '@mdi/js'
+import CardBox from '../CardBox'
+import Divider from '../Divider'
+import NotificationBar from '../NotificationBar'
+import { useFormikContext } from 'formik'
+import SnackbarAlert from '../snackbar'
 
-const TableSampleMedicines = () => {
-  const { medicines } = useSampleMedicines()
+const TableSampleMedicine = () => {
+  const [medicines, setMedicines] = useState([]);
 
+  const fetchMedicine = async () => {
+    try {
+      const response = await axios.get(`${SERVER_URI}/medicines`);
+      console.log("Fetch");
+      setMedicines(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMedicine();
+  }, []);
+
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const addNotification = (message, type = 'success') => {
+    setNotifications(prevNotifications => [
+      ...prevNotifications,
+      {
+        id: Date.now(), // unique id for key
+        message,
+        type
+      }
+    ]);
+  };
   const perPage = 5
 
   const [currentPage, setCurrentPage] = useState(0)
 
   const medicinesPaginated = medicines.slice(perPage * currentPage, perPage * (currentPage + 1))
 
-  const numPages = medicines.length / perPage
+  const numPages = Math.ceil(medicines.length / perPage)
 
   const pagesList = []
 
@@ -25,38 +64,151 @@ const TableSampleMedicines = () => {
 
   const [isModalInfoActive, setIsModalInfoActive] = useState(false)
   const [isModalTrashActive, setIsModalTrashActive] = useState(false)
+  const [MedTemp, setMedicine] = useState(null)
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState<"error" | "warning" | "info" | "success">("success");
 
   const handleModalAction = () => {
     setIsModalInfoActive(false)
     setIsModalTrashActive(false)
+    fetchMedicine()
+  }
+  const handleDeleteModalAction = async () => {
+    try {
+      await axios.delete(`${SERVER_URI}/medicines/${MedTemp._id}`)
+      fetchMedicine();
+
+      setIsModalTrashActive(false)
+      console.log('Deleted')
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  const handleEditModalAction = async () => {
+    try {
+      await axios.post(`${SERVER_URI}/medicines/${MedTemp._id}`, MedTemp)
+      console.log(MedTemp);
+      fetchMedicine();
+      setIsSubmitted(true);
+    } catch (error) {
+      console.log(error)
+      addNotification('Cập nhật thiết bị thất bại!', 'error');
+    }
   }
 
   return (
     <>
+      {isSubmitted && <SnackbarAlert message={alertMessage} severity={alertSeverity} />}
       <CardBoxModal
-        title="Thông tin bệnh nhân"
+        title="Thông tin thiết bị"
         buttonColor="info"
         buttonLabel="Done"
+        style={{ display: 'none' }}
         isActive={isModalInfoActive}
-        onConfirm={handleModalAction}
+        onConfirm={handleEditModalAction}
         onCancel={handleModalAction}
       >
-        <p>
-          Lorem ipsum dolor sit amet <b>adipiscing elit</b>
-        </p>
-        <p>This is sample modal</p>
-      </CardBoxModal>
+
+
+        <CardBox>
+          {MedTemp && (<Formik
+            initialValues={{
+              name: MedTemp.name,
+              model: MedTemp.model,
+              manufacturer: MedTemp.manufacturer,
+              serialNumber: MedTemp.serialNumber,
+              department: MedTemp.department,
+              availability: {
+                type: MedTemp.availability,
+              },
+              maintenanceHistory: {
+                date: new Date(MedTemp.date).toISOString().split('T')[0],
+                description: MedTemp.description,
+                technician: MedTemp.technician,
+              },
+
+            }}
+            onSubmit={(values) => {
+
+              console.log(JSON.stringify(values, null, 2));
+
+              console.log(MedTemp)
+              axios.post(`${SERVER_URI}/medicines/${MedTemp._id}`, values)
+                .then(response => {
+                  console.log(response);
+                  console.log(`${SERVER_URI}/medicines/${MedTemp._id}`)
+                  setIsSubmitted(true);
+                  fetchMedicine();
+                  setAlertMessage("Cập nhật thành công!");
+                  setAlertSeverity("success");
+                })
+                .catch(error => {
+                  console.error(error);
+                  setIsSubmitted(true);
+                  setAlertMessage("Cập nhật thất bại!");
+                  setAlertSeverity("error");
+                });
+            }}
+          >
+
+            {({ handleSubmit }) => <Form onSubmit={handleSubmit}>
+            <FormField label="Tên thiết bị" icons={[mdiAccount, mdiMail]}>
+                <Field name="deviceName" placeholder="Tên thiết bị" />
+              </FormField>
+              <FormField>
+                <FormField label="Hãng sản xuất" labelFor="manufacturer">
+                  <Field name="manufacturer" placeholder="Hãng sản xuất" id="manufacturer" />
+                </FormField>
+                <FormField label="Model" labelFor="deviceModel">
+                  <Field name="deviceModel" placeholder="Model" />
+                </FormField>
+              </FormField>
+              <FormField label="Số seri" labelFor="serialNumber">
+                <Field name="serialNumber" placeholder="Số seri" id="serialNumber" />
+              </FormField>
+              <FormField label="Khoa" labelFor="department">
+                <DepartmentSelect />
+              </FormField>
+              <FormField label="Trạng thái" labelFor="status">
+                <Field name="status" id="status" component="select">
+                  <option value="">Chọn trạng thái</option>
+                  <option value="Available">Sẵn dùng</option>
+                  <option value="In Use">Đang sử dụng</option>
+                  <option value="Under Maintenance">Đang bảo trì</option>
+                  <option value="Reserved">Đã đặt</option>
+                </Field>
+              </FormField>
+              <FormField label="Lịch sử bảo trì" labelFor="maintenanceHistory">
+                <Field name="dateMaintenance" type="date" id="dateMaintenance" />
+                <Field name="description" placeholder="Mô tả" />
+                <Field name="maintenanceBy" placeholder="Người bảo trì" />
+              </FormField>
+              <Divider />
+
+              <Divider />
+              <Button type="submit" active={false} color="info" label="Cập nhật" />
+            </Form>
+            }
+
+          </Formik>
+          )}
+        </CardBox>
+      </CardBoxModal >
 
       <CardBoxModal
-        title="Xóa bệnh nhân"
+        title="Xóa thiết bị"
         buttonColor="danger"
         buttonLabel="Xóa"
+        style={{}}
         isActive={isModalTrashActive}
-        onConfirm={handleModalAction}
+        onConfirm={handleDeleteModalAction}
         onCancel={handleModalAction}
       >
         <p>
-          Bạn có muốn xóa bệnh nhân này không?
+          Bạn có muốn xóa thiết bị này không?
         </p>
         <p>Chọn "Xác nhận" nếu có</p>
       </CardBoxModal>
@@ -64,36 +216,38 @@ const TableSampleMedicines = () => {
       <table>
         <thead>
           <tr>
-            <th>Tên thuốc</th>
+            <th>Tên thiết bị</th>
+            <th>Model</th>
             <th>Hãng sản xuất</th>
-            <th>Liều lượng</th>
-            <th>Đơn vị</th>
-            <th>Dạng thuốc</th>
-            <th>Tồn kho</th>
+            <th>Khoa</th>
+            <th>Trạng thái</th>
             <th />
           </tr>
         </thead>
         <tbody>
-          {medicinesPaginated.map((medicine: Medicine) => (
-            <tr key={medicine._id}>
-              <td>{medicine.name}</td>
-              <td>{medicine.brandName}</td>
-              <td>{medicine.dosage}</td>
-              <td>{medicine.unit}</td>
-              <td>{medicine.dosageForm}</td>
-              <td>{medicine.lot[0].stock}</td>
+          {medicinesPaginated.map((medicines:  Medicine) => (
+            <tr key={medicines._id}>
+              <td data-label="name">{medicines.name}</td>
+              <td data-label="model">{medicines.model}</td>
+              <td data-label="manufacturer">{medicines.manufacturer}</td>
               <td className="before:hidden lg:w-1 whitespace-nowrap">
                 <Buttons type="justify-start lg:justify-end" noWrap>
                   <Button
                     color="info"
                     icon={mdiEye}
-                    onClick={() => setIsModalInfoActive(true)}
+                    onClick={() => {
+                      setMedicine(medicines)
+                      setIsModalInfoActive(true)
+                    }}
                     small
                   />
                   <Button
                     color="danger"
                     icon={mdiTrashCan}
-                    onClick={() => setIsModalTrashActive(true)}
+                    onClick={() => {
+                      setMedicine(medicines)
+                      setIsModalTrashActive(true)
+                    }}
                     small
                   />
                 </Buttons>
@@ -122,7 +276,8 @@ const TableSampleMedicines = () => {
         </div>
       </div>
     </>
+
   )
 }
 
-export default TableSampleMedicines
+export default TableSampleMedicine

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Field, useFormikContext } from 'formik';
 import FormField from './Field';
 
-const LocationSelect = ({}) => {
+const LocationSelect = ({initialData}) => {
   const { setFieldValue } = useFormikContext();
   const [data, setData] = useState([]);
   const [cities, setCities] = useState([]);
@@ -18,6 +18,15 @@ const LocationSelect = ({}) => {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (initialData) {
+      const province = data.find(province => province.Id === initialData.province);
+      setDistricts(province ? province.Districts : []);
+      const district = districts.find(district => district.Id === initialData.district);
+      setWards(district ? district.Wards : []);
+    }
+  }, [initialData, data, districts]);
 
   const handleprovinceChange = (event) => {
     const provinceId = event.target.value;
