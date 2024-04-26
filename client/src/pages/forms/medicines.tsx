@@ -21,7 +21,7 @@ const FormsPage = () => {
       </Head>
 
       <SectionMain>
-        <SectionTitleLineWithButton icon={mdiBallotOutline} title="Thông tin thiết bị" main>
+        <SectionTitleLineWithButton icon={mdiBallotOutline} title="Thông tin thuốc" main>
         </SectionTitleLineWithButton>
 
         <CardBox>
@@ -31,45 +31,37 @@ const FormsPage = () => {
             onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
           >
             <Form>
-              <FormField label="Tên thiết bị" icons={[mdiAccount, mdiMail]}>
-                <Field name="deviceName" placeholder="Tên thiết bị" />
-              </FormField>
-              <FormField>
-                <FormField label="Hãng sản xuất" labelFor="manufacturer">
-                  <Field name="manufacturer" placeholder="Hãng sản xuất" id="manufacturer" />
-                </FormField>
-                <FormField label="Model" labelFor="deviceModel">
-                  <Field name="deviceModel" placeholder="Model" />
-                </FormField>
-              </FormField>
-              <FormField label="Số seri" labelFor="serialNumber">
-                <Field name="serialNumber" placeholder="Số seri" id="serialNumber" />
-              </FormField>
-              <FormField label="Khoa" labelFor="department">
-                <DepartmentSelect />
-              </FormField>
-              <FormField label="Trạng thái" labelFor="status">
-                <Field name="status" id="status" component="select">
-                  <option value="">Chọn trạng thái</option>
-                  <option value="Available">Sẵn dùng</option>
-                  <option value="In Use">Đang sử dụng</option>
-                  <option value="Under Maintenance">Đang bảo trì</option>
-                  <option value="Reserved">Đã đặt</option>
-                </Field>
-              </FormField>
-              <FormField label="Lịch sử bảo trì" labelFor="maintenanceHistory">
-                <Field name="dateMaintenance" type="date" id="dateMaintenance" />
-                <Field name="description" placeholder="Mô tả" />
-                <Field name="maintenanceBy" placeholder="Người bảo trì" />
-              </FormField>
-
+            <FormField label="Tên thuốc" icons={[mdiAccount, mdiMail]}>
+              <Field name="name" placeholder="Tên thuốc" />
+            </FormField>
+            <FormField label="Thương hiệu" labelFor="brandName">
+              <Field name="brandName" placeholder="Thương hiệu" />
+            </FormField>
+            <FormField label="Mô tả" labelFor="description">
+              <Field name="description" placeholder="Mô tả" />
+            </FormField>
+            <FormField label="Liều lượng" labelFor="dosage">
+              <Field name="dosage" placeholder="Liều lượng" />
+            </FormField>
+            <FormField label="Đơn vị" labelFor="unit">
+              <Field name="unit" placeholder="Liều lượng" />
+            </FormField>
+            <FormField label="Dạng bào chế" labelFor="dosageForm">
+              <Field name="dosageForm" placeholder="Dạng bào chế" />
+            </FormField>
+            <FormField label="Trữ lượng" labelFor="stock">
+              <Field name="stock" placeholder="Trữ lượng" />
+            </FormField>
+            <FormField label="Ngày nhập" labelFor="dateImported">
+              <Field name="dateImported" type="date" />
+            </FormField>
+            <FormField label="Ngày hết hạn" labelFor="expirationDate">
+              <Field name="expirationDate" type="date" />
+            </FormField>
+            <Divider />
 
               <Divider />
-
-              <Buttons>
-                <Button type="submit" color="info" label="Submit" />
-                <Button type="reset" color="info" outline label="Reset" />
-              </Buttons>
+              <Button type="submit" active={false} color="info" label="Cập nhật" />
             </Form>
           </Formik>
         </CardBox>

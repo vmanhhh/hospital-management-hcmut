@@ -172,7 +172,7 @@ const TableSampleEquipment = () => {
                 <Field name="deviceName" placeholder="Tên thiết bị" />
               </FormField>
               <FormField>
-                <FormField label="Hãng sản xuất" labelFor="manufacturer">
+                <FormField label="Thương hiệu" labelFor="manufacturer">
                   <Field name="manufacturer" placeholder="Hãng sản xuất" id="manufacturer" />
                 </FormField>
                 <FormField label="Model" labelFor="deviceModel">
@@ -244,6 +244,7 @@ const TableSampleEquipment = () => {
               <td data-label="model">{equipments.model}</td>
               <td data-label="manufacturer">{equipments.manufacturer}</td>
               <td data-label="department">{departmentLabels[equipments.department]}</td>
+              <td data-label="availability">{equipments.availability}</td>
               <td className="before:hidden lg:w-1 whitespace-nowrap">
                 <Buttons type="justify-start lg:justify-end" noWrap>
                   <Button

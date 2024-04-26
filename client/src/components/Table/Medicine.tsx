@@ -95,7 +95,7 @@ const TableSampleMedicine = () => {
       setIsSubmitted(true);
     } catch (error) {
       console.log(error)
-      addNotification('Cập nhật thiết bị thất bại!', 'error');
+      addNotification('Cập nhật thuốc thất bại!', 'error');
     }
   }
 
@@ -103,7 +103,7 @@ const TableSampleMedicine = () => {
     <>
       {isSubmitted && <SnackbarAlert message={alertMessage} severity={alertSeverity} />}
       <CardBoxModal
-        title="Thông tin thiết bị"
+        title="Thông tin thuốc"
         buttonColor="info"
         buttonLabel="Done"
         style={{ display: 'none' }}
@@ -117,18 +117,14 @@ const TableSampleMedicine = () => {
           {MedTemp && (<Formik
             initialValues={{
               name: MedTemp.name,
-              model: MedTemp.model,
-              manufacturer: MedTemp.manufacturer,
-              serialNumber: MedTemp.serialNumber,
-              department: MedTemp.department,
-              availability: {
-                type: MedTemp.availability,
-              },
-              maintenanceHistory: {
-                date: new Date(MedTemp.date).toISOString().split('T')[0],
-                description: MedTemp.description,
-                technician: MedTemp.technician,
-              },
+              brandName: MedTemp.brandName,
+              description: MedTemp.description,
+              dosage: MedTemp.dosage,
+              unit: MedTemp.unit,
+              dosageForm: MedTemp.dosageForm,
+              stock: MedTemp.stock,
+              dateImported: new Date(MedTemp.dateImported).toISOString().split('T')[0],
+              expirationDate: new Date(MedTemp.expirationDate).toISOString().split('T')[0],
 
             }}
             onSubmit={(values) => {
@@ -155,38 +151,34 @@ const TableSampleMedicine = () => {
           >
 
             {({ handleSubmit }) => <Form onSubmit={handleSubmit}>
-            <FormField label="Tên thiết bị" icons={[mdiAccount, mdiMail]}>
-                <Field name="deviceName" placeholder="Tên thiết bị" />
-              </FormField>
-              <FormField>
-                <FormField label="Hãng sản xuất" labelFor="manufacturer">
-                  <Field name="manufacturer" placeholder="Hãng sản xuất" id="manufacturer" />
-                </FormField>
-                <FormField label="Model" labelFor="deviceModel">
-                  <Field name="deviceModel" placeholder="Model" />
-                </FormField>
-              </FormField>
-              <FormField label="Số seri" labelFor="serialNumber">
-                <Field name="serialNumber" placeholder="Số seri" id="serialNumber" />
-              </FormField>
-              <FormField label="Khoa" labelFor="department">
-                <DepartmentSelect />
-              </FormField>
-              <FormField label="Trạng thái" labelFor="status">
-                <Field name="status" id="status" component="select">
-                  <option value="">Chọn trạng thái</option>
-                  <option value="Available">Sẵn dùng</option>
-                  <option value="In Use">Đang sử dụng</option>
-                  <option value="Under Maintenance">Đang bảo trì</option>
-                  <option value="Reserved">Đã đặt</option>
-                </Field>
-              </FormField>
-              <FormField label="Lịch sử bảo trì" labelFor="maintenanceHistory">
-                <Field name="dateMaintenance" type="date" id="dateMaintenance" />
-                <Field name="description" placeholder="Mô tả" />
-                <Field name="maintenanceBy" placeholder="Người bảo trì" />
-              </FormField>
-              <Divider />
+            <FormField label="Tên thuốc" icons={[mdiAccount, mdiMail]}>
+              <Field name="name" placeholder="Tên thuốc" />
+            </FormField>
+            <FormField label="Thương hiệu" labelFor="brandName">
+              <Field name="brandName" placeholder="Thương hiệu" />
+            </FormField>
+            <FormField label="Mô tả" labelFor="description">
+              <Field name="description" placeholder="Mô tả" />
+            </FormField>
+            <FormField label="Liều lượng" labelFor="dosage">
+              <Field name="dosage" placeholder="Liều lượng" />
+            </FormField>
+            <FormField label="Đơn vị" labelFor="unit">
+              <Field name="unit" placeholder="Liều lượng" />
+            </FormField>
+            <FormField label="Dạng bào chế" labelFor="dosageForm">
+              <Field name="dosageForm" placeholder="Dạng bào chế" />
+            </FormField>
+            <FormField label="Trữ lượng" labelFor="stock">
+              <Field name="stock" placeholder="Trữ lượng" />
+            </FormField>
+            <FormField label="Ngày nhập" labelFor="dateImported">
+              <Field name="dateImported" type="date" />
+            </FormField>
+            <FormField label="Ngày hết hạn" labelFor="expirationDate">
+              <Field name="expirationDate" type="date" />
+            </FormField>
+            <Divider />
 
               <Divider />
               <Button type="submit" active={false} color="info" label="Cập nhật" />
@@ -199,7 +191,7 @@ const TableSampleMedicine = () => {
       </CardBoxModal >
 
       <CardBoxModal
-        title="Xóa thiết bị"
+        title="Xóa thuốc"
         buttonColor="danger"
         buttonLabel="Xóa"
         style={{}}
@@ -208,7 +200,7 @@ const TableSampleMedicine = () => {
         onCancel={handleModalAction}
       >
         <p>
-          Bạn có muốn xóa thiết bị này không?
+          Bạn có muốn xóa thuốc này không?
         </p>
         <p>Chọn "Xác nhận" nếu có</p>
       </CardBoxModal>
@@ -216,11 +208,11 @@ const TableSampleMedicine = () => {
       <table>
         <thead>
           <tr>
-            <th>Tên thiết bị</th>
-            <th>Model</th>
-            <th>Hãng sản xuất</th>
-            <th>Khoa</th>
-            <th>Trạng thái</th>
+            <th>Tên thuốc</th>
+            <th>Mô tả</th>
+            <th>Liều lượng</th>
+            <th>Đơn vị</th>
+            <th>Dạng bào chế</th>
             <th />
           </tr>
         </thead>
@@ -228,8 +220,10 @@ const TableSampleMedicine = () => {
           {medicinesPaginated.map((medicines:  Medicine) => (
             <tr key={medicines._id}>
               <td data-label="name">{medicines.name}</td>
-              <td data-label="model">{medicines.model}</td>
-              <td data-label="manufacturer">{medicines.manufacturer}</td>
+              <td data-label="description">{medicines.description}</td>
+              <td data-label="dosage">{medicines.dosage}</td>
+              <td data-label="unit">{medicines.unit}</td>
+              <td data-label="dosageForm">{medicines.dosageForm}</td>
               <td className="before:hidden lg:w-1 whitespace-nowrap">
                 <Buttons type="justify-start lg:justify-end" noWrap>
                   <Button
