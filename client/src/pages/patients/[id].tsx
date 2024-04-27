@@ -12,47 +12,68 @@ import {
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
 import type { ReactElement } from 'react'
-import Button from '../components/Button'
-import LayoutAuthenticated from '../layouts/Authenticated'
-import SectionMain from '../components/Section/Main'
-import SectionTitleLineWithButton from '../components/Section/TitleLineWithButton'
-import CardBoxWidget from '../components/CardBox/Widget'
-import { useSamplePatients, useSampleTransactions } from '../hooks/sampleData'
-import CardBoxTransaction from '../components/CardBox/Transaction'
-import { Client, Transaction } from '../interfaces'
-import CardBoxClient from '../components/CardBox/Client'
-import SectionBannerStarOnGitHub from '../components/Section/Banner/StarOnGitHub'
-import CardBox from '../components/CardBox'
-import { sampleChartData } from '../components/ChartLineSample/config'
-import ChartLineSample from '../components/ChartLineSample'
-import NotificationBar from '../components/NotificationBar'
-import TableSampleClients from '../components/Table/SampleClients'
-import { SERVER_URI, getPageTitle } from '../config'
+import Button from '../../components/Button'
+import LayoutAuthenticated from '../../layouts/Authenticated'
+import SectionMain from '../../components/Section/Main'
+import SectionTitleLineWithButton from '../../components/Section/TitleLineWithButton'
+import CardBoxWidget from '../../components/CardBox/Widget'
+import { useSamplePatients, useSampleTransactions } from '../../hooks/sampleData'
+import CardBoxTransaction from '../../components/CardBox/Transaction'
+import { Client, Transaction } from '../../interfaces'
+import CardBoxClient from '../../components/CardBox/Client'
+import SectionBannerStarOnGitHub from '../../components/Section/Banner/StarOnGitHub'
+import CardBox from '../../components/CardBox'
+import { sampleChartData } from '../../components/ChartLineSample/config'
+import ChartLineSample from '../../components/ChartLineSample'
+import NotificationBar from '../../components/NotificationBar'
+import TableSampleClients from '../../components/Table/SampleClients'
+import { SERVER_URI, getPageTitle } from '../../config'
 import { Field, Form, Formik } from 'formik'
-import FormField from '../components/Form/Field'
-import LocationSelect from '../components/Form/LocationSelect'
-import Divider from '../components/Divider'
+import FormField from '../../components/Form/Field'
+import LocationSelect from '../../components/Form/LocationSelect'
+import Divider from '../../components/Divider'
 import axios from 'axios'
-import CircularIndeterminate from '../components/Loading'
-
+import CircularIndeterminate from '../../components/Loading'
+import { useRouter } from 'next/router'
+type Patient = {
+  _id: string
+  lastName: string
+  firstName: string
+  dob: Date
+  address: {
+    province: string
+    district: string
+    ward: string
+  }
+  gender: string
+  contactInfo: {
+    phone: string
+    email: string
+  }
+}
 const DashboardPage = () => {
-  const [patients, setPatients] = useState([]);
+  const router = useRouter()
+  const {id} = router.query
+  const [patients, setPatients] = useState<Patient | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  
 
   const fetchPatients = async () => {
     try {
-      const response = await axios.get(`${SERVER_URI}/patients`);
+      const response = await axios.get(`${SERVER_URI}/patients/${id}`);
 
       setPatients(response.data);
       setIsLoading(false);
+      console.log(patients.dob)
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
+    if (id)
     fetchPatients();
-  }, []);
+  }, [id]);
 
   const [chartData, setChartData] = useState(sampleChartData())
 
@@ -67,7 +88,7 @@ const DashboardPage = () => {
   return (
     <>
       <Head>
-        <title>{getPageTitle(`Bệnh án ${patients[0].firstName}`)}</title>
+        <title>{getPageTitle(`Bệnh án ${patients.firstName}`)}</title>
       </Head>
       <SectionMain>
         <SectionTitleLineWithButton icon={mdiChartTimelineVariant} title="Overview" main>
@@ -78,18 +99,18 @@ const DashboardPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 mb-6">
         <Formik
             initialValues={{
-              lastName: patients[0].lastName,
-              firstName: patients[0].firstName,
-              dob: new Date(patients[0].dob).toISOString().split('T')[0],
+              lastName: patients.lastName,
+              firstName: patients.firstName,
+              dob: new Date(patients.dob).toISOString().split('T')[0],
               address: {
-                province: patients[0].address.province,
-                district: patients[0].address.district,
-                ward: patients[0].address.ward,
+                province: patients.address.province,
+                district: patients.address.district,
+                ward: patients.address.ward,
               },
-              gender: patients[0].gender,
+              gender: patients.gender,
               contactInfo: {
-                phone: patients[0].contactInfo.phone,
-                email: patients[0].contactInfo.email,
+                phone: patients.contactInfo.phone,
+                email: patients.contactInfo.email,
               }
             }}
             onSubmit={(values, { setSubmitting }) => {
@@ -119,7 +140,7 @@ const DashboardPage = () => {
             </FormField>
 
             <FormField label="Địa chỉ" labelFor="address">
-              <LocationSelect initialData={patients[0]}/>
+              <LocationSelect initialData={patients}/>
             </FormField>
             <Divider />
             <FormField

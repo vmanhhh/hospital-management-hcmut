@@ -1,7 +1,6 @@
 import { mdiAlertCircle, mdiCheckCircle, mdiEye, mdiTrashCan } from '@mdi/js'
 import Snackbar from '@mui/material/Snackbar';
 import React, { useState, useEffect } from 'react'
-import { useSamplePatients } from '../../hooks/sampleData'
 import { Patient } from '../../interfaces'
 import Button from '../Button'
 import Buttons from '../Buttons'
@@ -60,11 +59,9 @@ const TableSamplePatients = () => {
     pagesList.push(i)
   }
 
-  const [isModalInfoActive, setIsModalInfoActive] = useState(false)
   const [isModalTrashActive, setIsModalTrashActive] = useState(false)
   const [patientTemp, setPatient] = useState(null)
   const handleModalAction = () => {
-    setIsModalInfoActive(false)
     setIsModalTrashActive(false)
   }
   const handleDeleteModalAction = async () => {
@@ -87,7 +84,7 @@ const TableSamplePatients = () => {
       addNotification('Cập nhật bác sĩ thành công!');
     } catch (error) {
       console.log(error)
-      addNotification('Cập nhật bác sĩ thất bại!', 'error');
+      addNotification('Tìm kiếm bác sĩ thất bại!', 'error');
     }
   }
   {notifications.map(notification => (
@@ -103,122 +100,7 @@ const TableSamplePatients = () => {
 
   return (
     <>
-      <CardBoxModal
-        title="Thông tin Bác sĩ"
-        buttonColor="info"
-        buttonLabel="Done"
-        style={{ display: 'none' }}
-        isActive={isModalInfoActive}
-        onConfirm={handleEditModalAction}
-        onCancel={handleModalAction}
-      >
-        <CardBox>
-        <Formik
-            initialValues={patientTemp || {
-              lastName: '',
-              firstName: '',
-              role: '',
-              department: '',
-              dob: '1990-01-01',
-              address: {
-                province: '',
-                district: '',
-                ward: ''
-              },
-              gender: '',
-              contactInfo: {
-                phone: '',
-                email: '',
-              },
-              emergencyContact: {
-                lastName: '',
-                firstName: '',
-                relationship: '',
-                phone: '',
-              }
-            }}
-            onSubmit={(values) => {
-              console.log(JSON.stringify(values, null, 2));
-              axios.post(`${SERVER_URI}/patients`, values)
-                .then(response => {
-                  console.log(response);
-                  console.log(`${SERVER_URI}/patients`)
-                  setIsSubmitted(true);
-                  addNotification('Thêm bệnh nhân thành công!');
-                })
-                .catch(error => {
-                  console.error(error);
-                  addNotification('Thêm bệnh nhân thất bại!', 'error');
-                });
-            }}
-          >
-            <Form>
-              <FormField label="Họ và tên" icons={[mdiAccount, mdiMail]}>
-                <Field name="lastName" placeholder="Họ" />
-                <Field name="firstName" placeholder="Tên" />
-              </FormField>
-              <FormField>
-                <FormField label="Ngày sinh" labelFor="dob">
-                  <Field name="dob" type="date" id="dob" />
-                </FormField>
-                <FormField label="Giới tính" labelFor="gender">
-                  <Field name="gender" id="gender" component="select">
-                    <option value="">Chọn giới tính</option>
-                    <option value="male">Nam</option>
-                    <option value="female">Nữ</option>
-                    <option value="other">Khác</option>
-                  </Field>
-                </FormField>
-              </FormField>
-              
-              <FormField label="Địa chỉ" labelFor="address">
-                <LocationSelect />
-              </FormField>
-              <Divider />
-              <FormField
-                label="Thông tin liên hệ"
-                labelFor="contactInfo"
-              >
-                <FormField label="Số điện thoại" labelFor="contactInfo.phone">
-                  <Field name="contactInfo.phone" id="contactInfo.phone" />
-                </FormField>
-                <FormField label="Email" labelFor="contactInfo.email">
-                  <Field name="contactInfo.email" id="contactInfo.email" />
-                </FormField>
-              </FormField>
-              <Divider />
-
-              <FormField
-                label="Thông tin người thân"
-                labelFor="emergencyContact"
-              >
-                <FormField label="Họ" labelFor="emergencyContact.lastName">
-                  <Field name="emergencyContact.lastName" id="emergencyContact.lastName" />
-                </FormField>
-                <FormField label="Tên" labelFor="emergencyContact.firstName">
-                  <Field name="emergencyContact.firstName" id="emergencyContact.firstName" />
-                </FormField>
-                <FormField label="Quan hệ" labelFor="emergencyContact.relationship">
-                  <Field name="emergencyContact.relationship" id="emergencyContact.relationship" />
-                </FormField>
-                <FormField label="Số điện thoại" labelFor="emergencyContact.phone">
-                  <Field name="emergencyContact.phone" id="emergencyContact.phone" />
-                </FormField>
-              </FormField>
-
-              <Divider />
-
-              <Divider />
-
-              <Buttons>
-                <Button type="submit" color="info" label="Submit" />
-                <Button type="reset" color="info" outline label="Reset" />
-              </Buttons>
-            </Form>
-          </Formik>
-        </CardBox>
-      </CardBoxModal>
-
+      
       <CardBoxModal
         title="Xóa bác sĩ"
         buttonColor="danger"
@@ -260,7 +142,7 @@ const TableSamplePatients = () => {
                     icon={mdiEye}
                     onClick={() => {
                       setPatient(patient)
-                      setIsModalInfoActive(true)
+                      window.open(`/patients/${patient._id}`, '_blank')
                     }}
                     small
                   />

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Field, useFormikContext } from 'formik';
 import FormField from './Field';
 
-const LocationSelect = ({initialData}) => {
+const LocationSelect = ({ initialData }) => {
   const { setFieldValue } = useFormikContext();
   const [data, setData] = useState([]);
   const [cities, setCities] = useState([]);
@@ -21,10 +21,19 @@ const LocationSelect = ({initialData}) => {
 
   useEffect(() => {
     if (initialData) {
-      const province = data.find(province => province.Id === initialData.province);
+
+      const provinceId = initialData.address.province;
+      const province = data.find(province => province.Id === provinceId);
       setDistricts(province ? province.Districts : []);
-      const district = districts.find(district => district.Id === initialData.district);
+      setWards([]);
+      setFieldValue('address.province', provinceId); // Changed from 'address.province'
+      const districtId = initialData.address.district;
+      const district = districts.find(district => district.Id === districtId);
       setWards(district ? district.Wards : []);
+      setFieldValue('address.district', districtId);
+      const wardId = initialData.address.ward;
+      setFieldValue('address.ward', wardId);
+
     }
   }, [initialData, data, districts]);
 
@@ -38,18 +47,18 @@ const LocationSelect = ({initialData}) => {
     setFieldValue('address.ward', '');
   };
 
-const handleDistrictChange = (event) => {
-  const districtId = event.target.value;
-  const district = districts.find(district => district.Id === districtId);
-  setWards(district ? district.Wards : []);
-  setFieldValue('address.district', districtId);
-  setFieldValue('address.ward', '');
-};
+  const handleDistrictChange = (event) => {
+    const districtId = event.target.value;
+    const district = districts.find(district => district.Id === districtId);
+    setWards(district ? district.Wards : []);
+    setFieldValue('address.district', districtId);
+    setFieldValue('address.ward', '');
+  };
 
-const handleWardChange = (event) => {
-  const wardId = event.target.value;
-  setFieldValue('address.ward', wardId);
-};
+  const handleWardChange = (event) => {
+    const wardId = event.target.value;
+    setFieldValue('address.ward', wardId);
+  };
   return (
     <FormField>
       <Field as="select" name="address.province" onChange={handleprovinceChange}>
