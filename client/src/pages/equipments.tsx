@@ -28,23 +28,11 @@ const TablesPage = () => {
           />
         </SectionTitleLineWithButton>
 
-        <NotificationBar color="info" icon={mdiMonitorCellphone}>
-          <b>Responsive table.</b> Collapses on mobile
-        </NotificationBar>
 
         <CardBox className="mb-6" hasTable>
           <TableEquipments />
         </CardBox>
 
-        <SectionTitleLineWithButton icon={mdiTableOff} title="Empty variation" />
-
-        <NotificationBar color="danger" icon={mdiTableOff}>
-          <b>Empty card.</b> When there&apos;s nothing to show
-        </NotificationBar>
-
-        <CardBox>
-          <CardBoxComponentEmpty />
-        </CardBox>
       </SectionMain>
     </>
   )

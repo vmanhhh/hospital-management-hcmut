@@ -23,7 +23,7 @@ const LoginPage = () => {
   const router = useRouter()
 
   const handleSubmit = (formValues: LoginForm) => {
-    router.push('/dashboard')
+    router.push('/patients')
     console.log('Form values', formValues)
   }
 
@@ -59,7 +59,7 @@ const LoginPage = () => {
 
               <Buttons>
                 <Button type="submit" label="Login" color="info" />
-                <Button href="/dashboard" label="Home" color="info" outline />
+                <Button href="/patients" label="Home" color="info" outline />
               </Buttons>
             </Form>
           </Formik>

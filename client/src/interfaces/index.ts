@@ -132,12 +132,9 @@ export type Medicine = {
   dosage: string,
   unit: string,
   dosageForm: string,
-  lot: {
-    stock: number,
-    lotNumber: string,
-    dateImported: Date,
-    expirationDate: Date
-  }[]
+  stock: number,
+  dateImported: Date,
+  expirationDate: Date
 }
 
 export type Client = {

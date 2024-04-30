@@ -18,6 +18,7 @@ import NotificationBar from '../../components/NotificationBar'
 import { useFormikContext } from 'formik'
 const TableSamplePatients = () => {
   const [patients, setPatients] = useState([]);
+  const [data, setData] = useState([]);
 
   const fetchPatients = async () => {
     try {
@@ -28,9 +29,13 @@ const TableSamplePatients = () => {
       console.error(error);
     }
   };
-
+  const fetchData = async () => {
+    const result = await axios.get("https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json");
+    setData(result.data);
+  };
   useEffect(() => {
     fetchPatients();
+    fetchData();
   }, []);
 
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -87,20 +92,22 @@ const TableSamplePatients = () => {
       addNotification('Tìm kiếm bác sĩ thất bại!', 'error');
     }
   }
-  {notifications.map(notification => (
-    <NotificationBar
-      key={notification.id}
-      color={notification.type === 'error' ? 'danger' : 'success'}
-      icon={notification.type === 'error' ? mdiAlertCircle : mdiCheckCircle}
-      autoDismiss={true}
-    >
-      {notification.message}
-    </NotificationBar>
-  ))}
+  {
+    notifications.map(notification => (
+      <NotificationBar
+        key={notification.id}
+        color={notification.type === 'error' ? 'danger' : 'success'}
+        icon={notification.type === 'error' ? mdiAlertCircle : mdiCheckCircle}
+        autoDismiss={true}
+      >
+        {notification.message}
+      </NotificationBar>
+    ))
+  }
 
   return (
     <>
-      
+
       <CardBoxModal
         title="Xóa bác sĩ"
         buttonColor="danger"
@@ -133,8 +140,8 @@ const TableSamplePatients = () => {
               <td data-label="Last Name">{patient.lastName}</td>
               <td data-label="First Name">{patient.firstName}</td>
               <td data-label="Gender">{patient.gender === 'male' ? 'Nam' : (patient.gender === 'female' ? 'Nữ' : 'Khác')}</td>
-              <td data-label="Date of Birth">{new Date(patient.dob).toLocaleDateString()}</td>
-              <td data-label="Province">{patient.address.province}</td>
+              <td data-label="Date of Birth">{new Date(patient.dob).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</td>
+              <td data-label="Province">{(data.find(province => province.Id === patient.address.province) || {}).Name}</td>
               <td className="before:hidden lg:w-1 whitespace-nowrap">
                 <Buttons type="justify-start lg:justify-end" noWrap>
                   <Button

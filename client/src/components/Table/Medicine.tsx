@@ -1,22 +1,16 @@
 import { mdiAlertCircle, mdiCheckCircle, mdiEye, mdiTrashCan } from '@mdi/js'
-import Snackbar from '@mui/material/Snackbar';
 import React, { useState, useEffect } from 'react'
-import { useSampleMedicines } from '../../hooks/sampleData'
-import {  Medicine } from '../../interfaces'
+import { Medicine } from '../../interfaces'
 import Button from '../Button'
 import Buttons from '../Buttons'
 import CardBoxModal from '../CardBox/Modal'
 import axios from 'axios'
 import { Formik, Form, Field } from 'formik'
 import FormField from '../Form/Field'
-import DepartmentSelect from '../Form/DepartmentSelect'
-import LocationSelect from '../Form/LocationSelect'
 import { SERVER_URI } from '../../config'
 import { mdiAccount, mdiGithub, mdiMail, mdiUpload } from '@mdi/js'
 import CardBox from '../CardBox'
 import Divider from '../Divider'
-import NotificationBar from '../NotificationBar'
-import { useFormikContext } from 'formik'
 import SnackbarAlert from '../snackbar'
 
 const TableSampleMedicine = () => {
@@ -101,7 +95,6 @@ const TableSampleMedicine = () => {
 
   return (
     <>
-      {isSubmitted && <SnackbarAlert message={alertMessage} severity={alertSeverity} />}
       <CardBoxModal
         title="Thông tin thuốc"
         buttonColor="info"
@@ -132,7 +125,7 @@ const TableSampleMedicine = () => {
               console.log(JSON.stringify(values, null, 2));
 
               console.log(MedTemp)
-              axios.post(`${SERVER_URI}/medicines/${MedTemp._id}`, values)
+              axios.patch(`${SERVER_URI}/medicines/${MedTemp._id}`, values)
                 .then(response => {
                   console.log(response);
                   console.log(`${SERVER_URI}/medicines/${MedTemp._id}`)
@@ -140,12 +133,18 @@ const TableSampleMedicine = () => {
                   fetchMedicine();
                   setAlertMessage("Cập nhật thành công!");
                   setAlertSeverity("success");
+                  setTimeout(() => {
+                    setIsSubmitted(false);
+                  }, 3000);
                 })
                 .catch(error => {
                   console.error(error);
                   setIsSubmitted(true);
                   setAlertMessage("Cập nhật thất bại!");
                   setAlertSeverity("error");
+                  setTimeout(() => {
+                    setIsSubmitted(false);
+                  }, 3000);
                 });
             }}
           >
@@ -209,10 +208,11 @@ const TableSampleMedicine = () => {
         <thead>
           <tr>
             <th>Tên thuốc</th>
-            <th>Mô tả</th>
             <th>Liều lượng</th>
             <th>Đơn vị</th>
             <th>Dạng bào chế</th>
+            <th>Trữ lượng</th>
+            <th>Ngày hết hạn</th>
             <th />
           </tr>
         </thead>
@@ -220,10 +220,11 @@ const TableSampleMedicine = () => {
           {medicinesPaginated.map((medicines:  Medicine) => (
             <tr key={medicines._id}>
               <td data-label="name">{medicines.name}</td>
-              <td data-label="description">{medicines.description}</td>
               <td data-label="dosage">{medicines.dosage}</td>
               <td data-label="unit">{medicines.unit}</td>
               <td data-label="dosageForm">{medicines.dosageForm}</td>
+              <td data-label="stock">{medicines.stock}</td>
+              <td data-label="expirationDate">{new Date(medicines.expirationDate).toISOString().split('T')[0]}</td>
               <td className="before:hidden lg:w-1 whitespace-nowrap">
                 <Buttons type="justify-start lg:justify-end" noWrap>
                   <Button
@@ -269,6 +270,7 @@ const TableSampleMedicine = () => {
           </small>
         </div>
       </div>
+      {isSubmitted && <SnackbarAlert message={alertMessage} severity={alertSeverity} />}
     </>
 
   )

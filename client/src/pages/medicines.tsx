@@ -1,36 +1,34 @@
-import { mdiGithub, mdiDoctor, mdiTableBorder, mdiTableOff } from '@mdi/js'
+import { mdiPlusBox, mdiMonitorCellphone, mdiCellphoneLink, mdiTableOff, mdiPill } from '@mdi/js'
 import Head from 'next/head'
 import React, { ReactElement } from 'react'
 import Button from '../components/Button'
 import CardBox from '../components/CardBox'
-import CardBoxComponentEmpty from '../components/CardBox/Component/Empty'
 import LayoutAuthenticated from '../layouts/Authenticated'
 import NotificationBar from '../components/NotificationBar'
 import SectionMain from '../components/Section/Main'
 import SectionTitleLineWithButton from '../components/Section/TitleLineWithButton'
-import TableDoctors from '../components/Table/Doctors'
+import TableMedicines from '../components/Table/Medicine'
 import { getPageTitle } from '../config'
-import { mdiPlusBox } from '@mdi/js'
+
 const TablesPage = () => {
   return (
     <>
       <Head>
-        <title>{getPageTitle('Danh sách Bác sĩ')}</title>
+        <title>{getPageTitle('Danh sách Thuốc')}</title>
       </Head>
       <SectionMain>
-        <SectionTitleLineWithButton icon={mdiDoctor} title="Danh sách Bác sĩ" main>
+        <SectionTitleLineWithButton icon={mdiPill} title="Danh sách Thuốc" main>
         <Button
             color="info"
-            label="Thêm Bác sĩ"
+            label="Thêm Thuốc"
             icon={mdiPlusBox}
             roundedFull
-            href="/forms/doctor"
+            href="/forms/medicines"
           />
         </SectionTitleLineWithButton>
 
-
         <CardBox className="mb-6" hasTable>
-          <TableDoctors />
+          <TableMedicines />
         </CardBox>
 
       </SectionMain>

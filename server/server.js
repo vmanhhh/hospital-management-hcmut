@@ -45,6 +45,6 @@ app.use('/medicalRecords', medicalRecordRoute);
 app.use('/medicines', medicineRoute);
 app.use('/treatments', treatmentRoute);
 app.use('/progressTracking', progressTrackingRoute);
-app.use('/equipment', equipmentRoute);
+app.use('/equipments', equipmentRoute);
 app.use(notFound);
 app.use(errorHandlerMiddleware);

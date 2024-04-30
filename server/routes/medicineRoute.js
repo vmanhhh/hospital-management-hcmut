@@ -1,40 +1,32 @@
 import express from "express";
+import mongoose from "mongoose";
 import { Medicine } from '../models/medicineModel.js';
 
 const router = express.Router();
 
-router.post('/medicine',async (req, res)=>{
+router.post('/',async (req, res)=>{
     try{
         if(
-            !req.body.name||
-            !req.body.brandName||
-            !req.body.description||
-            !req.body.dosage||
-            !req.body.unit||
-            !req.body.dosageForm
+            !req.body.name
         ) {
             return res.status(400).send({message: 'Fill in the required fields'})
         }
-        const lotArray = req.body.lot.map(lotData => ({
-            stock: lotData.stock,
-            lotNumber: lotData.lotNumber,
-            dateImported: lotData.dateImported,
-            expirationDate: lotData.expirationDate
-          }));
 
 
         const newMedicine={
-            _id: new mongoose.Type.ObjectId(),
+            _id: new mongoose.Types.ObjectId(),
             name: req.body.name,
             brandName: req.body.brandName,
             description: req.body.description,
             dosage: req.body.dosage,
             unit: req.body.unit,
+            stock: req.body.stock,
             dosageForm: req.body.dosageForm,
-            lot: lotArray
+            dateImported: req.body.dateImported,
+            expirationDate: req.body.expirationDate,
         }
         const medicine = await Medicine.create(newMedicine);
-        res.status(201).json(result);
+        res.status(201).json(medicine);
     }catch(error){
         console.log(error);
         res.status(400).json({ message: error.message});
@@ -92,8 +84,8 @@ async function getMedicine(req, res, next) {
     if (req.body.dosageForm != null) {
       res.medicine.dosageForm = req.body.dosageForm;
     }
-    if (req.body.lot != null) {
-      res.medicine.lot = req.body.lot;
+    if (req.body.stock != null) {
+      res.medicine.stock = req.body.stock;
     }
     try {
       const updatedMedicine = await res.medicine.save();

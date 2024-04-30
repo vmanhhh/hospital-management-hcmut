@@ -131,7 +131,7 @@ const FormsPage = ({ id }) => {
               </FormField>
               
               <FormField label="Địa chỉ" labelFor="address">
-                <LocationSelect />
+                <LocationSelect initialData={{}} />
               </FormField>
               <Divider />
               <FormField

@@ -8,15 +8,12 @@ const equipmentSchema = mongoose.Schema({
     manufacturer: String,
     serialNumber: String,
     department: String,
-    availability: {
-        type: String,
-        enum: ['Available', 'In Use', 'Under Maintenance', 'Reserved'],  // Define possible availability states
-    },
-    maintenanceHistory: [{
+    availability: String,
+    maintenanceHistory:{
         date: Date,
         description: String,
-        technician: String  
-    }]
+        technician: String 
+    }
 })
 
 export const Equipment = mongoose.model('Equipment', equipmentSchema);

@@ -1,23 +1,26 @@
 import { mdiAccount, mdiBallotOutline, mdiGithub, mdiMail, mdiUpload } from '@mdi/js'
 import { Field, Form, Formik } from 'formik'
 import Head from 'next/head'
-import { ReactElement } from 'react'
+import { ReactElement, useState } from 'react'
 import Button from '../../components/Button'
 import Buttons from '../../components/Buttons'
 import Divider from '../../components/Divider'
 import CardBox from '../../components/CardBox'
-import FormCheckRadio from '../../components/Form/CheckRadio'
-import FormCheckRadioGroup from '../../components/Form/CheckRadioGroup'
 import FormField from '../../components/Form/Field'
-import FormFilePicker from '../../components/Form/FilePicker'
 import LayoutAuthenticated from '../../layouts/Authenticated'
 import SectionMain from '../../components/Section/Main'
-import SectionTitle from '../../components/Section/Title'
 import SectionTitleLineWithButton from '../../components/Section/TitleLineWithButton'
-import { getPageTitle } from '../../config'
+import { SERVER_URI, getPageTitle } from '../../config'
 import DepartmentSelect from '../../components/Form/DepartmentSelect'
+import axios from 'axios'
+import { Snackbar } from '@mui/material'
+import SnackbarAlert from '../../components/snackbar'
 
 const FormsPage = () => {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState<"error" | "warning" | "info" | "success">("success");
+
   return (
     <>
       <Head>
@@ -32,18 +35,42 @@ const FormsPage = () => {
           <Formik
             initialValues={{
             }}
-            onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
+            onSubmit={(values) => {
+
+              console.log(JSON.stringify(values, null, 2));
+
+              console.log(values)
+              axios.post(`${SERVER_URI}/equipments`, values)
+                .then(response => {
+                  console.log(response);
+                  setIsSubmitted(true);
+                  setAlertMessage("Cập nhật thành công!");
+                  setAlertSeverity("success");
+                  setTimeout(() => {
+                    setIsSubmitted(false);
+                  }, 3000);
+                })
+                .catch(error => {
+                  console.error(error);
+                  setIsSubmitted(true);
+                  setAlertMessage("Cập nhật thất bại!");
+                  setAlertSeverity("error");
+                  setTimeout(() => {
+                    setIsSubmitted(false);
+                  }, 3000);
+                });
+            }}
           >
             <Form>
               <FormField label="Tên thiết bị" icons={[mdiAccount, mdiMail]}>
-                <Field name="deviceName" placeholder="Tên thiết bị" />
+                <Field name="name" placeholder="Tên thiết bị" />
               </FormField>
               <FormField>
                 <FormField label="Hãng sản xuất" labelFor="manufacturer">
                   <Field name="manufacturer" placeholder="Hãng sản xuất" id="manufacturer" />
                 </FormField>
                 <FormField label="Model" labelFor="deviceModel">
-                  <Field name="deviceModel" placeholder="Model" />
+                  <Field name="model" placeholder="Model" />
                 </FormField>
               </FormField>
               <FormField label="Số seri" labelFor="serialNumber">
@@ -52,8 +79,8 @@ const FormsPage = () => {
               <FormField label="Khoa" labelFor="department">
                 <DepartmentSelect />
               </FormField>
-              <FormField label="Trạng thái" labelFor="status">
-                <Field name="status" id="status" component="select">
+              <FormField label="Trạng thái" labelFor="availability">
+                <Field name="availability" id="availability" component="select">
                   <option value="">Chọn trạng thái</option>
                   <option value="Available">Sẵn dùng</option>
                   <option value="In Use">Đang sử dụng</option>
@@ -62,9 +89,9 @@ const FormsPage = () => {
                 </Field>
               </FormField>
               <FormField label="Lịch sử bảo trì" labelFor="maintenanceHistory">
-                <Field name="dateMaintenance" type="date" id="dateMaintenance" />
-                <Field name="description" placeholder="Mô tả" />
-                <Field name="maintenanceBy" placeholder="Người bảo trì" />
+                <Field name="maintenanceHistory.date" type="date" />
+                <Field name="maintenanceHistory.description" placeholder="Mô tả" />
+                <Field name="maintenanceHistory.technician" placeholder="Người bảo trì" />
               </FormField>
 
 
@@ -78,7 +105,7 @@ const FormsPage = () => {
           </Formik>
         </CardBox>
       </SectionMain>
-
+      {isSubmitted && <SnackbarAlert message={alertMessage} severity={alertSeverity} />}
     </>
   )
 }

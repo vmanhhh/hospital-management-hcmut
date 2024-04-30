@@ -1,7 +1,7 @@
 import { mdiAccount, mdiBallotOutline, mdiGithub, mdiMail, mdiUpload } from '@mdi/js'
 import { Field, Form, Formik } from 'formik'
 import Head from 'next/head'
-import { ReactElement } from 'react'
+import { ReactElement, useState } from 'react'
 import Button from '../../components/Button'
 import Buttons from '../../components/Buttons'
 import Divider from '../../components/Divider'
@@ -10,12 +10,20 @@ import FormField from '../../components/Form/Field'
 import LayoutAuthenticated from '../../layouts/Authenticated'
 import SectionMain from '../../components/Section/Main'
 import SectionTitleLineWithButton from '../../components/Section/TitleLineWithButton'
-import { getPageTitle } from '../../config'
+import { SERVER_URI, getPageTitle } from '../../config'
 import DepartmentSelect from '../../components/Form/DepartmentSelect'
+import axios from 'axios'
+import SnackbarAlert from '../../components/snackbar'
+
 
 const FormsPage = () => {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState<"error" | "warning" | "info" | "success">("success");
+
   return (
     <>
+    {isSubmitted && <SnackbarAlert message={alertMessage} severity={alertSeverity} />}
       <Head>
         <title>{getPageTitle('Forms')}</title>
       </Head>
@@ -28,8 +36,28 @@ const FormsPage = () => {
           <Formik
             initialValues={{
             }}
-            onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
-          >
+            onSubmit={(values) => {
+              console.log(JSON.stringify(values, null, 2));
+              axios.post(`${SERVER_URI}/medicines`, values)
+                .then(response => {
+                  console.log(response);
+                  setIsSubmitted(true);
+                  setAlertMessage("Thêm thành công!");
+                  setAlertSeverity("success");
+                  setTimeout(() => {
+                    setIsSubmitted(false);
+                  }, 3000);
+                })
+                .catch(error => {
+                  console.error(error);
+                  setIsSubmitted(true);
+                  setAlertMessage("Thêm thất bại!");
+                  setAlertSeverity("error");
+                  setTimeout(() => {
+                    setIsSubmitted(false);
+                  }, 3000);
+                });
+            }}>
             <Form>
             <FormField label="Tên thuốc" icons={[mdiAccount, mdiMail]}>
               <Field name="name" placeholder="Tên thuốc" />
@@ -60,12 +88,12 @@ const FormsPage = () => {
             </FormField>
             <Divider />
 
-              <Divider />
-              <Button type="submit" active={false} color="info" label="Cập nhật" />
-            </Form>
-          </Formik>
-        </CardBox>
-      </SectionMain>
+            <Divider />
+            <Button type="submit" active={false} color="info" label="Cập nhật" />
+          </Form>
+        </Formik>
+      </CardBox>
+    </SectionMain >
 
     </>
   )

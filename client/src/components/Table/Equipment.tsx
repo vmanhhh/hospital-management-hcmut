@@ -32,14 +32,14 @@ const departmentLabels = {
   'ENT': 'Tai mũi họng',
   'Dental': 'Nha khoa',
 };
-const TableSampleEquipment = () => {
-  const [equipments, setPatients] = useState([]);
+const TableEquipments = () => {
+  const [equipments, setEquipments] = useState([]);
 
   const fetchEquipment = async () => {
     try {
       const response = await axios.get(`${SERVER_URI}/equipments`);
-      console.log("Fetch");
-      setPatients(response.data);
+      console.log(response.data);
+      setEquipments(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -50,17 +50,7 @@ const TableSampleEquipment = () => {
   }, []);
 
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [notifications, setNotifications] = useState([]);
-  const addNotification = (message, type = 'success') => {
-    setNotifications(prevNotifications => [
-      ...prevNotifications,
-      {
-        id: Date.now(), // unique id for key
-        message,
-        type
-      }
-    ]);
-  };
+
   const perPage = 5
 
   const [currentPage, setCurrentPage] = useState(0)
@@ -77,7 +67,7 @@ const TableSampleEquipment = () => {
 
   const [isModalInfoActive, setIsModalInfoActive] = useState(false)
   const [isModalTrashActive, setIsModalTrashActive] = useState(false)
-  const [EquipTemp, setDoctor] = useState(null)
+  const [EquipTemp, setEquipment] = useState(null)
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState<"error" | "warning" | "info" | "success">("success");
 
@@ -90,8 +80,8 @@ const TableSampleEquipment = () => {
     try {
       await axios.delete(`${SERVER_URI}/equipments/${EquipTemp._id}`)
       fetchEquipment();
-
-      setIsModalTrashActive(false)
+      setIsModalInfoActive(false);
+      setIsModalTrashActive(false);
       console.log('Deleted')
 
     } catch (error) {
@@ -108,7 +98,6 @@ const TableSampleEquipment = () => {
       setIsSubmitted(true);
     } catch (error) {
       console.log(error)
-      addNotification('Cập nhật thiết bị thất bại!', 'error');
     }
   }
 
@@ -138,7 +127,7 @@ const TableSampleEquipment = () => {
                 type: EquipTemp.availability,
               },
               maintenanceHistory: {
-                date: new Date(EquipTemp.date).toISOString().split('T')[0],
+                date: EquipTemp.date ? new Date(EquipTemp.date).toISOString().split('T') : null,
                 description: EquipTemp.description,
                 technician: EquipTemp.technician,
               },
@@ -185,8 +174,8 @@ const TableSampleEquipment = () => {
               <FormField label="Khoa" labelFor="department">
                 <DepartmentSelect />
               </FormField>
-              <FormField label="Trạng thái" labelFor="status">
-                <Field name="status" id="status" component="select">
+              <FormField label="Trạng thái" labelFor="availability">
+                <Field name="availability" id="availability" component="select">
                   <option value="">Chọn trạng thái</option>
                   <option value="Available">Sẵn dùng</option>
                   <option value="In Use">Đang sử dụng</option>
@@ -251,7 +240,7 @@ const TableSampleEquipment = () => {
                     color="info"
                     icon={mdiEye}
                     onClick={() => {
-                      setDoctor(equipments)
+                      setEquipment(equipments)
                       setIsModalInfoActive(true)
                     }}
                     small
@@ -260,7 +249,7 @@ const TableSampleEquipment = () => {
                     color="danger"
                     icon={mdiTrashCan}
                     onClick={() => {
-                      setDoctor(equipments)
+                      setEquipment(equipments)
                       setIsModalTrashActive(true)
                     }}
                     small
@@ -295,4 +284,4 @@ const TableSampleEquipment = () => {
   )
 }
 
-export default TableSampleEquipment
+export default TableEquipments
