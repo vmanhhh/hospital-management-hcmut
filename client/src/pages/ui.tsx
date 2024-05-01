@@ -101,6 +101,7 @@ const UiPage = () => {
       <SectionTitle>Modal examples</SectionTitle>
 
       <CardBoxModal
+        style={{}}
         title="Please confirm action"
         buttonColor="info"
         buttonLabel="Confirm"
@@ -112,6 +113,7 @@ const UiPage = () => {
       </CardBoxModal>
 
       <CardBoxModal
+        style={{}}
         title="Unhandled exception"
         buttonColor="danger"
         buttonLabel="Done"
@@ -122,6 +124,7 @@ const UiPage = () => {
       </CardBoxModal>
 
       <CardBoxModal
+        style={{}}
         title="Success"
         buttonColor="success"
         buttonLabel="Done"
