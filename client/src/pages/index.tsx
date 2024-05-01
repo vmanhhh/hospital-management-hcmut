@@ -1,73 +1,84 @@
+import React from 'react'
+import type { ReactElement } from 'react'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
-import React, { ReactElement } from 'react'
+import Button from '../components/Button'
 import CardBox from '../components/CardBox'
+import SectionFullScreen from '../components/Section/FullScreen'
 import LayoutGuest from '../layouts/Guest'
-import SectionMain from '../components/Section/Main'
-import { gradientBgPurplePink } from '../colors'
-import { appTitle } from '../config'
-import { useAppDispatch } from '../stores/hooks'
-import { setDarkMode } from '../stores/darkModeSlice'
+import { Field, Form, Formik } from 'formik'
+import FormField from '../components/Form/Field'
+import FormCheckRadio from '../components/Form/CheckRadio'
+import Divider from '../components/Divider'
+import Buttons from '../components/Buttons'
+import { useRouter } from 'next/router'
+import { getPageTitle } from '../config'
+import SnackbarAlert from '../components/snackbar'
 
-const StyleSelectPage = () => {
-  const dispatch = useAppDispatch()
+type LoginForm = {
+  login: string
+  password: string
+  remember: boolean
+}
 
-  dispatch(setDarkMode(false))
-
-  const styles = ['white', 'basic']
-
+const LoginPage = () => {
   const router = useRouter()
+  const [open, setOpen] = React.useState(false)
+  const handleSubmit = (formValues: LoginForm) => {
+    if (formValues.password === 'bG1sL9eQ1uD2sK3b')
+    router.push('/patients')
+    else {
+      setOpen(true);
+      setTimeout(() => {
+        setOpen(false);
+      },3000);
+    }
+  }
 
-  const handleStylePick = (e: React.MouseEvent, style: string) => {
-    e.preventDefault()
-
-    document.documentElement.classList.forEach((token) => {
-      if (token.indexOf('style') === 0) {
-        document.documentElement.classList.replace(token, `style-${style}`)
-      }
-    })
-
-    router.push('/login')
+  const initialValues: LoginForm = {
+    login: 'admin',
+    password: 'bG1sL9eQ1uD2sK3b',
+    remember: true,
   }
 
   return (
     <>
+    {open && <SnackbarAlert message="Invalid password" severity="error" />}
       <Head>
-        <title>{appTitle}</title>
+        <title>{getPageTitle('Login')}</title>
       </Head>
-      <div className={`flex min-h-screen items-center justify-center ${gradientBgPurplePink}`}>
-        <SectionMain>
-          <h1 className="text-4xl md:text-5xl text-center text-white font-bold mt-12 mb-3 lg:mt-0">
-            Pick a style&hellip;
-          </h1>
-          <h2 className="text-xl md:text-xl text-center text-white mb-12">
-            Style switching with a single{' '}
-            <code className="px-1.5 py-0.5 rounded bg-white bg-opaprovince-20">action()</code>
-          </h2>
-          <div className="grid gap-6 grid-cols-1 lg:grid-cols-2 px-6 max-w-6xl mx-auto">
-            {styles.map((style) => (
-              <CardBox
-                key={style}
-                className="cursor-pointer bg-gray-50"
-                isHoverable
-                onClick={(e) => handleStylePick(e, style)}
-              >
-                <div className="mb-3 md:mb-6">
 
-                </div>
-                <h1 className="text-xl md:text-2xl font-black capitalize">{style}</h1>
-                <h2 className="text-lg md:text-xl">& Dark mode</h2>
-              </CardBox>
-            ))}
-          </div>
-        </SectionMain>
-      </div>
+      <SectionFullScreen bg="purplePink">
+        <CardBox className="w-11/12 md:w-7/12 lg:w-6/12 xl:w-4/12 shadow-2xl">
+          <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+            <Form>
+              <FormField label="Login" help="Please enter your login">
+                <Field name="login" />
+              </FormField>
+
+              <FormField label="Password" help="Please enter your password">
+                <Field name="password" type="password" />
+              </FormField>
+
+              <FormCheckRadio type="checkbox" label="Remember">
+                <Field type="checkbox" name="remember" />
+              </FormCheckRadio>
+
+              <Divider />
+
+              <Buttons>
+                <Button type="submit" label="Login" color="info" />
+                <Button href="/patients" label="Home" color="info" outline />
+              </Buttons>
+            </Form>
+          </Formik>
+        </CardBox>
+      </SectionFullScreen>
     </>
   )
 }
 
-StyleSelectPage.getLayout = function getLayout(page: ReactElement) {
+LoginPage.getLayout = function getLayout(page: ReactElement) {
   return <LayoutGuest>{page}</LayoutGuest>
 }
 
-export default StyleSelectPage
+export default LoginPage

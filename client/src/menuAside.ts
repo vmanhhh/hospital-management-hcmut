@@ -1,9 +1,4 @@
 import {
-  mdiAccountCircle,
-  mdiLock,
-  mdiAlertCircle,
-  mdiTelevisionGuide,
-  mdiPalette,
   mdiDoctor,
   mdiAccountInjury,
   mdiCellphoneLink,
@@ -31,31 +26,6 @@ const menuAside: MenuAsideItem[] = [
     href: '/medicines',
     label: 'Thuốc',
     icon: mdiPill,
-  },
-  {
-    href: '/ui',
-    label: 'UI',
-    icon: mdiTelevisionGuide,
-  },
-  {
-    href: '/',
-    label: 'Styles',
-    icon: mdiPalette,
-  },
-  {
-    href: '/profile',
-    label: 'Profile',
-    icon: mdiAccountCircle,
-  },
-  {
-    href: '/login',
-    label: 'Login',
-    icon: mdiLock,
-  },
-  {
-    href: '/error',
-    label: 'Error',
-    icon: mdiAlertCircle,
   },
 ]
 

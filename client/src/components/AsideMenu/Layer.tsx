@@ -19,6 +19,7 @@ export default function AsideMenuLayer({ menu, className = '', ...props }: Props
     label: 'Logout',
     icon: mdiLogout,
     color: 'info',
+    href: '/',
     isLogout: true,
   }
 
