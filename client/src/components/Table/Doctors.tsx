@@ -5,7 +5,7 @@ import Button from '../Button'
 import Buttons from '../Buttons'
 import CardBoxModal from '../CardBox/Modal'
 import axios from 'axios'
-import { Formik, Form, Field, useFormikContext } from 'formik'
+import { Formik, Form, Field } from 'formik'
 import FormField from '../Form/Field'
 import DepartmentSelect from '../Form/DepartmentSelect'
 import LocationSelect from '../Form/LocationSelect'
@@ -45,17 +45,7 @@ const TableSampleDoctors = () => {
   }, []);
 
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [notifications, setNotifications] = useState([]);
-  const addNotification = (message, type = 'success') => {
-    setNotifications(prevNotifications => [
-      ...prevNotifications,
-      {
-        id: Date.now(), // unique id for key
-        message,
-        type
-      }
-    ]);
-  };
+
   const perPage = 5
 
   const [currentPage, setCurrentPage] = useState(0)
@@ -103,7 +93,6 @@ const TableSampleDoctors = () => {
       setIsSubmitted(true);
     } catch (error) {
       console.log(error)
-      addNotification('Cập nhật bác sĩ thất bại!', 'error');
     }
   }
 
@@ -256,7 +245,7 @@ const TableSampleDoctors = () => {
         <p>
           Bạn có muốn xóa bác sĩ này không?
         </p>
-        <p>Chọn "Xác nhận" nếu có</p>
+        <p>Chọn &quot;Xác nhận&quot; nếu có</p>
       </CardBoxModal>
 
       <table>
@@ -267,7 +256,7 @@ const TableSampleDoctors = () => {
             <th>Giới tính</th>
             <th>Chức vụ</th>
             <th>Khoa</th>
-            <th />
+            <th/>
           </tr>
         </thead>
         <tbody>

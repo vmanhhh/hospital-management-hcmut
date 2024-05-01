@@ -1,4 +1,4 @@
-import { mdiAlertCircle, mdiCheckCircle, mdiEye, mdiTrashCan } from '@mdi/js'
+import { mdiEye, mdiTrashCan } from '@mdi/js'
 import React, { useState, useEffect } from 'react'
 import { Medicine } from '../../interfaces'
 import Button from '../Button'
@@ -8,7 +8,7 @@ import axios from 'axios'
 import { Formik, Form, Field } from 'formik'
 import FormField from '../Form/Field'
 import { SERVER_URI } from '../../config'
-import { mdiAccount, mdiGithub, mdiMail, mdiUpload } from '@mdi/js'
+import { mdiAccount, mdiMail } from '@mdi/js'
 import CardBox from '../CardBox'
 import Divider from '../Divider'
 import SnackbarAlert from '../snackbar'
@@ -31,17 +31,6 @@ const TableSampleMedicine = () => {
   }, []);
 
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [notifications, setNotifications] = useState([]);
-  const addNotification = (message, type = 'success') => {
-    setNotifications(prevNotifications => [
-      ...prevNotifications,
-      {
-        id: Date.now(), // unique id for key
-        message,
-        type
-      }
-    ]);
-  };
   const perPage = 5
 
   const [currentPage, setCurrentPage] = useState(0)
@@ -89,7 +78,6 @@ const TableSampleMedicine = () => {
       setIsSubmitted(true);
     } catch (error) {
       console.log(error)
-      addNotification('Cập nhật thuốc thất bại!', 'error');
     }
   }
 
@@ -201,7 +189,7 @@ const TableSampleMedicine = () => {
         <p>
           Bạn có muốn xóa thuốc này không?
         </p>
-        <p>Chọn "Xác nhận" nếu có</p>
+        <p>Chọn &quot;Xác nhận&quot; nếu có</p>
       </CardBoxModal>
 
       <table>

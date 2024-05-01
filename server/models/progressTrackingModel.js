@@ -9,10 +9,7 @@ const progressTrackingScheme = mongoose.Schema(
             ref: 'Patient',
             required: true
         },
-        date: {
-            type: Date,
-            default: Date.now
-        },
+        date: Date,
         weight: Number,
         bloodPressureSystolic: Number,
         bloodPressureDiastolic: Number,

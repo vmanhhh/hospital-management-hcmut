@@ -1,4 +1,4 @@
-import { mdiAccount, mdiAlertCircle, mdiBallotOutline, mdiCheckCircle, mdiGithub, mdiMail, mdiUpload } from '@mdi/js'
+import { mdiAccount, mdiBallotOutline, mdiMail } from '@mdi/js'
 import { Field, Form, Formik } from 'formik'
 import Head from 'next/head'
 import { ReactElement } from 'react'

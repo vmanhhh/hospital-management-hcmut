@@ -7,7 +7,7 @@
     return [
       {
           source: '/',
-          destination: '/',
+          destination: '/patients',
           basePath: false,
           permanent: false
       }

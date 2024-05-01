@@ -1,21 +1,11 @@
-import { mdiAlertCircle, mdiCheckCircle, mdiEye, mdiTrashCan } from '@mdi/js'
-import Snackbar from '@mui/material/Snackbar';
+import { mdiEye, mdiTrashCan } from '@mdi/js'
 import React, { useState, useEffect } from 'react'
 import { Patient } from '../../interfaces'
 import Button from '../Button'
 import Buttons from '../Buttons'
 import CardBoxModal from '../CardBox/Modal'
 import axios from 'axios'
-import { Formik, Form, Field } from 'formik'
-import FormField from '../Form/Field'
-import DepartmentSelect from '../Form/DepartmentSelect'
-import LocationSelect from '../Form/LocationSelect'
 import { SERVER_URI } from '../../config'
-import { mdiAccount, mdiGithub, mdiMail, mdiUpload } from '@mdi/js'
-import CardBox from '../../components/CardBox'
-import Divider from '../../components/Divider'
-import NotificationBar from '../../components/NotificationBar'
-import { useFormikContext } from 'formik'
 const TableSamplePatients = () => {
   const [patients, setPatients] = useState([]);
   const [data, setData] = useState([]);
@@ -37,19 +27,6 @@ const TableSamplePatients = () => {
     fetchPatients();
     fetchData();
   }, []);
-
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [notifications, setNotifications] = useState([]);
-  const addNotification = (message, type = 'success') => {
-    setNotifications(prevNotifications => [
-      ...prevNotifications,
-      {
-        id: Date.now(), // unique id for key
-        message,
-        type
-      }
-    ]);
-  };
   const perPage = 5
 
   const [currentPage, setCurrentPage] = useState(0)
@@ -79,32 +56,6 @@ const TableSamplePatients = () => {
     }
   }
 
-
-  const handleEditModalAction = async () => {
-    try {
-      await axios.post(`${SERVER_URI}/patients/${patientTemp._id}`, patientTemp)
-      console.log(patientTemp)
-      setIsSubmitted(true);
-      fetchPatients();
-      addNotification('Cập nhật bác sĩ thành công!');
-    } catch (error) {
-      console.log(error)
-      addNotification('Tìm kiếm bác sĩ thất bại!', 'error');
-    }
-  }
-  {
-    notifications.map(notification => (
-      <NotificationBar
-        key={notification.id}
-        color={notification.type === 'error' ? 'danger' : 'success'}
-        icon={notification.type === 'error' ? mdiAlertCircle : mdiCheckCircle}
-        autoDismiss={true}
-      >
-        {notification.message}
-      </NotificationBar>
-    ))
-  }
-
   return (
     <>
 
@@ -120,7 +71,7 @@ const TableSamplePatients = () => {
         <p>
           Bạn có muốn xóa bác sĩ này không?
         </p>
-        <p>Chọn "Xác nhận" nếu có</p>
+        <p>Chọn &quot;Xác nhận&quot; nếu có</p>
       </CardBoxModal>
 
       <table>
@@ -131,7 +82,7 @@ const TableSamplePatients = () => {
             <th>Giới tính</th>
             <th>Ngày sinh</th>
             <th>Tỉnh/thành</th>
-            <th />
+            <th/>
           </tr>
         </thead>
         <tbody>

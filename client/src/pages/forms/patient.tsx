@@ -1,4 +1,4 @@
-import { mdiAccount, mdiAlertCircle, mdiBallotOutline, mdiCheckCircle, mdiGithub, mdiMail, mdiUpload } from '@mdi/js'
+import { mdiAccount, mdiAlertCircle, mdiBallotOutline, mdiCheckCircle, mdiMail } from '@mdi/js'
 import { Field, Form, Formik } from 'formik'
 import Head from 'next/head'
 import { ReactElement } from 'react'
@@ -6,17 +6,12 @@ import Button from '../../components/Button'
 import Buttons from '../../components/Buttons'
 import Divider from '../../components/Divider'
 import CardBox from '../../components/CardBox'
-import FormCheckRadio from '../../components/Form/CheckRadio'
-import FormCheckRadioGroup from '../../components/Form/CheckRadioGroup'
 import FormField from '../../components/Form/Field'
-import FormFilePicker from '../../components/Form/FilePicker'
 import LayoutAuthenticated from '../../layouts/Authenticated'
 import SectionMain from '../../components/Section/Main'
-import SectionTitle from '../../components/Section/Title'
 import SectionTitleLineWithButton from '../../components/Section/TitleLineWithButton'
 import { getPageTitle } from '../../config'
 import LocationSelect from '../../components/Form/LocationSelect'
-import DepartmentSelect from '../../components/Form/DepartmentSelect'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import NotificationBar from '../../components/NotificationBar'
@@ -24,8 +19,6 @@ import { SERVER_URI } from '../../config'
 
 const FormsPage = ({ id }) => {
   const [data, setData] = useState(null);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
   // ... useEffect for fetching data ...
@@ -51,16 +44,7 @@ const FormsPage = ({ id }) => {
         });
     }
   }, [id]);
-  useEffect(() => {
-    if (isSubmitted) {
-      setIsVisible(true);
-      const timer = setTimeout(() => {
-        setIsVisible(false);
-      }, 2000);
 
-      return () => clearTimeout(timer);
-    }
-  }, [isSubmitted]);
   return (
     <>
       <Head>
@@ -101,8 +85,7 @@ const FormsPage = ({ id }) => {
               axios.post(`${SERVER_URI}/patients`, values)
                 .then(response => {
                   console.log(response);
-                  console.log(`${SERVER_URI}/patients`)
-                  setIsSubmitted(true);
+                  console.log(`${SERVER_URI}/patients`);
                   addNotification('Thêm bệnh nhân thành công!');
                 })
                 .catch(error => {

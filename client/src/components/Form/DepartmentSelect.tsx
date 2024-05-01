@@ -1,5 +1,4 @@
 import { Field, useFormikContext } from 'formik';
-import { useEffect, useState } from 'react';
 import FormField from './Field';
 
 const DepartmentSelect = () => {

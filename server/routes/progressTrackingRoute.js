@@ -1,4 +1,5 @@
 import express from "express";
+import mongoose from "mongoose";
 import { ProgressTracking } from "../models/progressTrackingModel.js";
 const router = express.Router();
 router.post("/", async (req, res) => {
@@ -16,7 +17,7 @@ router.post("/", async (req, res) => {
         }
 
         const newProgressTracking = {
-            _id: mongoose.Schema.Types.ObjectId,
+            _id: new mongoose.Types.ObjectId(),
             patientId: req.body.patientId,
             date: req.body.date,
             weight: req.body.weight,
@@ -28,7 +29,7 @@ router.post("/", async (req, res) => {
             note: req.body.note
         };
         const progressTracking = await ProgressTracking.create(newProgressTracking);
-        res.status(201).json(result);
+        res.status(201).json(progressTracking);
     } catch (error) {
         console.log(error);
         res.status(400).json({ message: error.message });
@@ -45,11 +46,10 @@ router.get("/", async (req, res) => {
     }
 }
 );
-router.get("/:id", async (req, res) => {
+// Find by patientId
+router.get("/patient/:id", async (req, res) => {
     try {
-        const progressTracking = await ProgressTracking.findById(req.params.id)
-            .populate("patientId")
-            .populate("doctorId");
+        const progressTracking = await ProgressTracking.find({ patientId: req.params.id });
         if (!progressTracking) {
             return res.status(404).json({ message: "Progress tracking not found" });
         }
@@ -60,5 +60,19 @@ router.get("/:id", async (req, res) => {
     }
 }
 );
+router.get("/patient/recent/:id", async (req, res) => {
+    try {
+        const progressTracking = await ProgressTracking.find({ patientId: req.params.id })
+            .sort({ date: -1 }) // Sort by date in descending order
+            .limit(1); // Get only the first result
+        if (!progressTracking || progressTracking.length === 0) {
+            return res.status(404).json({ message: "Progress tracking not found" });
+        }
+        res.status(200).json(progressTracking[0]); // Return the first (and only) result
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+});
 export default router;
 

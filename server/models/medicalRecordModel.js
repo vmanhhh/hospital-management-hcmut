@@ -10,15 +10,12 @@ const medicalRecordScheme = mongoose.Schema(
         },
         doctorId: [{
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Staff',
+            ref: 'Doctor',
             required: true
         }],
-        date: {
-            type: Date,
-            default: Date.now
-        },
-        symptoms: [String],
-        diagnosis: [String],
+        date: Date,
+        symptoms: String,
+        diagnosis: String,
     }
 );
 

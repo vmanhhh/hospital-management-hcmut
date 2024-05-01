@@ -3,29 +3,25 @@ import mongoose from 'mongoose';
 const treatmentSchema = mongoose.Schema(
     {
         _id: mongoose.Schema.Types.ObjectId,
+        symptoms: String,
+        diagnosis: String,
         patientId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Patient',
-            required: true
+            ref: 'Patient'
         },
         doctorId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Staff',
-            required: true
+            ref: 'Doctor'
         },
         medicine: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Medicine',
-        }],
-        equipment: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Equipment',
+            medicineId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Medicine',
+            },
+            quantity: Number,
         }],
         description: String,
-        date: {
-            type: Date,
-            default: Date.now
-        },
+        date: Date,
     }
 );
 

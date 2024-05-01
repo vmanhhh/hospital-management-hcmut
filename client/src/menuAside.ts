@@ -1,47 +1,21 @@
 import {
   mdiAccountCircle,
-  mdiMonitor,
-  mdiGithub,
   mdiLock,
   mdiAlertCircle,
-  mdiSquareEditOutline,
-  mdiTable,
-  mdiViewList,
   mdiTelevisionGuide,
-  mdiResponsive,
   mdiPalette,
-  mdiVuejs,
   mdiDoctor,
   mdiAccountInjury,
   mdiCellphoneLink,
   mdiPill,
-  mdiStethoscope,
-  mdiPulse,
-  mdiInformation,
 } from '@mdi/js'
 import { MenuAsideItem } from './interfaces'
 
 const menuAside: MenuAsideItem[] = [
   {
+    href: '/patients',
     label: 'Bệnh nhân',
     icon: mdiAccountInjury,
-    menu: [
-      {
-        href: '/patients',
-        label: 'Danh sách',
-        icon: mdiInformation,
-      },
-      {
-        href: '/progresstracking',
-        label: 'Theo dõi',
-        icon: mdiPulse,
-      },
-      {
-        href: '/treatments',
-        label: 'Điều trị',
-        icon: mdiStethoscope,
-      }
-    ],
   },
   {
     href: '/doctors',

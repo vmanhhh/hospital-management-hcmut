@@ -2,7 +2,6 @@ import {
   mdiAccount,
   mdiAsterisk,
   mdiFormTextboxPassword,
-  mdiGithub,
   mdiMail,
   mdiUpload,
 } from '@mdi/js'

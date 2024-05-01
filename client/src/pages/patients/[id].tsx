@@ -1,13 +1,10 @@
 import {
   mdiAccount,
-  mdiAccountMultiple,
-  mdiCartOutline,
-  mdiChartPie,
   mdiChartTimelineVariant,
-  mdiGithub,
   mdiMail,
-  mdiMonitorCellphone,
-  mdiReload,
+  mdiPlus,
+  mdiPulse,
+  mdiStethoscope,
 } from '@mdi/js'
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
@@ -16,17 +13,6 @@ import Button from '../../components/Button'
 import LayoutAuthenticated from '../../layouts/Authenticated'
 import SectionMain from '../../components/Section/Main'
 import SectionTitleLineWithButton from '../../components/Section/TitleLineWithButton'
-import CardBoxWidget from '../../components/CardBox/Widget'
-import { useSamplePatients, useSampleTransactions } from '../../hooks/sampleData'
-import CardBoxTransaction from '../../components/CardBox/Transaction'
-import { Client, Transaction } from '../../interfaces'
-import CardBoxClient from '../../components/CardBox/Client'
-import SectionBannerStarOnGitHub from '../../components/Section/Banner/StarOnGitHub'
-import CardBox from '../../components/CardBox'
-import { sampleChartData } from '../../components/ChartLineSample/config'
-import ChartLineSample from '../../components/ChartLineSample'
-import NotificationBar from '../../components/NotificationBar'
-import TableSampleClients from '../../components/Table/SampleClients'
 import { SERVER_URI, getPageTitle } from '../../config'
 import { Field, Form, Formik } from 'formik'
 import FormField from '../../components/Form/Field'
@@ -51,37 +37,86 @@ type Patient = {
     email: string
   }
 }
+type ProgressTracking = {
+  _id: string
+  date: Date
+  weight: number
+  bloodPressureSystolic: number
+  bloodPressureDiastolic: number
+  heartRate: number
+  temperature: number
+  note: string
+}
+type Treatment = {
+  _id: string
+  date: Date
+  symptoms: string
+  diagnosis: string
+  doctorId: string
+  medicine: {
+    medicineId: string
+    quantity: number
+  }[]
+  description: string
+}
+
+
 const DashboardPage = () => {
   const router = useRouter()
-  const {id} = router.query
+  const { id } = router.query
+  const [doctor, setDoctor] = useState(null);
   const [patients, setPatients] = useState<Patient | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  
-
+  const [progressTracking, setProgressTracking] = useState<ProgressTracking | null>(null);
+  const [treatment, setTreatment] = useState<Treatment | null>(null);
+  const fetchProgress = async () => {
+    try {
+      const respond = await axios.get(`${SERVER_URI}/progressTracking/patient/recent/${id}`);
+      setProgressTracking(respond.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const fetchPatients = async () => {
     try {
       const response = await axios.get(`${SERVER_URI}/patients/${id}`);
 
       setPatients(response.data);
-      setIsLoading(false);
-      console.log(patients.dob)
     } catch (error) {
       console.error(error);
     }
   };
+  const fetchTreatment = async () => {
+    try {
+      const respond = await axios.get(`${SERVER_URI}/treatments/patient/recent/${id}`);
+      setTreatment(respond.data);
+      await fetchDoctor(respond.data.doctorId);
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchDoctor = async (doctorId) => {
+    try {
+      const response = await axios.get(`${SERVER_URI}/doctors/${doctorId}`);
+      setDoctor(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchData = async () => {
+    await fetchPatients();
+    await fetchProgress();
+    await fetchTreatment();
+    setIsLoading(false);
+  };
 
   useEffect(() => {
     if (id)
-    fetchPatients();
+      fetchData();
   }, [id]);
 
-  const [chartData, setChartData] = useState(sampleChartData())
 
-  const fillChartData = (e: React.MouseEvent) => {
-    e.preventDefault()
-
-    setChartData(sampleChartData())
-  }
   if (isLoading) {
     return <CircularIndeterminate />
   }
@@ -97,7 +132,7 @@ const DashboardPage = () => {
 
 
         <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 mb-6">
-        <Formik
+          <Formik
             initialValues={{
               lastName: patients.lastName,
               firstName: patients.firstName,
@@ -120,62 +155,147 @@ const DashboardPage = () => {
               }, 400)
             }}
           >
+            <Form>
+              <FormField label="Họ và tên" icons={[mdiAccount, mdiMail]}>
+                <Field name="lastName" placeholder="Họ" disabled />
+                <Field name="firstName" placeholder="Tên" disabled />
+              </FormField>
+              <FormField>
+                <FormField label="Ngày sinh" labelFor="dob">
+                  <Field name="dob" type="date" id="dob" disabled />
+                </FormField>
+                <FormField label="Giới tính" labelFor="gender">
+                  <Field name="gender" id="gender" component="select" disabled>
+                    <option value="">Chọn giới tính</option>
+                    <option value="male">Nam</option>
+                    <option value="female">Nữ</option>
+                    <option value="other">Khác</option>
+                  </Field>
+                </FormField>
+              </FormField>
+
+              <FormField label="Địa chỉ" labelFor="address">
+                <LocationSelect initialData={patients} />
+              </FormField>
+              <Divider />
+              <FormField
+                label="Thông tin liên hệ"
+                labelFor="contactInfo"
+              >
+                <FormField label="Số điện thoại" labelFor="contactInfo.phone">
+                  <Field name="contactInfo.phone" id="contactInfo.phone" disabled />
+                </FormField>
+                <FormField label="Email" labelFor="contactInfo.email">
+                  <Field name="contactInfo.email" id="contactInfo.email" disabled />
+                </FormField>
+              </FormField>
+              <Divider />
+
+            </Form>
+          </Formik>
+        </div>
+
+        <SectionTitleLineWithButton icon={mdiPulse} title="Tiến triển">
+          <Button
+            color="info"
+            label="Thêm tiến triển"
+            icon={mdiPlus}
+            roundedFull
+            href={`/progressTracking/${id}`}
+          />
+        </SectionTitleLineWithButton>
+
+        <Formik
+          initialValues={{
+            date: progressTracking ? new Date(progressTracking.date).toISOString().split('.')[0] : "",
+            weight: progressTracking ? progressTracking.weight : 0,
+            bloodPressureSystolic: progressTracking ? progressTracking.bloodPressureSystolic : 0,
+            bloodPressureDiastolic: progressTracking ? progressTracking.bloodPressureDiastolic : 0,
+            heartRate: progressTracking ? progressTracking.heartRate : 0,
+            temperature: progressTracking ? progressTracking.temperature : 0,
+            note: progressTracking ? progressTracking.note : "No Data",
+          }}
+          onSubmit={(values, { setSubmitting }) => {
+            setTimeout(() => {
+              alert(JSON.stringify(values, null, 2))
+              setSubmitting(false)
+            }, 400)
+          }}
+        >
           <Form>
-            <FormField label="Họ và tên" icons={[mdiAccount, mdiMail]}>
-              <Field name="lastName" placeholder="Họ"  disabled/>
-              <Field name="firstName" placeholder="Tên" disabled/>
+            <FormField label="Ngày kiểm tra" labelFor="date">
+              <Field name="date" type="datetime-local" id="date" disabled />
+            </FormField>
+            <FormField label="Cân nặng" labelFor="weight">
+              <Field name="weight" id="weight" disabled />
             </FormField>
             <FormField>
-              <FormField label="Ngày sinh" labelFor="dob">
-                <Field name="dob" type="date" id="dob" disabled/>
+              <FormField label="Huyết áp tâm thu" labelFor="bloodPressureSystolic">
+                <Field name="bloodPressureSystolic" id="bloodPressureSystolic" disabled />
               </FormField>
-              <FormField label="Giới tính" labelFor="gender">
-                <Field name="gender" id="gender" component="select" disabled>
-                  <option value="">Chọn giới tính</option>
-                  <option value="male">Nam</option>
-                  <option value="female">Nữ</option>
-                  <option value="other">Khác</option>
-                </Field>
+              <FormField label="Huyết áp tâm trương" labelFor="bloodPressureDiastolic">
+                <Field name="bloodPressureDiastolic" id="bloodPressureDiastolic" disabled />
               </FormField>
+            </FormField>
+            <FormField>
+              <FormField label="Nhịp tim" labelFor="heartRate">
+                <Field name="heartRate" id="heartRate" disabled />
+              </FormField>
+              <FormField label="Nhiệt độ" labelFor="temperature">
+                <Field name="temperature" id="temperature" disabled />
+              </FormField>
+            </FormField>
+            <FormField label="Ghi chú" labelFor="note">
+              <Field name="note" id="note" as="textarea" rows="4" cols="50" disabled />
             </FormField>
 
-            <FormField label="Địa chỉ" labelFor="address">
-              <LocationSelect initialData={patients}/>
-            </FormField>
-            <Divider />
-            <FormField
-              label="Thông tin liên hệ"
-              labelFor="contactInfo"
-            >
-              <FormField label="Số điện thoại" labelFor="contactInfo.phone">
-                <Field name="contactInfo.phone" id="contactInfo.phone" disabled />
-              </FormField>
-              <FormField label="Email" labelFor="contactInfo.email">
-                <Field name="contactInfo.email" id="contactInfo.email" disabled />
-              </FormField>
-            </FormField>
             <Divider />
 
           </Form>
         </Formik>
-        </div>
-
-
-        <SectionTitleLineWithButton icon={mdiChartPie} title="Trends overview">
-          <Button icon={mdiReload} color="whiteDark" onClick={fillChartData} />
+        <SectionTitleLineWithButton icon={mdiStethoscope} title="Chẩn đoán">
+          <Button
+            color="info"
+            label="Thêm chẩn đoán"
+            icon={mdiPlus}
+            roundedFull
+            href={`/treatment/${id}`}
+          />
         </SectionTitleLineWithButton>
 
-        <CardBox className="mb-6">{chartData && <ChartLineSample data={chartData} />}</CardBox>
+        <Formik
+          initialValues={{
+            doctor: doctor ? `Bác sĩ ${doctor.lastName} ${doctor.firstName} - ${doctor.department}` : "Hello",
+            date: treatment ? new Date(treatment.date).toISOString().split('.')[0] : "",
+            symptoms: treatment ? treatment.symptoms : "No Data",
+            diagnosis: treatment ? treatment.diagnosis : "No Data",
+            medicine: treatment ? treatment.medicine : [],
+            description: treatment ? treatment.description : "No Data",
+          }}
+          onSubmit={(values) => {
+            console.log(JSON.stringify(values, null, 2));
+          }}
+        >
+          <Form>
+            <FormField label="Ngày kiểm tra" labelFor="date">
+              <Field name="date" id="date" type="datetime-local" disabled />
+            </FormField>
+            <FormField label="Triệu chứng" labelFor="symptoms" >
+              <Field name="symptoms" id="symptoms" disabled />
+            </FormField>
+            <FormField label="Chẩn đoán" labelFor="diagnosis">
+              <Field name="diagnosis" id="diagnosis" />
+            </FormField>
+            <FormField label="Bác sĩ chẩn đoán" labelFor="doctor">
+              <Field name="doctor" id="doctor" disabled />
+            </FormField>
 
-        <SectionTitleLineWithButton icon={mdiAccountMultiple} title="Clients" />
-
-        <NotificationBar color="info" icon={mdiMonitorCellphone}>
-          <b>Responsive table.</b> Collapses on mobile
-        </NotificationBar>
-
-        <CardBox hasTable>
-          <TableSampleClients />
-        </CardBox>
+            <FormField label="Mô tả" labelFor="description">
+              <Field name="description" id="description" />
+            </FormField>
+            <Divider />
+          </Form>
+        </Formik>
       </SectionMain>
     </>
   )

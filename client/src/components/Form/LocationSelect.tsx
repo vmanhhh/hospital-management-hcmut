@@ -20,7 +20,7 @@ const LocationSelect = ({ initialData }) => {
   }, []);
 
   useEffect(() => {
-    if (initialData) {
+    if (initialData.address) {
 
       const provinceId = initialData.address.province;
       const province = data.find(province => province.Id === provinceId);

@@ -1,7 +1,5 @@
-import { mdiAlertCircle, mdiCheckCircle, mdiEye, mdiTrashCan } from '@mdi/js'
-import Snackbar from '@mui/material/Snackbar';
+import { mdiEye, mdiTrashCan } from '@mdi/js'
 import React, { useState, useEffect } from 'react'
-import { useSampleEquipments } from '../../hooks/sampleData'
 import {  Equipment } from '../../interfaces'
 import Button from '../Button'
 import Buttons from '../Buttons'
@@ -10,13 +8,10 @@ import axios from 'axios'
 import { Formik, Form, Field } from 'formik'
 import FormField from '../Form/Field'
 import DepartmentSelect from '../Form/DepartmentSelect'
-import LocationSelect from '../Form/LocationSelect'
 import { SERVER_URI } from '../../config'
-import { mdiAccount, mdiGithub, mdiMail, mdiUpload } from '@mdi/js'
+import { mdiAccount, mdiMail } from '@mdi/js'
 import CardBox from '../../components/CardBox'
 import Divider from '../../components/Divider'
-import NotificationBar from '../../components/NotificationBar'
-import { useFormikContext } from 'formik'
 import SnackbarAlert from '../../components/snackbar'
 
 const departmentLabels = {
@@ -212,7 +207,7 @@ const TableEquipments = () => {
         <p>
           Bạn có muốn xóa thiết bị này không?
         </p>
-        <p>Chọn "Xác nhận" nếu có</p>
+        <p>Chọn &quot;Xác nhận&quot; nếu có</p>
       </CardBoxModal>
 
       <table>

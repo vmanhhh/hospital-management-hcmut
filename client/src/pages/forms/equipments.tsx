@@ -1,4 +1,4 @@
-import { mdiAccount, mdiBallotOutline, mdiGithub, mdiMail, mdiUpload } from '@mdi/js'
+import { mdiAccount, mdiBallotOutline, mdiMail } from '@mdi/js'
 import { Field, Form, Formik } from 'formik'
 import Head from 'next/head'
 import { ReactElement, useState } from 'react'
@@ -13,7 +13,6 @@ import SectionTitleLineWithButton from '../../components/Section/TitleLineWithBu
 import { SERVER_URI, getPageTitle } from '../../config'
 import DepartmentSelect from '../../components/Form/DepartmentSelect'
 import axios from 'axios'
-import { Snackbar } from '@mui/material'
 import SnackbarAlert from '../../components/snackbar'
 
 const FormsPage = () => {

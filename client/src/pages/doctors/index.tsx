@@ -1,4 +1,4 @@
-import { mdiGithub, mdiDoctor, mdiTableBorder, mdiTableOff } from '@mdi/js'
+import { mdiDoctor } from '@mdi/js'
 import Head from 'next/head'
 import React, { ReactElement } from 'react'
 import Button from '../../components/Button'
