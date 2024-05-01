@@ -126,13 +126,13 @@ const FormsPage = () => {
                 </FormField>
 
                 <FormField label="Ngày kiểm tra" labelFor="date">
-                  <Field name="date" id="date" type="datetime-local" />
+                  <Field name="date" id="date" type="datetime-local" required/>
                 </FormField>
                 <FormField label="Triệu chứng" labelFor="symptoms">
-                  <Field name="symptoms" id="symptoms" />
+                  <Field name="symptoms" id="symptoms" required/>
                 </FormField>
                 <FormField label="Chẩn đoán" labelFor="diagnosis">
-                  <Field name="diagnosis" id="diagnosis" />
+                  <Field name="diagnosis" id="diagnosis" required/>
                 </FormField>
                 <FormField label="Bác sĩ chẩn đoán" labelFor="doctor">
                   <ComboBox />

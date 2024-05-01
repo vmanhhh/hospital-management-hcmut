@@ -58,10 +58,10 @@ const FormsPage = () => {
             }}>
             <Form>
             <FormField label="Tên thuốc" icons={[mdiAccount, mdiMail]}>
-              <Field name="name" placeholder="Tên thuốc" />
+              <Field name="name" placeholder="Tên thuốc" required/>
             </FormField>
             <FormField label="Thương hiệu" labelFor="brandName">
-              <Field name="brandName" placeholder="Thương hiệu" />
+              <Field name="brandName" placeholder="Thương hiệu" required/>
             </FormField>
             <FormField label="Mô tả" labelFor="description">
               <Field name="description" placeholder="Mô tả" />

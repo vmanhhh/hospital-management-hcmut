@@ -27,7 +27,7 @@ const StyleSelectPage = () => {
       }
     })
 
-    router.push('/patients')
+    router.push('/login')
   }
 
   return (

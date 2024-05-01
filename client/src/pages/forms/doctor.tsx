@@ -102,12 +102,12 @@ const FormsPage = ({ id }) => {
           >
             <Form>
               <FormField label="Họ và tên" icons={[mdiAccount, mdiMail]}>
-                <Field name="lastName" placeholder="Họ" />
-                <Field name="firstName" placeholder="Tên" />
+                <Field name="lastName" placeholder="Họ" required/>
+                <Field name="firstName" placeholder="Tên" required/>
               </FormField>
               <FormField>
                 <FormField label="Chức vụ" labelFor="role">
-                  <Field name="role" id="role" component="select">
+                  <Field name="role" id="role" component="select" required>
                     <option value="">Chọn chức vụ</option>
                     <option value="Doctor">Bác sĩ</option>
                     <option value="Nurse">Y tá</option>
@@ -119,10 +119,10 @@ const FormsPage = ({ id }) => {
                 </FormField>
               </FormField>
               <FormField label="Ngày sinh" labelFor="dob">
-                <Field name="dob" type="date" id="dob" />
+                <Field name="dob" type="date" id="dob" required/>
               </FormField>
               <FormField label="Giới tính" labelFor="gender">
-                <Field name="gender" id="gender" component="select">
+                <Field name="gender" id="gender" component="select" required>
                   <option value="">Chọn giới tính</option>
                   <option value="male">Nam</option>
                   <option value="female">Nữ</option>

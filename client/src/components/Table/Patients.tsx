@@ -33,7 +33,7 @@ const TableSamplePatients = () => {
 
   const patientsPaginated = patients.slice(perPage * currentPage, perPage * (currentPage + 1))
 
-  const numPages = patients.length / perPage
+  const numPages = Math.ceil(patients.length / perPage)
 
   const pagesList = []
 

@@ -114,7 +114,7 @@ const FormsPage = () => {
               </FormField>
 
               <FormField label="Ngày kiểm tra" labelFor="dob">
-                <Field name="date" id="date" type="datetime-local" />
+                <Field name="date" id="date" type="datetime-local" required/>
               </FormField>
               <FormField>
                 <FormField label="Cân nặng" labelFor="weight">

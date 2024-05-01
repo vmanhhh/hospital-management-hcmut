@@ -12,6 +12,7 @@ import Divider from '../components/Divider'
 import Buttons from '../components/Buttons'
 import { useRouter } from 'next/router'
 import { getPageTitle } from '../config'
+import SnackbarAlert from '../components/snackbar'
 
 type LoginForm = {
   login: string
@@ -21,20 +22,27 @@ type LoginForm = {
 
 const LoginPage = () => {
   const router = useRouter()
-
+  const [open, setOpen] = React.useState(false)
   const handleSubmit = (formValues: LoginForm) => {
+    if (formValues.password === 'bG1sL9eQ1uD2sK3b')
     router.push('/patients')
-    console.log('Form values', formValues)
+    else {
+      setOpen(true);
+      setTimeout(() => {
+        setOpen(false);
+      },3000);
+    }
   }
 
   const initialValues: LoginForm = {
-    login: 'john.doe',
+    login: 'admin',
     password: 'bG1sL9eQ1uD2sK3b',
     remember: true,
   }
 
   return (
     <>
+    {open && <SnackbarAlert message="Invalid password" severity="error" />}
       <Head>
         <title>{getPageTitle('Login')}</title>
       </Head>

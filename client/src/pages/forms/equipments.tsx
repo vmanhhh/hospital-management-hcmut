@@ -62,14 +62,14 @@ const FormsPage = () => {
           >
             <Form>
               <FormField label="Tên thiết bị" icons={[mdiAccount, mdiMail]}>
-                <Field name="name" placeholder="Tên thiết bị" />
+                <Field name="name" placeholder="Tên thiết bị" required/>
               </FormField>
               <FormField>
                 <FormField label="Hãng sản xuất" labelFor="manufacturer">
-                  <Field name="manufacturer" placeholder="Hãng sản xuất" id="manufacturer" />
+                  <Field name="manufacturer" placeholder="Hãng sản xuất" id="manufacturer"required />
                 </FormField>
                 <FormField label="Model" labelFor="deviceModel">
-                  <Field name="model" placeholder="Model" />
+                  <Field name="model" placeholder="Model" required/>
                 </FormField>
               </FormField>
               <FormField label="Số seri" labelFor="serialNumber">
