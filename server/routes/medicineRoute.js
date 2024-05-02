@@ -85,7 +85,7 @@ async function getMedicine(req, res, next) {
       res.medicine.dosageForm = req.body.dosageForm;
     }
     if (req.body.stock != null) {
-      res.medicine.stock -= req.body.stock;
+      res.medicine.stock += req.body.stock;
     }
     try {
       const updatedMedicine = await res.medicine.save();
