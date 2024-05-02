@@ -21,9 +21,9 @@ const FormsPage = () => {
 
   return (
     <>
-    {isSubmitted && <SnackbarAlert message={alertMessage} severity={alertSeverity} />}
+      {isSubmitted && <SnackbarAlert message={alertMessage} severity={alertSeverity} />}
       <Head>
-        <title>{getPageTitle('Forms')}</title>
+        <title>{getPageTitle('Thuốc')}</title>
       </Head>
 
       <SectionMain>
@@ -57,41 +57,45 @@ const FormsPage = () => {
                 });
             }}>
             <Form>
-            <FormField label="Tên thuốc" icons={[mdiAccount, mdiMail]}>
-              <Field name="name" placeholder="Tên thuốc" required/>
-            </FormField>
-            <FormField label="Thương hiệu" labelFor="brandName">
-              <Field name="brandName" placeholder="Thương hiệu" required/>
-            </FormField>
-            <FormField label="Mô tả" labelFor="description">
-              <Field name="description" placeholder="Mô tả" />
-            </FormField>
-            <FormField label="Liều lượng" labelFor="dosage">
-              <Field name="dosage" placeholder="Liều lượng" />
-            </FormField>
-            <FormField label="Đơn vị" labelFor="unit">
-              <Field name="unit" placeholder="Liều lượng" />
-            </FormField>
-            <FormField label="Dạng bào chế" labelFor="dosageForm">
-              <Field name="dosageForm" placeholder="Dạng bào chế" />
-            </FormField>
-            <FormField label="Trữ lượng" labelFor="stock">
-              <Field name="stock" placeholder="Trữ lượng" />
-            </FormField>
-            <FormField label="Ngày nhập" labelFor="dateImported">
-              <Field name="dateImported" type="date" />
-            </FormField>
-            <FormField label="Ngày hết hạn" labelFor="expirationDate">
-              <Field name="expirationDate" type="date" />
-            </FormField>
-            <Divider />
+              <FormField label="Tên thuốc" icons={[mdiAccount, mdiMail]}>
+                <Field name="name" placeholder="Tên thuốc" required />
+              </FormField>
+              <FormField label="Thương hiệu" labelFor="brandName">
+                <Field name="brandName" placeholder="Thương hiệu" required />
+              </FormField>
+              <FormField label="Mô tả" labelFor="description">
+                <Field name="description" placeholder="Mô tả" />
+              </FormField>
+              <FormField>
+                <FormField label="Liều lượng" labelFor="dosage">
+                  <Field name="dosage" placeholder="Liều lượng" />
+                </FormField>
+                <FormField label="Đơn vị" labelFor="unit">
+                  <Field name="unit" placeholder="Liều lượng" />
+                </FormField>
+                <FormField label="Dạng bào chế" labelFor="dosageForm">
+                  <Field name="dosageForm" placeholder="Dạng bào chế" />
+                </FormField>
+              </FormField>
+              <FormField label="Thêm/giảm trữ lưỡng" labelFor="stock">
+                <Field name="stock" placeholder="Trữ lượng" />
+              </FormField>
+              <FormField>
+              <FormField label="Ngày nhập" labelFor="dateImported">
+                <Field name="dateImported" type="date" />
+              </FormField>
+              <FormField label="Ngày hết hạn" labelFor="expirationDate">
+                <Field name="expirationDate" type="date" />
+              </FormField>
+              </FormField>
+              <Divider />
 
-            <Divider />
-            <Button type="submit" active={false} color="info" label="Cập nhật" />
-          </Form>
-        </Formik>
-      </CardBox>
-    </SectionMain >
+              <Divider />
+              <Button type="submit" active={false} color="info" label="Cập nhật" />
+            </Form>
+          </Formik>
+        </CardBox>
+      </SectionMain >
 
     </>
   )

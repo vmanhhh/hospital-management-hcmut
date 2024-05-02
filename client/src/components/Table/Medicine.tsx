@@ -31,7 +31,7 @@ const TableSampleMedicine = () => {
   }, []);
 
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const perPage = 10
+  const perPage = 5
 
   const [currentPage, setCurrentPage] = useState(0)
 
@@ -110,10 +110,8 @@ const TableSampleMedicine = () => {
             }}
             onSubmit={(values) => {
 
-              console.log(JSON.stringify(values, null, 2));
-
-              console.log(MedTemp)
-              axios.patch(`${SERVER_URI}/medicines/${MedTemp._id}`, values)
+              console.log(values)
+              axios.put(`${SERVER_URI}/medicines/${MedTemp._id}`, values)
                 .then(response => {
                   console.log(response);
                   console.log(`${SERVER_URI}/medicines/${MedTemp._id}`)

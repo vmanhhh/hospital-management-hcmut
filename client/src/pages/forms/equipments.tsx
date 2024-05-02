@@ -23,7 +23,7 @@ const FormsPage = () => {
   return (
     <>
       <Head>
-        <title>{getPageTitle('Forms')}</title>
+        <title>{getPageTitle('Thiết bị')}</title>
       </Head>
 
       <SectionMain>
