@@ -46,7 +46,7 @@ const TableSampleDoctors = () => {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const perPage = 5
+  const perPage = 10
 
   const [currentPage, setCurrentPage] = useState(0)
 
