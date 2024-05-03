@@ -104,8 +104,8 @@ const TableSampleMedicine = () => {
               unit: MedTemp.unit,
               dosageForm: MedTemp.dosageForm,
               stock: MedTemp.stock,
-              dateImported: new Date(MedTemp.dateImported).toISOString().split('T')[0],
-              expirationDate: new Date(MedTemp.expirationDate).toISOString().split('T')[0],
+              dateImported: MedTemp.dateImported ? new Date(MedTemp.dateImported).toISOString().split('T')[0] : "",
+              expirationDate: MedTemp.expirationDate? new Date(MedTemp.expirationDate).toISOString().split('T')[0] :"",
 
             }}
             onSubmit={(values) => {
