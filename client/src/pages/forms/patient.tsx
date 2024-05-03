@@ -82,7 +82,7 @@ const FormsPage = ({ id }) => {
             }}
             onSubmit={(values) => {
               console.log(JSON.stringify(values, null, 2));
-              axios.post(`${SERVER_URI}/patients`, values)
+              return axios.post(`${SERVER_URI}/patients`, values)
                 .then(response => {
                   console.log(response);
                   console.log(`${SERVER_URI}/patients`);

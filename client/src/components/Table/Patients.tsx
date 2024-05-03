@@ -69,7 +69,7 @@ const TableSamplePatients = () => {
         onCancel={handleModalAction}
       >
         <p>
-          Bạn có muốn xóa bác sĩ này không?
+          Bạn có muốn xóa bệnh nhân này không?
         </p>
         <p>Chọn &quot;Xác nhận&quot; nếu có</p>
       </CardBoxModal>

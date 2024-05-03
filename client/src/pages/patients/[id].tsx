@@ -21,6 +21,7 @@ import Divider from '../../components/Divider'
 import axios from 'axios'
 import CircularIndeterminate from '../../components/Loading'
 import { useRouter } from 'next/router'
+import moment from 'moment'
 type Patient = {
   _id: string
   lastName: string
@@ -60,6 +61,9 @@ type Treatment = {
   description: string
 }
 
+function formatDateTime(dateTime) {
+  return moment(dateTime).format('YYYY-MM-DD hh:mm:ss')
+}
 
 const DashboardPage = () => {
   const router = useRouter()
@@ -120,6 +124,7 @@ const DashboardPage = () => {
   if (isLoading) {
     return <CircularIndeterminate />
   }
+
   return (
     <>
       <Head>
@@ -128,9 +133,6 @@ const DashboardPage = () => {
       <SectionMain>
         <SectionTitleLineWithButton icon={mdiChartTimelineVariant} title="Overview" main>
         </SectionTitleLineWithButton>
-
-
-
         <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 mb-6">
           <Formik
             initialValues={{
@@ -207,7 +209,7 @@ const DashboardPage = () => {
 
         <Formik
           initialValues={{
-            date: progressTracking ? new Date(progressTracking.date).toISOString().split('.')[0] : "",
+            date: progressTracking ? formatDateTime(progressTracking.date) : "",
             weight: progressTracking ? progressTracking.weight : 0,
             bloodPressureSystolic: progressTracking ? progressTracking.bloodPressureSystolic : 0,
             bloodPressureDiastolic: progressTracking ? progressTracking.bloodPressureDiastolic : 0,
@@ -266,7 +268,7 @@ const DashboardPage = () => {
         <Formik
           initialValues={{
             doctor: doctor ? `Bác sĩ ${doctor.lastName} ${doctor.firstName} - ${doctor.department}` : "Hello",
-            date: treatment ? new Date(treatment.date).toISOString().split('.')[0] : "",
+            date: treatment ? formatDateTime(treatment.date) : "",
             symptoms: treatment ? treatment.symptoms : "No Data",
             diagnosis: treatment ? treatment.diagnosis : "No Data",
             medicine: treatment ? treatment.medicine : [],

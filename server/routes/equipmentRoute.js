@@ -43,9 +43,12 @@ router.get("/", async (req, res) => {
     }
 }
 );
+
 router.post('/:id', async (req, res) => {
     try {
-        const equipment = await Equipment.findByIdAndUpdate(req?.params?.id);
+        const body = req?.body
+        console.log('req?.params?.id >> ', req?.params?.id);
+        const equipment = await Equipment.findByIdAndUpdate(req?.params?.id, {...body});
         if (!equipment) {
             return res.status(404).json({ message: "Equipment not found" });
         }
@@ -76,7 +79,6 @@ router.delete('/:id', async (req, res) => {
         if (!equipment) {
             return res.status(404).json({ message: "Equipment not found" });
         }
-        await equipment.remove();
         res.json({ message: "Equipment deleted successfully" });
     } catch (error) {
         console.log(error);

@@ -13,6 +13,7 @@ import { mdiAccount, mdiMail } from '@mdi/js'
 import CardBox from '../../components/CardBox'
 import Divider from '../../components/Divider'
 import SnackbarAlert from '../../components/snackbar'
+import moment from 'moment'
 
 const departmentLabels = {
   'Neural': 'Thần kinh',
@@ -27,13 +28,17 @@ const departmentLabels = {
   'ENT': 'Tai mũi họng',
   'Dental': 'Nha khoa',
 };
+
+function formatDateTime(dateTime: string) {
+  return moment(dateTime)?.format('YYYY-MM-DD')
+} 
+
 const TableEquipments = () => {
   const [equipments, setEquipments] = useState([]);
 
   const fetchEquipment = async () => {
     try {
       const response = await axios.get(`${SERVER_URI}/equipments`);
-      console.log(response.data);
       setEquipments(response.data);
     } catch (error) {
       console.error(error);
@@ -108,8 +113,6 @@ const TableEquipments = () => {
         onConfirm={handleEditModalAction}
         onCancel={handleModalAction}
       >
-
-
         <CardBox>
           {EquipTemp && (<Formik
             initialValues={{
@@ -118,25 +121,27 @@ const TableEquipments = () => {
               manufacturer: EquipTemp.manufacturer,
               serialNumber: EquipTemp.serialNumber,
               department: EquipTemp.department,
-              availability: {
-                type: EquipTemp.availability,
-              },
-              maintenanceHistory: {
-                date: EquipTemp.date ? new Date(EquipTemp.date).toISOString().split('T') : null,
-                description: EquipTemp.description,
-                technician: EquipTemp.technician,
-              },
-
+              availability: EquipTemp?.availability,
+              dateMaintenance: EquipTemp?.maintenanceHistory?.date ? formatDateTime(EquipTemp?.maintenanceHistory?.date) : null,
+              description: EquipTemp?.maintenanceHistory?.description,
+              maintenanceBy: EquipTemp?.maintenanceHistory?.technician
             }}
             onSubmit={(values) => {
-
-              console.log(JSON.stringify(values, null, 2));
-
-              console.log(EquipTemp)
-              axios.post(`${SERVER_URI}/equipments/${EquipTemp._id}`, values)
+              const body = {
+                maintenanceHistory: {
+                  date: values?.dateMaintenance,
+                  description: values?.description,
+                  technician: values?.maintenanceBy
+                },
+                name: values?.name,
+                model: values?.model,
+                manufacturer: values?.manufacturer,
+                serialNumber: values?.serialNumber,
+                department: values?.department,
+                availability: values?.availability,
+              }
+              return axios.post(`${SERVER_URI}/equipments/${EquipTemp._id}`, body)
                 .then(response => {
-                  console.log(response);
-                  console.log(`${SERVER_URI}/equipments/${EquipTemp._id}`)
                   setIsSubmitted(true);
                   fetchEquipment();
                   setAlertMessage("Cập nhật thành công!");
@@ -153,14 +158,14 @@ const TableEquipments = () => {
 
             {({ handleSubmit }) => <Form onSubmit={handleSubmit}>
             <FormField label="Tên thiết bị" icons={[mdiAccount, mdiMail]}>
-                <Field name="deviceName" placeholder="Tên thiết bị" />
+                <Field name="name" placeholder="Tên thiết bị" />
               </FormField>
               <FormField>
                 <FormField label="Thương hiệu" labelFor="manufacturer">
                   <Field name="manufacturer" placeholder="Hãng sản xuất" id="manufacturer" />
                 </FormField>
-                <FormField label="Model" labelFor="deviceModel">
-                  <Field name="deviceModel" placeholder="Model" />
+                <FormField label="Model" labelFor="model">
+                  <Field name="model" placeholder="Model" />
                 </FormField>
               </FormField>
               <FormField label="Số seri" labelFor="serialNumber">
@@ -235,6 +240,7 @@ const TableEquipments = () => {
                     color="info"
                     icon={mdiEye}
                     onClick={() => {
+                      console.log('equipments 11111 >>> ', equipments);
                       setEquipment(equipments)
                       setIsModalInfoActive(true)
                     }}
