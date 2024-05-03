@@ -210,7 +210,7 @@ const TableSampleMedicine = () => {
               <td data-label="unit">{medicines.unit}</td>
               <td data-label="dosageForm">{medicines.dosageForm}</td>
               <td data-label="stock">{medicines.stock}</td>
-              <td data-label="expirationDate">{new Date(medicines.expirationDate).toISOString().split('T')[0]}</td>
+              <td data-label="expirationDate">{medicines.expirationDate ? new Date(medicines.expirationDate).toISOString().split('T')[0]: ""}</td>
               <td className="before:hidden lg:w-1 whitespace-nowrap">
                 <Buttons type="justify-start lg:justify-end" noWrap>
                   <Button
