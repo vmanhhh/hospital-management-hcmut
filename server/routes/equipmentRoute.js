@@ -45,7 +45,7 @@ router.get("/", async (req, res) => {
 );
 router.post('/:id', async (req, res) => {
     try {
-        const equipment = await Equipment.findByIdAndUpdate(req.params);
+        const equipment = await Equipment.findByIdAndUpdate(req?.params?.id);
         if (!equipment) {
             return res.status(404).json({ message: "Equipment not found" });
         }
