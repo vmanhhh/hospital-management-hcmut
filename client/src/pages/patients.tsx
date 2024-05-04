@@ -1,16 +1,13 @@
-import { mdiGithub, mdiTableBorder, mdiTableOff, mdiAccountInjury } from '@mdi/js'
+import { mdiAccountInjury } from '@mdi/js'
 import Head from 'next/head'
 import React, { ReactElement } from 'react'
 import Button from '../components/Button'
 import CardBox from '../components/CardBox'
-import CardBoxComponentEmpty from '../components/CardBox/Component/Empty'
 import LayoutAuthenticated from '../layouts/Authenticated'
-import NotificationBar from '../components/NotificationBar'
 import SectionMain from '../components/Section/Main'
 import SectionTitleLineWithButton from '../components/Section/TitleLineWithButton'
 import TablePatients from '../components/Table/Patients'
 import { getPageTitle } from '../config'
-import { mdiPlusBox } from '@mdi/js'
 const TablesPage = () => {
   return (
     <>

@@ -141,7 +141,7 @@ const TableEquipments = () => {
                 availability: values?.availability,
               }
               return axios.post(`${SERVER_URI}/equipments/${EquipTemp._id}`, body)
-                .then(response => {
+                .then(() => {
                   setIsSubmitted(true);
                   fetchEquipment();
                   setAlertMessage("Cập nhật thành công!");
