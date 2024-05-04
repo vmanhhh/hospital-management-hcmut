@@ -262,11 +262,11 @@ const TableSampleDoctors = () => {
         <tbody>
           {doctorsPaginated.map((doctor: Doctor) => (
             <tr key={doctor._id}>
-              <td data-label="Last Name">{doctor.lastName}</td>
-              <td data-label="First Name">{doctor.firstName}</td>
-              <td data-label="Gender">{doctor.gender === 'male' ? 'Nam' : (doctor.gender === 'female' ? 'Nữ' : 'Khác')}</td>
-              <td data-label="Role">{doctor.role === 'Doctor' ? 'Bác sĩ' : (doctor.role === 'Nurse' ? 'Y tá' : 'Nhân viên')}</td>
-              <td data-label="Department">{departmentLabels[doctor.department]}</td>
+              <td data-label="Họ">{doctor.lastName}</td>
+              <td data-label="Tên">{doctor.firstName}</td>
+              <td data-label="Giới tính">{doctor.gender === 'male' ? 'Nam' : (doctor.gender === 'female' ? 'Nữ' : 'Khác')}</td>
+              <td data-label="Chức vụ">{doctor.role === 'Doctor' ? 'Bác sĩ' : (doctor.role === 'Nurse' ? 'Y tá' : 'Nhân viên')}</td>
+              <td data-label="Khoa">{departmentLabels[doctor.department]}</td>
               <td className="before:hidden lg:w-1 whitespace-nowrap">
                 <Buttons type="justify-start lg:justify-end" noWrap>
                   <Button

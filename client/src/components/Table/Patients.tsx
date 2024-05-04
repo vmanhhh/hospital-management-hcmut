@@ -88,11 +88,11 @@ const TableSamplePatients = () => {
         <tbody>
           {patientsPaginated.map((patient: Patient) => (
             <tr key={patient._id}>
-              <td data-label="Last Name">{patient.lastName}</td>
-              <td data-label="First Name">{patient.firstName}</td>
-              <td data-label="Gender">{patient.gender === 'male' ? 'Nam' : (patient.gender === 'female' ? 'Nữ' : 'Khác')}</td>
-              <td data-label="Date of Birth">{new Date(patient.dob).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</td>
-              <td data-label="Province">{(data.find(province => province.Id === patient.address.province) || {}).Name}</td>
+              <td data-label="Họ">{patient.lastName}</td>
+              <td data-label="Tên">{patient.firstName}</td>
+              <td data-label="Giới tính">{patient.gender === 'male' ? 'Nam' : (patient.gender === 'female' ? 'Nữ' : 'Khác')}</td>
+              <td data-label="Ngày sinh">{new Date(patient.dob).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</td>
+              <td data-label="Tỉnh/thành">{(data.find(province => province.Id === patient.address.province) || {}).Name}</td>
               <td className="before:hidden lg:w-1 whitespace-nowrap">
                 <Buttons type="justify-start lg:justify-end" noWrap>
                   <Button

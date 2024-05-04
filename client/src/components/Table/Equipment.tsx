@@ -229,11 +229,11 @@ const TableEquipments = () => {
         <tbody>
           {equipmentsPaginated.map((equipments:  Equipment) => (
             <tr key={equipments._id}>
-              <td data-label="name">{equipments.name}</td>
-              <td data-label="model">{equipments.model}</td>
-              <td data-label="manufacturer">{equipments.manufacturer}</td>
-              <td data-label="department">{departmentLabels[equipments.department]}</td>
-              <td data-label="availability">{equipments.availability}</td>
+              <td data-label="Tên thiết bị">{equipments.name}</td>
+              <td data-label="Model">{equipments.model}</td>
+              <td data-label="Hãng sản xuất">{equipments.manufacturer}</td>
+              <td data-label="Khoa">{departmentLabels[equipments.department]}</td>
+              <td data-label="Trạng thái">{equipments.availability}</td>
               <td className="before:hidden lg:w-1 whitespace-nowrap">
                 <Buttons type="justify-start lg:justify-end" noWrap>
                   <Button

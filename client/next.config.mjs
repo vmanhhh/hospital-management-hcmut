@@ -7,7 +7,7 @@
     return [
       {
           source: '/',
-          destination: '/login',
+          destination: '/',
           basePath: false,
           permanent: false
       }
