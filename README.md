@@ -25,8 +25,6 @@ The **Hospital Management System** is designed to enhance the efficiency of hosp
 
 ## Technical Requirements
 - **Object-Oriented Programming (OOP)**: Encapsulation, Inheritance, Polymorphism, Abstraction.
-- **Software Design Patterns**: Factory, Singleton, Observer.
-- **User Interface**: CLI or GUI for intuitive interaction.
 - **Security & Exception Handling**: Data encryption, restricted access, input validation.
 ---
 
